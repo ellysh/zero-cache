@@ -2,6 +2,7 @@ include_directories(${COMMON_INCLUDE_DIRS})
 link_directories(${COMMON_LIBDIR})
 
 set(zero_cache_LIB_SRCS
+    container.cpp
     debug.cpp
     debug_client.cpp)
 
