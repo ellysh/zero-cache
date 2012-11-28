@@ -4,6 +4,8 @@
 #include <string>
 #include <map>
 
+#include <boost/thread/mutex.hpp>
+
 namespace zero_cache
 {
 
@@ -18,6 +20,7 @@ public:
 
 protected:
     Data data_;
+    boost::mutex mutex_;
 };
 
 }

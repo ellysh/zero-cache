@@ -1,4 +1,6 @@
 #include <iostream>
+#include <boost/lexical_cast.hpp>
+
 #include <assert.h>
 #include <czmq.h>
 
@@ -8,24 +10,49 @@
 using namespace std;
 using namespace zero_cache;
 
-void* SendLoop(void* args)
+static string gKey = "0";
+
+void IncKey()
+{
+    int key = boost::lexical_cast<int>(gKey);
+    key++;
+    gKey = boost::lexical_cast<string>(key);
+}
+
+void* WriteLoop(void* args)
 {
     Container* container = static_cast<Container*>(args);
 
-    char id[10];
-    sprintf(id, "%p", args);
+    IncKey();
 
     while (true)
     {
         PRE_TIME_MEASURE("WriteData")
-        container->WriteData(id, 100);
+        container->WriteData(gKey, 100);
         POST_TIME_MEASURE
     }
 }
 
-void StartSendThread(void* container)
+void StartWriteThread(void* container)
 {
-    zthread_new(SendLoop, container);
+    zthread_new(WriteLoop, container);
+}
+
+void* ReadLoop(void* args)
+{
+    Container* container = static_cast<Container*>(args);
+
+    while (true)
+    {
+        PRE_TIME_MEASURE("WriteData")
+        container->ReadData("1");
+        POST_TIME_MEASURE
+    }
+}
+
+void StartReadThread(void* container)
+{
+    zthread_new(ReadLoop, container);
 }
 
 int main()
@@ -34,10 +61,12 @@ int main()
 
     cout << "Start test..." << endl;
 
-    StartSendThread(&container);
-    StartSendThread(&container);
-    StartSendThread(&container);
-    StartSendThread(&container);
+    StartWriteThread(&container);
+    StartWriteThread(&container);
+    StartWriteThread(&container);
+    StartWriteThread(&container);
+
+    //StartReadThread(&container);
 
     usleep(10 * 1000 * 1000);
 }
