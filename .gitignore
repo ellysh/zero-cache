@@ -1,0 +1,29 @@
+# Temporary files
+*.swp
+cscope.out
+*-journal
+*.log
+
+# CMake temporary files
+*.cmake
+CMakeFiles
+CMakeCache.txt
+Makefile
+
+# Binaries
+*.so
+test/thread_test
+
+# debian build files
+debian/*~
+debian/buildroot/
+debian/libsql-state/
+debian/libsql-state-dev/
+debian/*.debhelper.log
+debian/*.substvars
+install_manifest.txt
+*.1
+bin/deb/
+build-stamp
+configure-stamp
+debian/files

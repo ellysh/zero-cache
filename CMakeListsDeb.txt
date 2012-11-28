@@ -1,0 +1,30 @@
+set(BIN_DIR ${PROJECT_SOURCE_DIR}/bin)
+set(BIN_DEB_DIR ${BIN_DIR}/deb)
+set(DEBIAN_DIR ${PROJECT_SOURCE_DIR}/debian)
+
+# Targets for the deb packages building
+add_custom_target(deb-clean
+    COMMAND -rm -rf build-stamp install_manifest.txt configure-stamp
+    COMMAND find . -name "*.1" | xargs rm -f
+
+    COMMAND -rm -rf ${DEBIAN_DIR}/buildroot
+    COMMAND -rm -rf ${DEBIAN_DIR}/libmysql-state
+    COMMAND -rm -rf ${DEBIAN_DIR}/libmysql-state-dev
+    COMMAND find ${DEBIAN_DIR} -name "*.log" | xargs rm -f
+    COMMAND find ${DEBIAN_DIR} -name "*.substvars" | xargs rm -f
+
+    COMMAND -rm -rf ${BIN_DEB_DIR}
+    COMMAND find ${BIN_DIR} -name \"*.dsc\" | xargs rm -f
+    COMMAND find ${BIN_DIR} -name "*.changes" | xargs rm -f
+    COMMAND find ${BIN_DIR} -name "*.deb" | xargs rm -f
+    COMMAND find ${BIN_DIR} -name "*.tar.gz" | xargs rm -f
+)
+
+add_custom_target(deb
+    COMMAND mkdir -p ${BIN_DEB_DIR}
+    COMMAND ${MKCHANGELOG}
+    COMMAND dpkg-buildpackage -rfakeroot -b -us -uc
+    COMMAND mv -f ../*.changes ../*.deb ${BIN_DEB_DIR}
+)
+
+add_dependencies(deb deb-clean)
