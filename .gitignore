@@ -12,6 +12,7 @@ Makefile
 
 # Binaries
 *.so
+zero_cached
 test/thread_test
 
 # debian build files

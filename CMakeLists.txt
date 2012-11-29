@@ -21,10 +21,12 @@ if(UNIX)
 endif(UNIX)
 
 set(COMMON_INCLUDE_DIRS
-    ${PROJECT_SOURCE_DIR}/source)
+    ${PROJECT_SOURCE_DIR}/source/client
+    ${PROJECT_SOURCE_DIR}/source/server)
 
 set(COMMON_LIBDIR
-    ${PROJECT_SOURCE_DIR}/source)
+    ${project_source_dir}/source/client
+    ${project_source_dir}/source/server)
 
 # Build type by default is Debug
 if(NOT CMAKE_BUILD_TYPE)
