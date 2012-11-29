@@ -1,6 +1,16 @@
 #include "reactor.h"
 
+#include <iostream>
+
+using namespace std;
 using namespace zero_cache;
+
+void WaitInput()
+{
+    char key;
+
+    cin >> key;
+}
 
 int main()
 {
@@ -8,8 +18,7 @@ int main()
 
     reactor.Start();
 
-    while (true)
-        usleep(1000);
+    WaitInput();
 
     return 0;
 }
