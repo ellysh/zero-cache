@@ -32,8 +32,14 @@ static void* ReactorLoop(void* args)
         zmq_poll(items, 1, -1);
         if ( items[0].revents & ZMQ_POLLIN )
         {
-            string data = zstr_recv(receiver);
-            debug->Log() << "data = " << data << endl;
+            zmsg_t* msg = zmsg_recv(receiver);
+            zframe_t* key = zmsg_pop(msg);
+            zframe_t* data = zmsg_pop(msg);
+
+            debug->Log() << "key = " << zframe_strdup(key) << " data = " << zframe_strhex(data) << endl;
+            container->WriteData(zframe_strdup(key), zframe_dup(data));
+
+            zmsg_destroy(&msg);
         }
     }
     zctx_destroy(&ctx);
