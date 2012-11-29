@@ -1,9 +1,11 @@
 #include "client.h"
 
+#include "debug.h"
+
 using namespace std;
 using namespace zero_cache;
 
-Client::Client()
+Client::Client(string log_file) : DebugClient(log_file)
 {
     context_ = zctx_new();
     socket_ = zsocket_new(context_, ZMQ_DEALER);
@@ -19,6 +21,7 @@ Client::~Client()
 
 void Client::WriteString(std::string data)
 {
+    debug_->Log() << "Client::WriteString() - data = " << data << endl;
     zstr_send(socket_, data.c_str());
 }
 

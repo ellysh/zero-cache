@@ -11,7 +11,7 @@ using namespace zero_cache;
 void* WriteLoop(void* args)
 {
     const char* data = static_cast<char*>(args);
-    Client client;
+    Client client(data);
 
     while (true)
     {

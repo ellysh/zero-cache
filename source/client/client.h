@@ -2,18 +2,19 @@
 #define CLIENT_H
 
 #include <string>
-#include <map>
 
 #include <czmq.h>
+
+#include "debug_client.h"
 
 namespace zero_cache
 {
 
-class Client
+class Client : public DebugClient
 {
 public:
-    Client();
-    ~Client();
+    Client(std::string log_file = "");
+    virtual ~Client();
 
     /* FIXME: Remove this debug method */
     void WriteString(std::string data);
