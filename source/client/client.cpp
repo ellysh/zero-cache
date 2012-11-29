@@ -19,22 +19,18 @@ Client::~Client()
     zctx_destroy(&context_);
 }
 
-void Client::WriteString(std::string data)
+void Client::WriteData(string key, void* data, size_t size)
 {
-    debug_->Log() << "Client::WriteString() - data = " << data << endl;
-    zstr_send(socket_, data.c_str());
+    debug_->Log() << "Client::WriteData() - key = " << key << " data_size = " << size << endl;
+
+    zframe_t* key_frame = zframe_new(key.c_str(), key.size());
+    zframe_t* data_frame = zframe_new(data, size);
+
+    zframe_send(&key_frame, socket_, ZFRAME_MORE);
+    zframe_send(&data_frame, socket_, 0);
 }
 
-void WriteData(std::string key, void* data, size_t size)
-{
-    /* FIXME: Implement this method */
-#if 0
-    zframe_t* frame = zframe_new(data, size);
-    zframe_destroy(frame);
-#endif
-}
-
-void* ReadData(std::string key)
+void* Client::ReadData(string key)
 {
     /* FIXME: Implement this method */
     return NULL;
