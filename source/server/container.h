@@ -4,7 +4,7 @@
 #include <string>
 #include <map>
 
-#include <boost/thread/mutex.hpp>
+#include <czmq.h>
 
 namespace zero_cache
 {
@@ -12,15 +12,16 @@ namespace zero_cache
 class Container
 {
 private:
-    typedef std::map<std::string, int> Data;
+    typedef std::map<std::string, zframe_t*> DataMap;
 
 public:
-    void WriteData(std::string key, int data);
-    int ReadData(std::string key);
+    ~Container();
+
+    void WriteData(std::string key, zframe_t* data);
+    zframe_t* ReadData(std::string key);
 
 protected:
-    Data data_;
-    boost::mutex mutex_;
+    DataMap map_;
 };
 
 }

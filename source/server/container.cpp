@@ -3,19 +3,20 @@
 using namespace std;
 using namespace zero_cache;
 
-void Container::WriteData(string key, int data)
+Container::~Container()
 {
-    mutex_.lock();
-    data_[key] = data;
-    mutex_.unlock();
+    /* FIXME: Implement map_ cleanup here */
 }
 
-int Container::ReadData(string key)
+void Container::WriteData(string key, zframe_t* data)
 {
-    mutex_.lock();
-    if (data_.count(key) != 0 )
-        return data_[key];
+    map_[key] = data;
+}
+
+zframe_t* Container::ReadData(string key)
+{
+    if (map_.count(key) != 0 )
+        return map_[key];
     else
         return 0;
-    mutex_.unlock();
 }
