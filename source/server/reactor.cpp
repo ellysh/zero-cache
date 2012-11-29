@@ -7,9 +7,19 @@
 using namespace std;
 using namespace zero_cache;
 
+static const int kThreadCreationDelay = 1000 * 1000;
+
+struct ReactorArgs
+{
+    Debug* debug;
+    Container* container;
+};
+
 static void* ReactorLoop(void* args)
 {
-    Debug* debug = static_cast<Debug*>(args);
+    ReactorArgs* reactor = static_cast<ReactorArgs*>(args);
+    Debug* debug = reactor->debug;
+    Container* container = reactor->container;
 
     zctx_t* ctx = zctx_new ();
     void* receiver = zsocket_new (ctx, ZMQ_DEALER);
@@ -36,5 +46,11 @@ void Reactor::Start()
 
     is_start_ = true;
 
-    zthread_new(ReactorLoop, debug_);
+    ReactorArgs args;
+    args.debug = debug_;
+    args.container = &container_;
+
+    zthread_new(ReactorLoop, &args);
+
+    usleep(kThreadCreationDelay);
 }

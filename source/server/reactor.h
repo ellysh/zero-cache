@@ -2,6 +2,7 @@
 #define REACTOR_H
 
 #include "debug_client.h"
+#include "container.h"
 
 namespace zero_cache
 {
@@ -16,6 +17,7 @@ public:
 
 protected:
     bool is_start_;
+    Container container_;
 };
 
 }
