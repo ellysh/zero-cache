@@ -8,7 +8,7 @@ Client::Client()
     context_ = zctx_new();
     socket_ = zsocket_new(context_, ZMQ_DEALER);
 
-    zsocket_bind(socket_, "ipc:///tmp/0");
+    zsocket_connect(socket_, "tcp://localhost:5570");
     zsocket_set_hwm(socket_, 10);
 }
 

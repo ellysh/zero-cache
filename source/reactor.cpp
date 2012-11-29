@@ -9,7 +9,7 @@ static void ReactorLoop()
 {
     zctx_t* ctx = zctx_new ();
     void* receiver = zsocket_new (ctx, ZMQ_DEALER);
-    zsocket_connect(receiver, "ipc:///tmp/0");
+    zsocket_bind(receiver, "tcp://*:5570");
     zsocket_set_hwm(receiver, 1000);
 
     zmq_pollitem_t items[] = { { receiver, 0, ZMQ_POLLIN, 0 } };

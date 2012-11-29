@@ -32,7 +32,7 @@ void* WriteLoop(void* args)
         PRE_TIME_MEASURE(data)
         client.WriteData(data);
         POST_TIME_MEASURE
-        usleep(1000 * 1000);
+        usleep(100);
     }
 }
 
