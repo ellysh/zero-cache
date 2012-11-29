@@ -10,7 +10,7 @@ cmake_minimum_required(VERSION 2.6)
 project(zero-cache)
 
 if(UNIX)
-  find_package(Boost 1.40 REQUIRED)
+    find_package(Boost 1.40 COMPONENTS thread REQUIRED)
   find_package(ZMQ REQUIRED)
   find_package(CZMQ REQUIRED)
   include_directories( ${Boost_INCLUDE_DIR} )
