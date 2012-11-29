@@ -1,31 +1,17 @@
 #include <iostream>
-#include <boost/lexical_cast.hpp>
 
-#include <assert.h>
 #include <czmq.h>
 
-#include "reactor.h"
 #include "client.h"
 #include "speed_test.h"
 
 using namespace std;
 using namespace zero_cache;
 
-static string gKey = "0";
-
-void IncKey()
-{
-    int key = boost::lexical_cast<int>(gKey);
-    key++;
-    gKey = boost::lexical_cast<string>(key);
-}
-
 void* WriteLoop(void* args)
 {
+    const char* data = static_cast<char*>(args);
     Client client;
-
-    IncKey();
-    string data = gKey;
 
     while (true)
     {
@@ -36,19 +22,19 @@ void* WriteLoop(void* args)
     }
 }
 
-void StartWriteThread()
+void StartWriteThread(const char* args)
 {
-    zthread_new(WriteLoop, NULL);
+    zthread_new(WriteLoop, const_cast<char*>(args));
 }
 
 int main()
 {
     cout << "Start test..." << endl;
 
-    StartWriteThread();
-    StartWriteThread();
-    StartWriteThread();
-    StartWriteThread();
+    StartWriteThread("1");
+    StartWriteThread("2");
+    StartWriteThread("3");
+    StartWriteThread("4");
 
     usleep(10 * 1000 * 1000);
 }
