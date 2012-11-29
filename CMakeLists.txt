@@ -10,7 +10,6 @@ cmake_minimum_required(VERSION 2.6)
 project(zero-cache)
 
 if(UNIX)
-  find_package(Boost 1.40 REQUIRED)
   find_package(ZMQ REQUIRED)
   find_package(CZMQ REQUIRED)
   include_directories( ${Boost_INCLUDE_DIR} )
@@ -22,11 +21,13 @@ endif(UNIX)
 
 set(COMMON_INCLUDE_DIRS
     ${PROJECT_SOURCE_DIR}/source/client
+    ${PROJECT_SOURCE_DIR}/source/common
     ${PROJECT_SOURCE_DIR}/source/server)
 
 set(COMMON_LIBDIR
-    ${project_source_dir}/source/client
-    ${project_source_dir}/source/server)
+    ${PROJECT_SOURCE_DIR}/source/client
+    ${PROJECT_SOURCE_DIR}/source/common
+    ${PROJECT_SOURCE_DIR}/source/server)
 
 # Build type by default is Debug
 if(NOT CMAKE_BUILD_TYPE)
