@@ -15,7 +15,7 @@ static void* ReactorLoop(void* args)
     zmq_pollitem_t items[] = { { receiver, 0, ZMQ_POLLIN, 0 } };
     while (true)
     {
-        zmq_poll(items, 1, 0);
+        zmq_poll(items, 1, -1);
         if ( items[0].revents & ZMQ_POLLIN )
         {
             string data = zstr_recv(receiver);
