@@ -1,24 +1,20 @@
 #ifndef REACTOR_H
 #define REACTOR_H
 
-#include <string>
-#include <map>
-
-#include <czmq.h>
+#include "debug_client.h"
 
 namespace zero_cache
 {
 
-class Reactor
+class Reactor : public DebugClient
 {
-private:
-    typedef std::map<std::string, int> Data;
-
 public:
+    Reactor(std::string log_file = "") : DebugClient(log_file), is_start_(false) {};
+    virtual ~Reactor() {};
+
     void Start();
 
 protected:
-    Data data_;
     bool is_start_;
 };
 

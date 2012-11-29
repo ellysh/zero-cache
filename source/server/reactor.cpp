@@ -1,12 +1,16 @@
 #include "reactor.h"
 
-#include <iostream>
+#include <czmq.h>
+
+#include "debug.h"
 
 using namespace std;
 using namespace zero_cache;
 
 static void* ReactorLoop(void* args)
 {
+    Debug* debug = static_cast<Debug*>(args);
+
     zctx_t* ctx = zctx_new ();
     void* receiver = zsocket_new (ctx, ZMQ_DEALER);
     zsocket_bind(receiver, "tcp://*:5570");
@@ -19,7 +23,7 @@ static void* ReactorLoop(void* args)
         if ( items[0].revents & ZMQ_POLLIN )
         {
             string data = zstr_recv(receiver);
-            cout << "data = " << data << endl;
+            debug->Log() << "data = " << data << endl;
         }
     }
     zctx_destroy(&ctx);
@@ -32,5 +36,5 @@ void Reactor::Start()
 
     is_start_ = true;
 
-    zthread_new(ReactorLoop, NULL);
+    zthread_new(ReactorLoop, debug_);
 }

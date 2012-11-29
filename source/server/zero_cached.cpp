@@ -14,7 +14,7 @@ void WaitInput()
 
 int main()
 {
-    Reactor reactor;
+    Reactor reactor("zero_cached.log");
 
     reactor.Start();
 
