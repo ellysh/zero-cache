@@ -3,6 +3,7 @@
 #include <czmq.h>
 
 #include "debug.h"
+#include "types.h"
 
 using namespace std;
 using namespace zero_cache;
@@ -15,8 +16,20 @@ struct ReactorArgs
     Container* container;
 };
 
+static Command GetCommand(zframe_t* frame)
+{
+    Command command = kSet;
+    zframe_t* set_frame = zframe_new(&command, sizeof(Command));
+
+    if ( zframe_eq(frame, set_frame) )
+        return kSet;
+    else
+        return kGet;
+}
+
 static void* ReactorLoop(void* args)
 {
+    /* FIXME: Split this function to sub-functions */
     ReactorArgs* reactor = static_cast<ReactorArgs*>(args);
     Debug* debug = reactor->debug;
     Container* container = reactor->container;
@@ -33,11 +46,15 @@ static void* ReactorLoop(void* args)
         if ( items[0].revents & ZMQ_POLLIN )
         {
             zmsg_t* msg = zmsg_recv(receiver);
+            zframe_t* command = zmsg_pop(msg);
             zframe_t* key = zmsg_pop(msg);
             zframe_t* data = zmsg_pop(msg);
 
-            debug->Log() << "key = " << zframe_strdup(key) << " data = " << zframe_strhex(data) << endl;
-            container->WriteData(zframe_strdup(key), zframe_dup(data));
+            if ( GetCommand(command) == kSet )
+            {
+                debug->Log() << "set: key = " << zframe_strdup(key) << " data = " << zframe_strhex(data) << endl;
+                container->WriteData(zframe_strdup(key), zframe_dup(data));
+            }
 
             zmsg_destroy(&msg);
         }

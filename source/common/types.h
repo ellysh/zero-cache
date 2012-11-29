@@ -4,11 +4,11 @@
 namespace zero_cache
 {
 
-enum Commands
+enum Command
 {
     kSet = 0,
     kGet
-}
+};
 
 }
 

@@ -1,6 +1,7 @@
 #include "client.h"
 
 #include "debug.h"
+#include "types.h"
 
 using namespace std;
 using namespace zero_cache;
@@ -23,9 +24,13 @@ void Client::WriteData(string key, void* data, size_t size)
 {
     debug_->Log() << "Client::WriteData() - key = " << key << " data_size = " << size << endl;
 
+    Command command = kSet;
+
+    zframe_t* command_frame = zframe_new(&command, sizeof(Command));
     zframe_t* key_frame = zframe_new(key.c_str(), key.size());
     zframe_t* data_frame = zframe_new(data, size);
 
+    zframe_send(&command_frame, socket_, ZFRAME_MORE);
     zframe_send(&key_frame, socket_, ZFRAME_MORE);
     zframe_send(&data_frame, socket_, 0);
 }
