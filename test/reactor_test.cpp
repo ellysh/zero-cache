@@ -16,7 +16,7 @@ void* WriteLoop(void* args)
     while (true)
     {
         PRE_TIME_MEASURE(data)
-        client.WriteData(data);
+        client.WriteString(data);
         POST_TIME_MEASURE
         usleep(100);
     }

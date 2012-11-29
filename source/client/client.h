@@ -15,10 +15,10 @@ public:
     Client();
     ~Client();
 
-    void WriteData(std::string data);
-
-    //void WriteData(std::string key, int data);
-    //int ReadData(std::string key);
+    /* FIXME: Remove this debug method */
+    void WriteString(std::string data);
+    void WriteData(std::string key, void* data, size_t size);
+    void* ReadData(std::string key);
 
 protected:
     zctx_t* context_;

@@ -17,7 +17,22 @@ Client::~Client()
     zctx_destroy(&context_);
 }
 
-void Client::WriteData(std::string data)
+void Client::WriteString(std::string data)
 {
     zstr_send(socket_, data.c_str());
+}
+
+void WriteData(std::string key, void* data, size_t size)
+{
+    /* FIXME: Implement this method */
+#if 0
+    zframe_t* frame = zframe_new(data, size);
+    zframe_destroy(frame);
+#endif
+}
+
+void* ReadData(std::string key)
+{
+    /* FIXME: Implement this method */
+    return NULL;
 }
