@@ -1,11 +1,11 @@
 #include "reactor.h"
 
-#include <boost/thread/thread.hpp>
+#include <iostream>
 
 using namespace std;
 using namespace zero_cache;
 
-static void ReactorLoop()
+static void* ReactorLoop(void* args)
 {
     zctx_t* ctx = zctx_new ();
     void* receiver = zsocket_new (ctx, ZMQ_DEALER);
@@ -32,5 +32,5 @@ void Reactor::Start()
 
     is_start_ = true;
 
-    boost::thread reactor(&ReactorLoop);
+    zthread_new(ReactorLoop, NULL);
 }

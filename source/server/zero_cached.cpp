@@ -10,4 +10,6 @@ int main()
 
     while (true)
         usleep(1000);
+
+    return 0;
 }

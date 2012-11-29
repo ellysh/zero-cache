@@ -6,7 +6,7 @@ set(zero_cached_SRCS
     debug.cpp
     debug_client.cpp
     reactor.cpp
-    zero_cached)
+    zero_cached.cpp)
 
 add_executable(zero_cached ${zero_cached_SRCS})
 

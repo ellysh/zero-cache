@@ -43,10 +43,6 @@ void StartWriteThread()
 
 int main()
 {
-    Reactor reactor;
-
-    reactor.Start();
-
     cout << "Start test..." << endl;
 
     StartWriteThread();
