@@ -4,6 +4,7 @@ link_directories(${COMMON_LIBDIR})
 set(zero_cached_SRCS
     container.cpp
     reactor.cpp
+    reactor_loop.cpp
     zero_cached.cpp)
 
 add_executable(zero_cached ${zero_cached_SRCS})

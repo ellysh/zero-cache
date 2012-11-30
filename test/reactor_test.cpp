@@ -27,6 +27,12 @@ void StartWriteThread(const char* args)
     zthread_new(WriteLoop, const_cast<char*>(args));
 }
 
+void WaitInput()
+{
+    char key;
+    cin >> key;
+}
+
 int main()
 {
     cout << "Start test..." << endl;
@@ -36,5 +42,5 @@ int main()
     StartWriteThread("3");
     StartWriteThread("4");
 
-    usleep(10 * 1000 * 1000);
+    WaitInput();
 }

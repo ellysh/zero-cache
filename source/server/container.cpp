@@ -10,12 +10,15 @@ Container::~Container()
 
 void Container::WriteData(string key, zframe_t* data)
 {
-    map_[key] = data;
+    if ( map_.count(key) != 0 )
+        zframe_reset(map_[key], zframe_data(data), zframe_size(data));
+    else
+        map_[key] = data;
 }
 
 zframe_t* Container::ReadData(string key)
 {
-    if (map_.count(key) != 0 )
+    if ( map_.count(key) != 0 )
         return map_[key];
     else
         return 0;
