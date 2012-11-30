@@ -20,6 +20,8 @@ void Reactor::Start()
     args.debug = debug_;
     args.container = &container_;
 
+    CreateReactorConnection(args);
+
     zthread_new(ReactorLoop, &args);
 
     usleep(kThreadCreationDelay);

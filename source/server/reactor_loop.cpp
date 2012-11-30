@@ -25,37 +25,41 @@ static Command GetCommand(zframe_t* frame)
     return command;
 }
 
-void* zero_cache::ReactorLoop(void* args)
+void zero_cache::CreateReactorConnection(ReactorArgs& args)
+{
+    args.context = zctx_new ();
+    args.socket = zsocket_new(args.context, ZMQ_DEALER);
+
+    zsocket_bind(args.socket, "tcp://*:5570");
+    zsocket_set_hwm(args.socket, 1000);
+
+    zmq_pollitem_t items[1] = { { args.socket, 0, ZMQ_POLLIN, 0 } };
+    memcpy(&args.items, &items, sizeof(items));
+}
+
+void* zero_cache::ReactorLoop(void* reactor_args)
 {
     /* FIXME: Split this function to sub-functions */
-    ReactorArgs* reactor = static_cast<ReactorArgs*>(args);
-    Debug* debug = reactor->debug;
-    Container* container = reactor->container;
+    ReactorArgs* args = static_cast<ReactorArgs*>(reactor_args);
 
-    zctx_t* ctx = zctx_new ();
-    void* receiver = zsocket_new (ctx, ZMQ_DEALER);
-    zsocket_bind(receiver, "tcp://*:5570");
-    zsocket_set_hwm(receiver, 1000);
-
-    zmq_pollitem_t items[] = { { receiver, 0, ZMQ_POLLIN, 0 } };
     while (true)
     {
-        zmq_poll(items, 1, -1);
-        if ( items[0].revents & ZMQ_POLLIN )
+        zmq_poll(args->items, 1, -1);
+        if ( args->items[0].revents & ZMQ_POLLIN )
         {
-            zmsg_t* msg = zmsg_recv(receiver);
+            zmsg_t* msg = zmsg_recv(args->socket);
             zframe_t* command = zmsg_pop(msg);
             zframe_t* key = zmsg_pop(msg);
             zframe_t* data = zmsg_pop(msg);
 
             if ( GetCommand(command) == kSet )
             {
-                debug->Log() << "set: key = " << zframe_strdup(key) << " data = " << zframe_strhex(data) << endl;
-                //container->WriteData(zframe_strdup(key), zframe_dup(data));
+                args->debug->Log() << "set: key = " << zframe_strdup(key) << " data = " << zframe_strhex(data) << endl;
+                //args->container->WriteData(zframe_strdup(key), zframe_dup(data));
             }
 
             zmsg_destroy(&msg);
         }
     }
-    zctx_destroy(&ctx);
+    zctx_destroy(&args->context);
 }
