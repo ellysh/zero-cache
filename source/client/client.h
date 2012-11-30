@@ -13,7 +13,7 @@ namespace zero_cache
 class Client : public DebugClient
 {
 public:
-    Client(std::string log_file = "");
+    Client(std::string log_file = "", std::string connection = "tcp://localhost:5570");
     virtual ~Client();
 
     void WriteData(std::string key, void* data, size_t size);

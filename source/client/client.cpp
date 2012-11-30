@@ -8,12 +8,12 @@ using namespace zero_cache;
 
 static const long kReadAnswerTimeout = 1000;
 
-Client::Client(string log_file) : DebugClient(log_file)
+Client::Client(string log_file, string connection) : DebugClient(log_file)
 {
     context_ = zctx_new();
     socket_ = zsocket_new(context_, ZMQ_DEALER);
 
-    zsocket_connect(socket_, "tcp://localhost:5570");
+    zsocket_connect(socket_, connection.c_str());
     zsocket_set_hwm(socket_, 10);
 }
 
