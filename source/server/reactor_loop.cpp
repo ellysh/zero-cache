@@ -66,7 +66,7 @@ void* zero_cache::ReactorLoop(void* reactor_args)
                 zframe_t* data = args->container->ReadData(zframe_strdup(key));
 
                 if ( data == NULL )
-                    continue;
+                    data = zframe_new(NULL, 0);
 
                 args->debug->Log() << " data = " << zframe_strhex(data) << endl;
                 zframe_send(&data, args->socket, ZFRAME_REUSE);
