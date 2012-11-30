@@ -6,6 +6,8 @@
 using namespace std;
 using namespace zero_cache;
 
+static const long kReadAnswerTimeout = 1000;
+
 Client::Client(string log_file) : DebugClient(log_file)
 {
     context_ = zctx_new();
@@ -17,6 +19,7 @@ Client::Client(string log_file) : DebugClient(log_file)
 
 Client::~Client()
 {
+    zsocket_destroy(context_, socket_);
     zctx_destroy(&context_);
 }
 
@@ -49,7 +52,12 @@ void Client::SendReadRequest(string key)
 void* Client::ReceiveReadAnswer()
 {
     zmq_pollitem_t items[] = { { socket_, 0, ZMQ_POLLIN, 0 } };
-    zmq_poll(items, 1, -1);
+
+    if ( zmq_poll(items, 1, kReadAnswerTimeout) <= 0 )
+    {
+        debug_->Log() << "Client::ReceiveReadAnswer() - error = " << zmq_strerror(zmq_errno()) << " (" << zmq_errno << ")" << endl;
+        return NULL;
+    }
 
     zmsg_t* msg = zmsg_recv(socket_);
 
