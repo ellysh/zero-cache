@@ -8,6 +8,8 @@
 using namespace std;
 using namespace zero_cache;
 
+static char kData[1000];
+
 void* WriteLoop(void* args)
 {
     const char* data = static_cast<char*>(args);
@@ -17,6 +19,7 @@ void* WriteLoop(void* args)
     {
         PRE_TIME_MEASURE(data)
         client.WriteData(data, args, 1);
+        //client.WriteData(data, &kData, sizeof(kData));
         POST_TIME_MEASURE
         usleep(100);
     }

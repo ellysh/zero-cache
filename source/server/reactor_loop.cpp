@@ -2,6 +2,7 @@
 
 #include <czmq.h>
 
+#include "container.h"
 #include "debug.h"
 #include "types.h"
 
@@ -48,6 +49,7 @@ void* zero_cache::ReactorLoop(void* reactor_args)
         if ( args->items[0].revents & ZMQ_POLLIN )
         {
             zmsg_t* msg = zmsg_recv(args->socket);
+            assert( msg != NULL );
             zframe_t* command = zmsg_pop(msg);
             zframe_t* key = zmsg_pop(msg);
             zframe_t* data = zmsg_pop(msg);
@@ -55,7 +57,7 @@ void* zero_cache::ReactorLoop(void* reactor_args)
             if ( GetCommand(command) == kSet )
             {
                 args->debug->Log() << "set: key = " << zframe_strdup(key) << " data = " << zframe_strhex(data) << endl;
-                //args->container->WriteData(zframe_strdup(key), zframe_dup(data));
+                args->container->WriteData(zframe_strdup(key), zframe_dup(data));
             }
 
             zmsg_destroy(&msg);
