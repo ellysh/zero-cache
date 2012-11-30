@@ -22,6 +22,9 @@ public:
 protected:
     zctx_t* context_;
     void* socket_;
+
+    void SendReadRequest(std::string key);
+    void* ReceiveReadAnswer();
 };
 
 }

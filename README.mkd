@@ -1,0 +1,5 @@
+# zero-cache 0.1 version
+
+## INTRODUCTION
+
+This is memory caching system based on ZeroMQ messaging library.

@@ -35,10 +35,8 @@ void Client::WriteData(string key, void* data, size_t size)
     zframe_send(&data_frame, socket_, 0);
 }
 
-void* Client::ReadData(string key)
+void Client::SendReadRequest(string key)
 {
-    debug_->Log() << "Client::ReadData() - key = " << key << endl;
-
     Command command = kGet;
 
     zframe_t* command_frame = zframe_new(&command, sizeof(Command));
@@ -46,7 +44,10 @@ void* Client::ReadData(string key)
 
     zframe_send(&command_frame, socket_, ZFRAME_MORE);
     zframe_send(&key_frame, socket_, 0);
+}
 
+void* Client::ReceiveReadAnswer()
+{
     zmq_pollitem_t items[] = { { socket_, 0, ZMQ_POLLIN, 0 } };
     zmq_poll(items, 1, -1);
 
@@ -59,4 +60,13 @@ void* Client::ReadData(string key)
     zmsg_destroy(&msg);
 
     return data;
+}
+
+void* Client::ReadData(string key)
+{
+    debug_->Log() << "Client::ReadData() - key = " << key << endl;
+
+    SendReadRequest(key);
+
+    return ReceiveReadAnswer();
 }
