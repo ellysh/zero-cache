@@ -1,6 +1,7 @@
 #include "reactor_loop.h"
 
 #include <czmq.h>
+#include <iostream>
 
 #include "container.h"
 #include "debug.h"
@@ -45,7 +46,9 @@ void* zero_cache::ReactorLoop(void* reactor_args)
 
     while (true)
     {
-        zmq_poll(args->items, 1, -1);
+        if ( zmq_poll(args->items, 1, -1) == -1 )
+            cout << "ReactorLoop() - error = " << zmq_strerror(zmq_errno()) << endl;
+
         if ( args->items[0].revents & ZMQ_POLLIN )
         {
             zmsg_t* msg = zmsg_recv(args->socket);
