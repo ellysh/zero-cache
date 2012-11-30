@@ -37,6 +37,26 @@ void Client::WriteData(string key, void* data, size_t size)
 
 void* Client::ReadData(string key)
 {
-    /* FIXME: Implement this method */
-    return NULL;
+    debug_->Log() << "Client::ReadData() - key = " << key << endl;
+
+    Command command = kGet;
+
+    zframe_t* command_frame = zframe_new(&command, sizeof(Command));
+    zframe_t* key_frame = zframe_new(key.c_str(), key.size());
+
+    zframe_send(&command_frame, socket_, ZFRAME_MORE);
+    zframe_send(&key_frame, socket_, 0);
+
+    zmq_pollitem_t items[] = { { socket_, 0, ZMQ_POLLIN, 0 } };
+    zmq_poll(items, 1, -1);
+
+    zmsg_t* msg = zmsg_recv(socket_);
+
+    zframe_t* frame = zmsg_pop(msg);
+    void* data = malloc(zframe_size(frame));
+    memcpy(data, zframe_data(frame), zframe_size(frame));
+
+    zmsg_destroy(&msg);
+
+    return data;
 }

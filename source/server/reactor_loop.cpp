@@ -52,12 +52,24 @@ void* zero_cache::ReactorLoop(void* reactor_args)
             assert( msg != NULL );
             zframe_t* command = zmsg_pop(msg);
             zframe_t* key = zmsg_pop(msg);
-            zframe_t* data = zmsg_pop(msg);
 
             if ( GetCommand(command) == kSet )
             {
+                zframe_t* data = zmsg_pop(msg);
                 args->debug->Log() << "set: key = " << zframe_strdup(key) << " data = " << zframe_strhex(data) << endl;
                 args->container->WriteData(zframe_strdup(key), zframe_dup(data));
+            }
+
+            if ( GetCommand(command) == kGet )
+            {
+                args->debug->Log() << "get: key = " << zframe_strdup(key);
+                zframe_t* data = args->container->ReadData(zframe_strdup(key));
+
+                if ( data == NULL )
+                    continue;
+
+                args->debug->Log() << " data = " << zframe_strhex(data) << endl;
+                zframe_send(&data, args->socket, ZFRAME_REUSE);
             }
 
             zmsg_destroy(&msg);

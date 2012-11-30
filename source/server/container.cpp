@@ -26,5 +26,5 @@ zframe_t* Container::ReadData(string key)
     if ( map_.count(key) != 0 )
         return map_[key];
     else
-        return 0;
+        return NULL;
 }
