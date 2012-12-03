@@ -3,6 +3,7 @@
 
 #include "debug_client.h"
 #include "container.h"
+#include "reactor_loop.h"
 
 namespace zero_cache
 {
@@ -10,14 +11,15 @@ namespace zero_cache
 class Reactor : public DebugClient
 {
 public:
-    Reactor(std::string log_file = "") : DebugClient(log_file), is_start_(false) {};
-    virtual ~Reactor() {};
+    Reactor(std::string log_file = "");
+    virtual ~Reactor();
 
     void Start();
 
 protected:
     bool is_start_;
     Container container_;
+    ReactorArgs args_;
 };
 
 }

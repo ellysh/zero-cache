@@ -27,18 +27,6 @@ static Command GetCommand(zframe_t* frame)
     return command;
 }
 
-void zero_cache::CreateReactorConnection(ReactorArgs& args)
-{
-    args.context = zctx_new ();
-    args.socket = zsocket_new(args.context, ZMQ_DEALER);
-
-    zsocket_bind(args.socket, "tcp://*:5570");
-    zsocket_set_hwm(args.socket, 1000);
-
-    zmq_pollitem_t items[1] = { { args.socket, 0, ZMQ_POLLIN, 0 } };
-    memcpy(&args.items, &items, sizeof(items));
-}
-
 void* zero_cache::ReactorLoop(void* reactor_args)
 {
     /* FIXME: Split this function to sub-functions */
@@ -47,7 +35,7 @@ void* zero_cache::ReactorLoop(void* reactor_args)
     while (true)
     {
         if ( zmq_poll(args->items, 1, -1) == -1 )
-            cout << "ReactorLoop() - error = " << zmq_strerror(zmq_errno()) << endl;
+            args->debug->Log() << "ReactorLoop() - error = " << zmq_strerror(zmq_errno()) << endl;
 
         if ( args->items[0].revents & ZMQ_POLLIN )
         {

@@ -9,6 +9,26 @@ using namespace zero_cache;
 
 static const int kThreadCreationDelay = 1000 * 1000;
 
+Reactor::Reactor(string log_file) : DebugClient(log_file), is_start_(false)
+{
+    args_.debug = debug_;
+    args_.container = &container_;
+
+    args_.context = zctx_new ();
+    args_.socket = zsocket_new(args_.context, ZMQ_DEALER);
+
+    zsocket_bind(args_.socket, "tcp://*:5570");
+    zsocket_set_hwm(args_.socket, 1000);
+
+    zmq_pollitem_t items[1] = { { args_.socket, 0, ZMQ_POLLIN, 0 } };
+    memcpy(&args_.items, &items, sizeof(items));
+}
+
+Reactor::~Reactor()
+{
+    zctx_destroy(&args_.context);
+}
+
 void Reactor::Start()
 {
     if ( is_start_ )
@@ -16,13 +36,7 @@ void Reactor::Start()
 
     is_start_ = true;
 
-    ReactorArgs args;
-    args.debug = debug_;
-    args.container = &container_;
-
-    CreateReactorConnection(args);
-
-    zthread_new(ReactorLoop, &args);
+    zthread_new(ReactorLoop, &args_);
 
     usleep(kThreadCreationDelay);
 }

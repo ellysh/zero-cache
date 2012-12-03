@@ -18,7 +18,6 @@ struct ReactorArgs
     zctx_t* context;
 };
 
-void CreateReactorConnection(ReactorArgs& args);
 void* ReactorLoop(void* reactor_args);
 
 }
