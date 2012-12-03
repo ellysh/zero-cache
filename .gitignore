@@ -14,6 +14,8 @@ Makefile
 *.so
 zero_cached
 reactor_test
+memory_leak_test
+get_test
 
 # debian build files
 debian/*~
