@@ -11,7 +11,7 @@ namespace zero_cache
 
 class Container
 {
-private:
+public:
     typedef std::map<std::string, zframe_t*> DataMap;
 
 public:

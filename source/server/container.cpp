@@ -5,7 +5,7 @@
 using namespace std;
 using namespace zero_cache;
 
-static void RemoveFrame(pair<string, zframe_t*> frame_pair)
+static void RemoveFrame(Container::DataMap::value_type frame_pair)
 {
     zframe_destroy(&frame_pair.second);
 }
@@ -23,7 +23,7 @@ void Container::WriteData(string key, zframe_t* data)
     else
     {
         zframe_t* frame = zframe_dup(data);
-        map_[key] = frame;
+        map_.insert(DataMap::value_type(key, frame));
     }
 }
 
