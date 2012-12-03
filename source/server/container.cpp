@@ -1,24 +1,30 @@
 #include "container.h"
 
+#include <algorithm>
+
 using namespace std;
 using namespace zero_cache;
 
+static void RemoveFrame(pair<string, zframe_t*> frame_pair)
+{
+    zframe_destroy(&frame_pair.second);
+}
+
 Container::~Container()
 {
-    /* FIXME: Implement map_ cleanup here */
+    for_each(map_.begin(), map_.end(),
+             RemoveFrame);
 }
 
 void Container::WriteData(string key, zframe_t* data)
 {
-    map_[key] = data;
-
-    /* FIXME: Check if this mechanism is needed to prevent memory leaks */
-#if 0
     if ( map_.count(key) != 0 )
         zframe_reset(map_[key], zframe_data(data), zframe_size(data));
     else
-        map_[key] = data;
-#endif
+    {
+        zframe_t* frame = zframe_dup(data);
+        map_[key] = frame;
+    }
 }
 
 zframe_t* Container::ReadData(string key)

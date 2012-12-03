@@ -40,7 +40,7 @@ message(STATUS "Build type: " ${CMAKE_BUILD_TYPE})
 if(UNIX)
   set(CMAKE_CXX_FLAGS "-Wvla -Wl,-z,defs -fPIC")
   set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -O2 -fomit-frame-pointer -funroll-loops -pipe")
-  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -g -O0")
+  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -g -O0 -D__DEBUG__")
   set(CMAKE_C_FLAGS ${CMAKE_CXX_FLAGS_RELEASE})
 endif(UNIX)
 

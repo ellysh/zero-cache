@@ -26,6 +26,7 @@ Reactor::Reactor(string log_file) : DebugClient(log_file), is_start_(false)
 
 Reactor::~Reactor()
 {
+    zsocket_destroy(args_.context, args_.socket);
     zctx_destroy(&args_.context);
 }
 

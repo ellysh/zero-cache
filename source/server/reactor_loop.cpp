@@ -47,22 +47,27 @@ void* zero_cache::ReactorLoop(void* reactor_args)
             if ( GetCommand(command) == kSet )
             {
                 zframe_t* data = zmsg_pop(msg);
-                args->debug->Log() << "set: key = " << zframe_strdup(key) << " data = " << zframe_strhex(data) << endl;
-                args->container->WriteData(zframe_strdup(key), zframe_dup(data));
+                char* key_str = zframe_strdup(key);
+                //args->debug->Log() << "set: key = " << zframe_strdup(key) << " data = " << zframe_strhex(data) << endl;
+                args->container->WriteData(string(key_str), data);
+                free(key_str);
+                zframe_destroy(&data);
             }
 
             if ( GetCommand(command) == kGet )
             {
-                args->debug->Log() << "get: key = " << zframe_strdup(key);
+                //args->debug->Log() << "get: key = " << zframe_strdup(key);
                 zframe_t* data = args->container->ReadData(zframe_strdup(key));
 
                 if ( data == NULL )
                     data = zframe_new(NULL, 0);
 
-                args->debug->Log() << " data = " << zframe_strhex(data) << endl;
-                zframe_send(&data, args->socket, ZFRAME_REUSE);
+                //args->debug->Log() << " data = " << zframe_strhex(data) << endl;
+                zframe_send(&data, args->socket, 0);
             }
 
+            zframe_destroy(&key);
+            zframe_destroy(&command);
             zmsg_destroy(&msg);
         }
     }

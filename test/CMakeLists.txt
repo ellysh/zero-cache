@@ -12,6 +12,16 @@ target_link_libraries(reactor_test zero_cache)
 install(TARGETS reactor_test DESTINATION bin)
 
 
+set(memory_leak_test_SRCS
+    memory_leak_test.cpp)
+
+add_executable(memory_leak_test ${memory_leak_test_SRCS})
+
+target_link_libraries(memory_leak_test zero_cache)
+
+install(TARGETS memory_leak_test DESTINATION bin)
+
+
 set(get_test_SRCS
     get_test.cpp)
 
