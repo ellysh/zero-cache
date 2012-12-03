@@ -38,9 +38,9 @@ message(STATUS "Build type: " ${CMAKE_BUILD_TYPE})
 
 # CXXFLAGS and CMAKE_C_FLAGS
 if(UNIX)
-  set(CMAKE_CXX_FLAGS "-D__LINUX__ -Wvla -Wl,-z,defs -fPIC")
+  set(CMAKE_CXX_FLAGS "-Wvla -Wl,-z,defs -fPIC")
   set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -O2 -fomit-frame-pointer -funroll-loops -pipe")
-  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -D__DEBUG__ -O0 -gstabs")
+  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -g -O0")
   set(CMAKE_C_FLAGS ${CMAKE_CXX_FLAGS_RELEASE})
 endif(UNIX)
 
