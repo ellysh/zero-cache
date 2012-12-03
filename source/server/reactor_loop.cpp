@@ -61,16 +61,22 @@ void* zero_cache::ReactorLoop(void* reactor_args)
             {
                 args->debug->Log() << "get: key = " << key_str;
                 zframe_t* data = args->container->ReadData(string(key_str));
+                bool is_data_empty = false;
 
                 if ( data == NULL )
+                {
+                    is_data_empty = true;
                     data = zframe_new(NULL, 0);
+                }
 
 #ifdef __DEBUG__
                 char* data_hex = zframe_strhex(data);
                 args->debug->Log() << " data = " << data_hex << endl;
                 free(data_hex);
 #endif
-                zframe_send(&data, args->socket, 0);
+                zframe_send(&data, args->socket, ZFRAME_REUSE);
+                if ( is_data_empty )
+                    zframe_destroy(&data);
             }
 
             free(key_str);
