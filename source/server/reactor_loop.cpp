@@ -43,29 +43,37 @@ void* zero_cache::ReactorLoop(void* reactor_args)
             assert( msg != NULL );
             zframe_t* command = zmsg_pop(msg);
             zframe_t* key = zmsg_pop(msg);
+            char* key_str = zframe_strdup(key);
 
             if ( GetCommand(command) == kSet )
             {
                 zframe_t* data = zmsg_pop(msg);
-                char* key_str = zframe_strdup(key);
-                //args->debug->Log() << "set: key = " << zframe_strdup(key) << " data = " << zframe_strhex(data) << endl;
+#ifdef __DEBUG__
+                char* data_hex = zframe_strhex(data);
+                args->debug->Log() << "set: key = " << key_str << " data = " << data_hex << endl;
+                free(data_hex);
+#endif
                 args->container->WriteData(string(key_str), data);
-                free(key_str);
                 zframe_destroy(&data);
             }
 
             if ( GetCommand(command) == kGet )
             {
-                //args->debug->Log() << "get: key = " << zframe_strdup(key);
-                zframe_t* data = args->container->ReadData(zframe_strdup(key));
+                args->debug->Log() << "get: key = " << key_str;
+                zframe_t* data = args->container->ReadData(string(key_str));
 
                 if ( data == NULL )
                     data = zframe_new(NULL, 0);
 
-                //args->debug->Log() << " data = " << zframe_strhex(data) << endl;
+#ifdef __DEBUG__
+                char* data_hex = zframe_strhex(data);
+                args->debug->Log() << " data = " << data_hex << endl;
+                free(data_hex);
+#endif
                 zframe_send(&data, args->socket, 0);
             }
 
+            free(key_str);
             zframe_destroy(&key);
             zframe_destroy(&command);
             zmsg_destroy(&msg);
