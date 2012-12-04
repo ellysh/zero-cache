@@ -22,6 +22,8 @@ protected:
     zctx_t* context_;
 
     void ProcessMessage();
+    void WriteData(char* key_str, zmsg_t* msg);
+    void ReadData(char* key_str);
 };
 
 }
