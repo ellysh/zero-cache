@@ -2,8 +2,7 @@ include_directories(${COMMON_INCLUDE_DIRS})
 link_directories(${COMMON_LIBDIR})
 
 set(common_LIB_SRCS
-    debug.cpp
-    debug_client.cpp)
+    debug.cpp)
 
 add_library(common SHARED ${common_LIB_SRCS})
 

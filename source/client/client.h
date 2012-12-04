@@ -5,12 +5,12 @@
 
 #include <czmq.h>
 
-#include "debug_client.h"
+#include "debug.h"
 
 namespace zero_cache
 {
 
-class Client : public DebugClient
+class Client : protected Debug
 {
 public:
     Client(std::string log_file = "", std::string connection = "tcp://localhost:5570");

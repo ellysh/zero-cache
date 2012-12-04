@@ -8,7 +8,7 @@ using namespace zero_cache;
 
 static const long kReadAnswerTimeout = 1000;
 
-Client::Client(string log_file, string connection) : DebugClient(log_file)
+Client::Client(string log_file, string connection) : Debug(log_file)
 {
     context_ = zctx_new();
     socket_ = zsocket_new(context_, ZMQ_DEALER);
@@ -25,7 +25,7 @@ Client::~Client()
 
 void Client::WriteData(string key, void* data, size_t size)
 {
-    debug_->Log() << "Client::WriteData() - key = " << key << " data_size = " << size << endl;
+    Log() << "Client::WriteData() - key = " << key << " data_size = " << size << endl;
 
     Command command = kSet;
 
@@ -55,7 +55,7 @@ void* Client::ReceiveReadAnswer()
 
     if ( zmq_poll(items, 1, kReadAnswerTimeout) <= 0 )
     {
-        debug_->Log() << "Client::ReceiveReadAnswer() - error = " << zmq_strerror(zmq_errno()) << " (" << zmq_errno << ")" << endl;
+        Log() << "Client::ReceiveReadAnswer() - error = " << zmq_strerror(zmq_errno()) << " (" << zmq_errno << ")" << endl;
         return NULL;
     }
 
@@ -72,7 +72,7 @@ void* Client::ReceiveReadAnswer()
 
 void* Client::ReadData(string key)
 {
-    debug_->Log() << "Client::ReadData() - key = " << key << endl;
+    Log() << "Client::ReadData() - key = " << key << endl;
 
     SendReadRequest(key);
 

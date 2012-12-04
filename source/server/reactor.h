@@ -1,13 +1,13 @@
 #ifndef REACTOR_H
 #define REACTOR_H
 
-#include "debug_client.h"
+#include "debug.h"
 #include "container.h"
 
 namespace zero_cache
 {
 
-class Reactor : public DebugClient
+class Reactor : protected Debug
 {
 public:
     Reactor(std::string log_file = "");

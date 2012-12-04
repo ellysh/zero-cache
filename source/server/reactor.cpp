@@ -3,7 +3,6 @@
 #include <czmq.h>
 
 #include "zsignal.h"
-#include "debug.h"
 #include "types.h"
 
 using namespace std;
@@ -11,7 +10,7 @@ using namespace zero_cache;
 
 static const int kThreadCreationDelay = 1000 * 1000;
 
-Reactor::Reactor(string log_file) : DebugClient(log_file)
+Reactor::Reactor(string log_file) : Debug(log_file)
 {
     context_ = zctx_new ();
     socket_ = zsocket_new(context_, ZMQ_DEALER);
@@ -56,7 +55,7 @@ void Reactor::ProcessMessage()
 {
     /* FIXME: Split this method to submethods */
     if ( zmq_poll(items_, 1, -1) == -1 )
-        debug_->Log() << "ReactorLoop() - error = " << zmq_strerror(zmq_errno()) << endl;
+        Log() << "ReactorLoop() - error = " << zmq_strerror(zmq_errno()) << endl;
 
     if ( ! (items_[0].revents & ZMQ_POLLIN) )
         return;
@@ -72,7 +71,7 @@ void Reactor::ProcessMessage()
         zframe_t* data = zmsg_pop(msg);
 #ifdef __DEBUG__
         char* data_hex = zframe_strhex(data);
-        debug_->Log() << "set: key = " << key_str << " data = " << data_hex << endl;
+        Log() << "set: key = " << key_str << " data = " << data_hex << endl;
         free(data_hex);
 #endif
         container_.WriteData(string(key_str), data);
@@ -81,7 +80,7 @@ void Reactor::ProcessMessage()
 
     if ( GetCommand(command) == kGet )
     {
-        debug_->Log() << "get: key = " << key_str;
+        Log() << "get: key = " << key_str;
         zframe_t* data = container_.ReadData(string(key_str));
         bool is_data_empty = false;
 
@@ -93,7 +92,7 @@ void Reactor::ProcessMessage()
 
 #ifdef __DEBUG__
         char* data_hex = zframe_strhex(data);
-        debug_->Log() << " data = " << data_hex << endl;
+        Log() << " data = " << data_hex << endl;
         free(data_hex);
 #endif
         zframe_send(&data, socket_, ZFRAME_REUSE);
