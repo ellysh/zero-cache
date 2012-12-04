@@ -3,7 +3,6 @@
 
 #include "debug_client.h"
 #include "container.h"
-#include "reactor_loop.h"
 
 namespace zero_cache
 {

@@ -32,6 +32,7 @@ Reactor::~Reactor()
 void Reactor::Start()
 {
     s_catch_signals ();
+
     while ( ! s_interrupted )
         ProcessMessage();
 }
