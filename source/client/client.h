@@ -19,7 +19,7 @@ public:
     void WriteData(std::string key, void* data, size_t size);
     void* ReadData(std::string key);
 
-    void SetWaterMark(int water_mark);
+    void SetQueueSize(int size);
 
 protected:
     zctx_t* context_;
