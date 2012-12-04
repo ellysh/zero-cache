@@ -1,8 +1,5 @@
 #include "client.h"
 
-#include "debug.h"
-#include "types.h"
-
 using namespace std;
 using namespace zero_cache;
 

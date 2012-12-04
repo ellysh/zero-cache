@@ -3,8 +3,9 @@
 
 #include <string>
 #include <map>
-
 #include <czmq.h>
+
+#include "types.h"
 
 namespace zero_cache
 {
@@ -15,13 +16,16 @@ public:
     typedef std::map<std::string, zframe_t*> DataMap;
 
 public:
+    Container() {};
     ~Container();
 
     void WriteData(std::string key, zframe_t* data);
     zframe_t* ReadData(std::string key);
 
-protected:
+private:
     DataMap map_;
+
+    DISALLOW_COPY_AND_ASSIGN(Container)
 };
 
 }

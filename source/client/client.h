@@ -2,10 +2,10 @@
 #define CLIENT_H
 
 #include <string>
-
 #include <czmq.h>
 
 #include "debug.h"
+#include "types.h"
 
 namespace zero_cache
 {
@@ -21,12 +21,14 @@ public:
 
     void SetQueueSize(int size);
 
-protected:
+private:
     zctx_t* context_;
     void* socket_;
 
     void SendReadRequest(std::string key);
     void* ReceiveReadAnswer();
+
+    DISALLOW_COPY_AND_ASSIGN(Client)
 };
 
 }

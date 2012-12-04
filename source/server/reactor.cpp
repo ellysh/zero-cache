@@ -3,7 +3,6 @@
 #include <czmq.h>
 
 #include "zsignal.h"
-#include "types.h"
 
 using namespace std;
 using namespace zero_cache;

@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include "types.h"
+
 namespace zero_cache
 {
 
@@ -18,6 +20,7 @@ private:
     char** begin_;
     char** end_;
 
+    DISALLOW_COPY_AND_ASSIGN(ProgramOptions)
 };
 
 }

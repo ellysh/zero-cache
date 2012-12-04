@@ -1,6 +1,7 @@
 #ifndef REACTOR_H
 #define REACTOR_H
 
+#include "types.h"
 #include "debug.h"
 #include "container.h"
 
@@ -17,7 +18,7 @@ public:
 
     void SetQueueSize(int size);
 
-protected:
+private:
     Container container_;
     void* socket_;
     zmq_pollitem_t items_[1];
@@ -26,6 +27,8 @@ protected:
     void ProcessMessage();
     void WriteData(char* key_str, zmsg_t* msg);
     void ReadData(char* key_str);
+
+    DISALLOW_COPY_AND_ASSIGN(Reactor)
 };
 
 }
