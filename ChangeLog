@@ -1,3 +1,6 @@
+* zero-cache 0.3
+	- Packaging application for debian
+
 * zero-cache 0.2
 	- Fix bugs and memory leaks
 

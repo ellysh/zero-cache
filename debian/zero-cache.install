@@ -1,0 +1,3 @@
+debian/buildroot/usr/lib/libserial/*.so         usr/lib/libserial/
+debian/buildroot/usr/etc/ld.so.conf.d/*.conf    etc/ld.so.conf.d/
+debian/buildroot/usr/lib/pkgconfig/*.pc         usr/lib/pkgconfig

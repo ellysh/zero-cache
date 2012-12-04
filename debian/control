@@ -1,0 +1,16 @@
+Source: zero-cache
+Section: main
+Priority: extra
+Maintainer: Ilya Shpigor <petrsum@gmail.com>
+Build-Depends: debhelper (>= 5)
+Standards-Version: 3.7.2
+
+Package: zero-cache
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, pkg-config
+Description: Memory caching system based on 0MQ messaging library
+
+Package: zero-cache-dev
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Development files for zero-cache
