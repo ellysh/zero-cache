@@ -6,7 +6,7 @@
 using namespace std;
 using namespace zero_cache;
 
-char* GetOption(char** begin, char** end, const string & option)
+char* GetOption(char** begin, char** end, const string& option)
 {
     char ** itr = find(begin, end, option);
 
