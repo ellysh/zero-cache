@@ -19,4 +19,3 @@ bool ProgramOptions::IsOptionExist(const string& option)
 {
     return find(begin_, end_, option) != end_;
 }
-

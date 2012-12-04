@@ -1,25 +1,11 @@
 #include "reactor.h"
 
 #include <iostream>
-#include <algorithm>
+
+#include "program_options.h"
 
 using namespace std;
 using namespace zero_cache;
-
-char* GetOption(char** begin, char** end, const string& option)
-{
-    char ** itr = find(begin, end, option);
-
-    if ( (itr != end) && (++itr != end) )
-        return *itr;
-    else
-        return 0;
-}
-
-bool IsOptionExist(char** begin, char** end, const string& option)
-{
-    return find(begin, end, option) != end;
-}
 
 void PrintUsage()
 {
@@ -33,24 +19,26 @@ void PrintUsage()
 
 int main(int argc, char *argv[])
 {
-    if ( IsOptionExist(argv, argv+argc, "-h") )
+    ProgramOptions options(argv, argv+argc);
+
+    if ( options.IsOptionExist("-h") )
     {
         PrintUsage();
         return 1;
     }
 
     string log_file = "";
-    if ( IsOptionExist(argv, argv+argc, "-l") )
-        log_file = GetOption(argv, argv+argc, "-l");
+    if ( options.IsOptionExist("-l") )
+        log_file = options.GetOption("-l");
 
     string connection = "tcp://*:5570";
-    if ( IsOptionExist(argv, argv+argc, "-c") )
-        connection = GetOption(argv, argv+argc, "-c");
+    if ( options.IsOptionExist("-c") )
+        connection = options.GetOption("-c");
 
     Reactor reactor(log_file, connection);
 
-    if ( IsOptionExist(argv, argv+argc, "-s") )
-        reactor.SetQueueSize(atoi(GetOption(argv, argv+argc, "-s")));
+    if ( options.IsOptionExist("-s") )
+        reactor.SetQueueSize(atoi(options.GetOption("-s")));
 
     reactor.Start();
 
