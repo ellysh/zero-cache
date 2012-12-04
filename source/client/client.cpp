@@ -27,7 +27,7 @@ void Client::WriteData(string key, void* data, size_t size)
 {
     Log() << "Client::WriteData() - key = " << key << " data_size = " << size << endl;
 
-    Command command = kSet;
+    Command command = kWrite;
 
     zframe_t* command_frame = zframe_new(&command, sizeof(Command));
     zframe_t* key_frame = zframe_new(key.c_str(), key.size());
@@ -40,7 +40,7 @@ void Client::WriteData(string key, void* data, size_t size)
 
 void Client::SendReadRequest(string key)
 {
-    Command command = kGet;
+    Command command = kRead;
 
     zframe_t* command_frame = zframe_new(&command, sizeof(Command));
     zframe_t* key_frame = zframe_new(key.c_str(), key.size());

@@ -38,13 +38,13 @@ void Reactor::Start()
 
 static Command GetCommand(zframe_t* frame)
 {
-    Command command = kSet;
+    Command command = kWrite;
     zframe_t* set_frame = zframe_new(&command, sizeof(Command));
 
     if ( zframe_eq(frame, set_frame) )
-        command = kSet;
+        command = kWrite;
     else
-       command = kGet;
+        command = kRead;
 
     zframe_destroy(&set_frame);
 
@@ -66,7 +66,7 @@ void Reactor::ProcessMessage()
     zframe_t* key = zmsg_pop(msg);
     char* key_str = zframe_strdup(key);
 
-    if ( GetCommand(command) == kSet )
+    if ( GetCommand(command) == kWrite )
     {
         zframe_t* data = zmsg_pop(msg);
         Log() << "set: key = " << key_str;
@@ -75,7 +75,7 @@ void Reactor::ProcessMessage()
         zframe_destroy(&data);
     }
 
-    if ( GetCommand(command) == kGet )
+    if ( GetCommand(command) == kRead )
     {
         Log() << "get: key = " << key_str;
         zframe_t* data = container_.ReadData(string(key_str));

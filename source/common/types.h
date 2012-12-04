@@ -6,8 +6,8 @@ namespace zero_cache
 
 enum Command
 {
-    kSet = 0,
-    kGet
+    kWrite = 0,
+    kRead
 };
 
 }
