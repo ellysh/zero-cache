@@ -47,6 +47,6 @@ endif(UNIX)
 # Subdirs
 add_subdirectory(source)
 add_subdirectory(test)
-#add_subdirectory(conf)
+add_subdirectory(conf)
 
 include(CMakeListsDeb.txt)

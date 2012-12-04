@@ -1,0 +1,13 @@
+prefix=/usr
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib/zero-cache
+includedir=${prefix}/include/zero-cache
+modules=1
+
+Name: zero-cache
+Version: 0.3
+Description: Memory caching system based on 0MQ messaging library
+Requires:
+Libs: -L${libdir}
+Libs.private:
+Cflags: -I${includedir}

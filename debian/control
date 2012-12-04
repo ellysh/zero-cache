@@ -12,5 +12,5 @@ Description: Memory caching system based on 0MQ messaging library
 
 Package: zero-cache-dev
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, zero-cache
 Description: Development files for zero-cache
