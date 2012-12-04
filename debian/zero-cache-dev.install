@@ -1,1 +1,2 @@
-debian/buildroot/usr/include/libserial/*.h     usr/include/libserial/
+debian/buildroot/usr/lib/zero-cache/libzero_cache.so    usr/lib/zero-cache
+debian/buildroot/usr/include/zero-cache/*.h             usr/include/zero-cache

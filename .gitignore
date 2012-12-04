@@ -20,8 +20,7 @@ get_test
 # debian build files
 debian/*~
 debian/buildroot/
-debian/libsql-state/
-debian/libsql-state-dev/
+debian/zero-cache-dev
 debian/*.debhelper.log
 debian/*.substvars
 install_manifest.txt
