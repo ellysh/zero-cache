@@ -10,12 +10,12 @@ using namespace zero_cache;
 
 static const int kThreadCreationDelay = 1000 * 1000;
 
-Reactor::Reactor(string log_file) : Debug(log_file)
+Reactor::Reactor(string log_file, string connection) : Debug(log_file)
 {
     context_ = zctx_new ();
     socket_ = zsocket_new(context_, ZMQ_DEALER);
 
-    zsocket_bind(socket_, "tcp://*:5570");
+    zsocket_bind(socket_, connection.c_str());
     zsocket_set_hwm(socket_, 1000);
 
     zmq_pollitem_t items[1] = { { socket_, 0, ZMQ_POLLIN, 0 } };

@@ -4,12 +4,12 @@ link_directories(${COMMON_LIBDIR})
 set(zero_cached_SRCS
     container.cpp
     reactor.cpp
-    zero_cached.cpp)
+    zero_cache.cpp)
 
-add_executable(zero_cached ${zero_cached_SRCS})
+add_executable(zero-cache ${zero_cached_SRCS})
 
 if(UNIX)
-    target_link_libraries(zero_cached common ${ZMQ_LIBRARY} ${CZMQ_LIBRARY})
+    target_link_libraries(zero-cache common ${ZMQ_LIBRARY} ${CZMQ_LIBRARY})
 endif(UNIX)
 
-install(TARGETS zero_cached DESTINATION bin)
+install(TARGETS zero-cache DESTINATION bin)

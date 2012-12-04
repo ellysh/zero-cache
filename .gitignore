@@ -12,7 +12,7 @@ Makefile
 
 # Binaries
 *.so
-zero_cached
+zero-cache
 reactor_test
 memory_leak_test
 get_test
