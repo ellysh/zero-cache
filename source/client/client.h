@@ -5,7 +5,7 @@
 #include <czmq.h>
 
 #include "debug.h"
-#include "types.h"
+#include "types_zcache.h"
 
 namespace zero_cache
 {

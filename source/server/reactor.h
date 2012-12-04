@@ -1,7 +1,7 @@
 #ifndef REACTOR_H
 #define REACTOR_H
 
-#include "types.h"
+#include "types_zcache.h"
 #include "debug.h"
 #include "container.h"
 
