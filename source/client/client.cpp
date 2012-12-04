@@ -78,3 +78,8 @@ void* Client::ReadData(string key)
 
     return ReceiveReadAnswer();
 }
+
+void Client::SetWaterMark(int water_mark)
+{
+    zsocket_set_hwm(socket_, water_mark);
+}

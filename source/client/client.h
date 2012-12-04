@@ -19,6 +19,8 @@ public:
     void WriteData(std::string key, void* data, size_t size);
     void* ReadData(std::string key);
 
+    void SetWaterMark(int water_mark);
+
 protected:
     zctx_t* context_;
     void* socket_;
