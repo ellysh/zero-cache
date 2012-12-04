@@ -2,7 +2,7 @@
 
 #include <czmq.h>
 
-#include "reactor_loop.h"
+#include "zsignal.h"
 #include "debug.h"
 #include "types.h"
 
@@ -11,7 +11,7 @@ using namespace zero_cache;
 
 static const int kThreadCreationDelay = 1000 * 1000;
 
-Reactor::Reactor(string log_file) : DebugClient(log_file), is_start_(false)
+Reactor::Reactor(string log_file) : DebugClient(log_file)
 {
     context_ = zctx_new ();
     socket_ = zsocket_new(context_, ZMQ_DEALER);
@@ -31,14 +31,9 @@ Reactor::~Reactor()
 
 void Reactor::Start()
 {
-    if ( is_start_ )
-        return;
-
-    is_start_ = true;
-
-    zthread_new(ReactorLoop, this);
-
-    usleep(kThreadCreationDelay);
+    s_catch_signals ();
+    while ( ! s_interrupted )
+        ProcessMessage();
 }
 
 static Command GetCommand(zframe_t* frame)

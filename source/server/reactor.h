@@ -15,14 +15,14 @@ public:
     virtual ~Reactor();
 
     void Start();
-    void ProcessMessage();
 
 protected:
-    bool is_start_;
     Container container_;
     void* socket_;
     zmq_pollitem_t items_[1];
     zctx_t* context_;
+
+    void ProcessMessage();
 };
 
 }
