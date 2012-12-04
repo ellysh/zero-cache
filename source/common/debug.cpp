@@ -42,3 +42,12 @@ void Debug::Log(const char* fmt, ...)
     Log() << buf << endl;
     va_end( arg_list );
 }
+
+void Debug::PrintFrame(zframe_t* frame)
+{
+#ifdef __DEBUG__
+    char* data_hex = zframe_strhex(frame);
+    file_ << " data = " << data_hex << endl;
+    free(data_hex);
+#endif
+}

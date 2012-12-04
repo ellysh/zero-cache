@@ -2,6 +2,7 @@
 #define DEBUG_H
 
 #include <fstream>
+#include <czmq.h>
 
 namespace zero_cache
 {
@@ -14,6 +15,7 @@ public:
 
     std::ostream& Log();
     void Log(const char* fmt, ...);
+    void PrintFrame(zframe_t* frame);
 
 private:
     std::string log_file_;

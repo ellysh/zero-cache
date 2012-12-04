@@ -69,11 +69,8 @@ void Reactor::ProcessMessage()
     if ( GetCommand(command) == kSet )
     {
         zframe_t* data = zmsg_pop(msg);
-#ifdef __DEBUG__
-        char* data_hex = zframe_strhex(data);
-        Log() << "set: key = " << key_str << " data = " << data_hex << endl;
-        free(data_hex);
-#endif
+        Log() << "set: key = " << key_str;
+        PrintFrame(data);
         container_.WriteData(string(key_str), data);
         zframe_destroy(&data);
     }
@@ -90,11 +87,8 @@ void Reactor::ProcessMessage()
             data = zframe_new(NULL, 0);
         }
 
-#ifdef __DEBUG__
-        char* data_hex = zframe_strhex(data);
-        Log() << " data = " << data_hex << endl;
-        free(data_hex);
-#endif
+        PrintFrame(data);
+
         zframe_send(&data, socket_, ZFRAME_REUSE);
         if ( is_data_empty )
             zframe_destroy(&data);
