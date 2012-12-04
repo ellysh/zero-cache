@@ -108,3 +108,8 @@ void Reactor::ReadData(char* key_str)
     if ( is_data_empty )
         zframe_destroy(&data);
 }
+
+void Reactor::SetQueueSize(int size)
+{
+    zsocket_set_hwm(socket_, size);
+}

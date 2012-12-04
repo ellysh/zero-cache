@@ -27,6 +27,7 @@ void PrintUsage()
     cout << "Options:" << endl;
     cout << "\t-c CONNECTION\t\tSet connection string" << endl;
     cout << "\t-l FILE\t\t\tSet log file name" << endl;
+    cout << "\t-s SIZE\t\t\tSet size of the input queue" << endl;
     cout << "\t-h\t\t\tPrint option help" << endl;
 }
 
@@ -47,6 +48,9 @@ int main(int argc, char *argv[])
         connection = GetOption(argv, argv+argc, "-c");
 
     Reactor reactor(log_file, connection);
+
+    if ( IsOptionExist(argv, argv+argc, "-s") )
+        reactor.SetQueueSize(atoi(GetOption(argv, argv+argc, "-s")));
 
     reactor.Start();
 

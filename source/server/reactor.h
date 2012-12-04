@@ -15,6 +15,8 @@ public:
 
     void Start();
 
+    void SetQueueSize(int size);
+
 protected:
     Container container_;
     void* socket_;
