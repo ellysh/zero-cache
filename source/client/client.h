@@ -28,7 +28,7 @@ private:
     void SendReadRequest(std::string key);
     void* ReceiveReadAnswer();
 
-    DISALLOW_COPY_AND_ASSIGN(Client)
+    DISALLOW_COPY_AND_ASSIGN(Client);
 };
 
 }

@@ -23,7 +23,7 @@ private:
     std::string log_file_;
     std::ofstream file_;
 
-    DISALLOW_COPY_AND_ASSIGN(Debug)
+    DISALLOW_COPY_AND_ASSIGN(Debug);
 };
 
 }
