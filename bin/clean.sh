@@ -1,4 +1,8 @@
 #!/bin/bash
 
 rm -f *.log
-rm 1 2 3 4
+
+for (( i=1; i<=16; i++ ))
+do
+    rm $i
+done
