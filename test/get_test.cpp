@@ -34,7 +34,7 @@ void CheckData(Client& client)
 
 int main()
 {
-    Client client("get_test.log");
+    Client client("get_test.log", "ipc:///tmp/0");
 
     cout << "Start test..." << endl;
 
