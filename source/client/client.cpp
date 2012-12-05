@@ -12,10 +12,19 @@ Client::Client(string log_file, string connection) : Debug(log_file)
 
     zsocket_connect(socket_, connection.c_str());
     zsocket_set_hwm(socket_, 10);
+
+    char empty;
+    command_frame_ = zframe_new(&empty, sizeof(empty));
+    key_frame_ = zframe_new(&empty, sizeof(empty));
+    data_frame_ = zframe_new(&empty, sizeof(empty));
 }
 
 Client::~Client()
 {
+    zframe_destroy(&data_frame_);
+    zframe_destroy(&key_frame_);
+    zframe_destroy(&command_frame_);
+
     zsocket_destroy(context_, socket_);
     zctx_destroy(&context_);
 }
@@ -26,24 +35,24 @@ void Client::WriteData(string key, void* data, size_t size)
 
     Command command = kWrite;
 
-    zframe_t* command_frame = zframe_new(&command, sizeof(Command));
-    zframe_t* key_frame = zframe_new(key.c_str(), key.size());
-    zframe_t* data_frame = zframe_new(data, size);
+    zframe_reset(command_frame_, &command, sizeof(Command));
+    zframe_reset(key_frame_, key.c_str(), key.size());
+    zframe_reset(data_frame_, data, size);
 
-    zframe_send(&command_frame, socket_, ZFRAME_MORE);
-    zframe_send(&key_frame, socket_, ZFRAME_MORE);
-    zframe_send(&data_frame, socket_, 0);
+    zframe_send(&command_frame_, socket_, ZFRAME_MORE + ZFRAME_REUSE);
+    zframe_send(&key_frame_, socket_, ZFRAME_MORE + ZFRAME_REUSE);
+    zframe_send(&data_frame_, socket_, ZFRAME_REUSE);
 }
 
 void Client::SendReadRequest(string key)
 {
     Command command = kRead;
 
-    zframe_t* command_frame = zframe_new(&command, sizeof(Command));
-    zframe_t* key_frame = zframe_new(key.c_str(), key.size());
+    zframe_reset(command_frame_, &command, sizeof(Command));
+    zframe_reset(key_frame_, key.c_str(), key.size());
 
-    zframe_send(&command_frame, socket_, ZFRAME_MORE);
-    zframe_send(&key_frame, socket_, 0);
+    zframe_send(&command_frame_, socket_, ZFRAME_MORE + ZFRAME_REUSE);
+    zframe_send(&key_frame_, socket_, ZFRAME_REUSE);
 }
 
 void* Client::ReceiveReadAnswer()

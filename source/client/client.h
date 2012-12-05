@@ -24,6 +24,9 @@ public:
 private:
     zctx_t* context_;
     void* socket_;
+    zframe_t* command_frame_;
+    zframe_t* key_frame_;
+    zframe_t* data_frame_;
 
     void SendReadRequest(std::string key);
     void* ReceiveReadAnswer();
