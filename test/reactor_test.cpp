@@ -18,7 +18,7 @@ void* WriteLoop(void* args)
         PRE_TIME_MEASURE(data)
         client.WriteData(data, args, 1);
         POST_TIME_MEASURE
-        usleep(100);
+        usleep(10);
     }
 }
 
@@ -41,6 +41,18 @@ int main()
     StartWriteThread("2");
     StartWriteThread("3");
     StartWriteThread("4");
+    StartWriteThread("5");
+    StartWriteThread("6");
+    StartWriteThread("7");
+    StartWriteThread("8");
+    StartWriteThread("9");
+    StartWriteThread("10");
+    StartWriteThread("11");
+    StartWriteThread("12");
+    StartWriteThread("13");
+    StartWriteThread("14");
+    StartWriteThread("15");
+    StartWriteThread("16");
 
     WaitInput();
 }
