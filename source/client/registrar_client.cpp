@@ -48,11 +48,17 @@ void RegistrarClient::AddKey(string key)
     if ( clients_.count(key) !=0 )
         return;
 
+    /* FIXME: Check counters of existing clients to limit before add new client.
+     * Attach new key to one of them if possible */
+
     zframe_t* key_frame = zframe_new(key.c_str(), key.size());
 
     zframe_send(&key_frame, socket_, ZFRAME_REUSE);
 
     string connection = ReceiveAnswer(key_frame);
+
+    Client* client = new Client("", connection);
+    clients_.insert(KeyClient::value_type(key, client));
 
     zframe_destroy(&key_frame);
 }
@@ -71,7 +77,8 @@ string RegistrarClient::ReceiveAnswer(zframe_t* key)
     if ( ! zframe_eq(key_frame, key) )
         return "";
 
-    char* buffer = zstr_recv(socket_);
+    zframe_t* connection_frame = zmsg_pop(msg);
+    char* buffer =  zframe_strdup(connection_frame);
     string connection = buffer;
     free(buffer);
 

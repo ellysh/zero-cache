@@ -3,7 +3,6 @@
 
 #include <string>
 #include <map>
-#include <list>
 #include <czmq.h>
 
 #include "debug.h"
@@ -18,7 +17,6 @@ class RegistrarClient : protected Debug
 {
 private:
     typedef std::map<std::string, Client*> KeyClient;
-    typedef std::list<Client> ClientList;
 
 public:
     RegistrarClient(std::string log_file = "", std::string connection = "tcp://localhost:5570");
@@ -31,7 +29,6 @@ private:
     zctx_t* context_;
     void* socket_;
     KeyClient clients_;
-    ClientList client_repository_;
 
     void AddKey(std::string key);
     Client* GetClient(std::string key);
