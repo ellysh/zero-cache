@@ -1,5 +1,7 @@
 #include "registrar_client.h"
 
+#include "client.h"
+
 using namespace std;
 using namespace zero_cache;
 
@@ -24,13 +26,18 @@ void RegistrarClient::WriteData(string key, void* data, size_t size)
 {
     Log() << "RegistrarClient::WriteData() - key = " << key << " data_size = " << size << endl;
 
-    /* FIXME: Implement this method */
+    GetClient(key)->WriteData(key, data, size);
 }
 
 void* RegistrarClient::ReadData(string key)
 {
     Log() << "RegistrarClient::ReadData() - key = " << key << endl;
 
+    return GetClient(key)->ReadData(key);
+}
+
+Client* RegistrarClient::GetClient(string key)
+{
     /* FIXME: Implement this method */
 
     return NULL;
