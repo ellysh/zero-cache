@@ -7,8 +7,6 @@
 using namespace std;
 using namespace zero_cache;
 
-static const int kThreadCreationDelay = 1000 * 1000;
-
 Reactor::Reactor(string log_file, string connection) : Debug(log_file)
 {
     context_ = zctx_new ();
