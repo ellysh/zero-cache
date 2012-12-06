@@ -24,6 +24,9 @@ KeyList::~KeyList()
 
 void KeyList::AddKey(string key)
 {
+    if ( ports_.count(key) != 0 )
+        return;
+
     char port[10];
     sprintf(port, "%d", current_port_);
 
