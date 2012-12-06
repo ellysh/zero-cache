@@ -11,7 +11,7 @@ KeyList::KeyList(string connection)
     size_t pos = connection.find_last_of('/') + 1;
     string port = connection.substr(pos, connection.size());
 
-    current_port_ = atoi(connection.c_str());
+    current_port_ = atoi(port.c_str());
     current_port_++;
 
     host_= connection.substr(0, pos);
