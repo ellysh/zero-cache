@@ -64,11 +64,10 @@ void Registrar::ProcessMessage()
 
     key_list_->AddKey(key_str);
 
-    zframe_send(&key, socket_, ZFRAME_REUSE + ZFRAME_MORE);
-
     string connection = key_list_->GetConnection(key_str);
     zthread_new(ReactorStart, const_cast<char*>(connection.c_str()));
 
+    zframe_send(&key, socket_, ZFRAME_REUSE + ZFRAME_MORE);
     zstr_sendf(socket_, connection.c_str());
 
     free(key_str);

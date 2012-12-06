@@ -38,7 +38,42 @@ void* RegistrarClient::ReadData(string key)
 
 Client* RegistrarClient::GetClient(string key)
 {
-    /* FIXME: Implement this method */
+    AddKey(key);
 
-    return NULL;
+    return clients_[key];
+}
+
+void RegistrarClient::AddKey(string key)
+{
+    if ( clients_.count(key) !=0 )
+        return;
+
+    zframe_t* key_frame = zframe_new(key.c_str(), key.size());
+
+    zframe_send(&key_frame, socket_, ZFRAME_REUSE);
+
+    string connection = ReceiveAnswer(key_frame);
+
+    zframe_destroy(&key_frame);
+}
+
+string RegistrarClient::ReceiveAnswer(zframe_t* key)
+{
+    zmq_pollitem_t items[] = { { socket_, 0, ZMQ_POLLIN, 0 } };
+
+    if ( zmq_poll(items, 1, kReadAnswerTimeout) <= 0 )
+        Log() << "RegistrarClient::AddKey() - error = " << zmq_strerror(zmq_errno()) << " (" << zmq_errno << ")" << endl;
+
+    zmsg_t* msg = zmsg_recv(socket_);
+    zframe_t* key_frame = zmsg_pop(msg);
+
+    /* FIXME: Implement request resend if have been received wrong key */
+    if ( ! zframe_eq(key_frame, key) )
+        return "";
+
+    char* buffer = zstr_recv(socket_);
+    string connection = buffer;
+    free(buffer);
+
+    return connection;
 }
