@@ -2,7 +2,7 @@
 
 #include <czmq.h>
 
-#include "client.h"
+#include "registrar_client.h"
 #include "speed_test.h"
 
 using namespace std;
@@ -11,7 +11,7 @@ using namespace zero_cache;
 void* WriteLoop(void* args)
 {
     const char* data = static_cast<char*>(args);
-    Client client(data, "ipc:///tmp/0");
+    RegistrarClient client(data, "ipc:///tmp/0");
 
     while (true)
     {
