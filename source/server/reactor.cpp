@@ -51,7 +51,7 @@ static Command DecodeCommand(zframe_t* frame)
 void Reactor::ProcessMessage()
 {
     if ( zmq_poll(items_, 1, -1) == -1 )
-        Log() << "ReactorLoop() - error = " << zmq_strerror(zmq_errno()) << endl;
+        Log() << "Reactor::ProcessMessage() - error = " << zmq_strerror(zmq_errno()) << endl;
 
     if ( ! (items_[0].revents & ZMQ_POLLIN) )
         return;

@@ -5,6 +5,7 @@ set(zero_cached_SRCS
     container.cpp
     program_options.cpp
     reactor.cpp
+    registrar.cpp
     zero_cache.cpp)
 
 add_executable(zero-cache ${zero_cached_SRCS})

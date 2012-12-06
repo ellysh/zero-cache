@@ -44,6 +44,15 @@ void Client::WriteData(string key, void* data, size_t size)
     zframe_send(&data_frame_, socket_, ZFRAME_REUSE);
 }
 
+void* Client::ReadData(string key)
+{
+    Log() << "Client::ReadData() - key = " << key << endl;
+
+    SendReadRequest(key);
+
+    return ReceiveReadAnswer();
+}
+
 void Client::SendReadRequest(string key)
 {
     Command command = kRead;
@@ -67,6 +76,8 @@ void* Client::ReceiveReadAnswer()
 
     zmsg_t* msg = zmsg_recv(socket_);
 
+    /* FIXME: Check key value of the received message */
+
     zframe_t* frame = zmsg_pop(msg);
     void* data = malloc(zframe_size(frame));
     memcpy(data, zframe_data(frame), zframe_size(frame));
@@ -74,15 +85,6 @@ void* Client::ReceiveReadAnswer()
     zmsg_destroy(&msg);
 
     return data;
-}
-
-void* Client::ReadData(string key)
-{
-    Log() << "Client::ReadData() - key = " << key << endl;
-
-    SendReadRequest(key);
-
-    return ReceiveReadAnswer();
 }
 
 void Client::SetQueueSize(int size)
