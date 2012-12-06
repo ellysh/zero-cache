@@ -3,10 +3,11 @@
 
 #include "types_zcache.h"
 #include "debug.h"
-#include "key_list.h"
 
 namespace zero_cache
 {
+
+class KeyList;
 
 class Registrar : protected Debug
 {
@@ -17,7 +18,7 @@ public:
     void Start();
 
 private:
-    KeyList key_list_;
+    KeyList* key_list_;
     void* socket_;
     zmq_pollitem_t items_[1];
     zctx_t* context_;
