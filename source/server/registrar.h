@@ -3,7 +3,7 @@
 
 #include "types_zcache.h"
 #include "debug.h"
-#include "container.h"
+#include "key_list.h"
 
 namespace zero_cache
 {
@@ -17,6 +17,7 @@ public:
     void Start();
 
 private:
+    KeyList key_list_;
     void* socket_;
     zmq_pollitem_t items_[1];
     zctx_t* context_;

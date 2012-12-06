@@ -1,4 +1,4 @@
-#include "reactor.h"
+#include "registrar.h"
 
 #include <iostream>
 
@@ -35,12 +35,9 @@ int main(int argc, char *argv[])
     if ( options.IsOptionExist("-c") )
         connection = options.GetOption("-c");
 
-    Reactor reactor(log_file, connection);
+    Registrar registrar(log_file, connection);
 
-    if ( options.IsOptionExist("-s") )
-        reactor.SetQueueSize(atoi(options.GetOption("-s")));
-
-    reactor.Start();
+    registrar.Start();
 
     return 0;
 }

@@ -46,7 +46,12 @@ void Registrar::ProcessMessage()
     zframe_t* key = zmsg_pop(msg);
     char* key_str = zframe_strdup(key);
 
-    /* FIXME: Add new key and send the client connection string */
+    key_list_.AddKey(key_str);
+
+    zframe_send(&key, socket_, ZFRAME_REUSE + ZFRAME_MORE);
+
+    string connection = key_list_.GetConnection(key_str);
+    zstr_sendf(socket_, connection.c_str());
 
     free(key_str);
     zframe_destroy(&key);
