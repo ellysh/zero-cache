@@ -49,16 +49,13 @@ Client* RegistrarClient::GetClient(string key)
 {
     AddKey(key);
 
-    return clients_[key];
+    return clients_[connections_[key]];
 }
 
 void RegistrarClient::AddKey(string key)
 {
-    if ( clients_.count(key) != 0 )
+    if ( connections_.count(key) != 0 )
         return;
-
-    /* FIXME: Check counters of existing clients to limit before add new client.
-     * Attach new key to one of them if possible */
 
     string connection = "";
     zframe_t* key_frame;
@@ -73,10 +70,17 @@ void RegistrarClient::AddKey(string key)
         usleep((rand() % 1000) * 1000);
     }
 
-    Log() << "RegistrarClient::AddKey() - connection = " << connection << endl;
+    Log() << "RegistrarClient::AddKey() - add key = " << key << " connection = " << connection << endl;
 
-    Client* client = new Client("", connection);
-    clients_.insert(KeyClient::value_type(key, client));
+    connections_.insert(KeyConnection::value_type(key, connection));
+
+    if ( clients_.count(connection) == 0 )
+    {
+        Client* client = new Client("", connection);
+        clients_.insert(ConnectionClient::value_type(connection, client));
+
+        Log() << "RegistrarClient::AddKey() - add client = " << client << " connection = " << connection << endl;
+    }
 
     zframe_destroy(&key_frame);
 }

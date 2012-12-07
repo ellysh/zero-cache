@@ -16,7 +16,8 @@ class Client;
 class RegistrarClient : protected Debug
 {
 private:
-    typedef std::map<std::string, Client*> KeyClient;
+    typedef std::map<std::string, std::string> KeyConnection;
+    typedef std::map<std::string, Client*> ConnectionClient;
 
 public:
     RegistrarClient(std::string log_file = "", std::string connection = "tcp://localhost:5570");
@@ -28,7 +29,8 @@ public:
 private:
     zctx_t* context_;
     void* socket_;
-    KeyClient clients_;
+    KeyConnection connections_;
+    ConnectionClient clients_;
 
     void AddKey(std::string key);
     Client* GetClient(std::string key);
