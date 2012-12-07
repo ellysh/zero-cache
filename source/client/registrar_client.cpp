@@ -13,7 +13,7 @@ RegistrarClient::RegistrarClient(string log_file, string connection) : Debug(log
     socket_ = zsocket_new(context_, ZMQ_DEALER);
 
     zsocket_connect(socket_, connection.c_str());
-    zsocket_set_hwm(socket_, 10);
+    zsocket_set_hwm(socket_, 1);
 }
 
 RegistrarClient::~RegistrarClient()
@@ -57,6 +57,8 @@ void RegistrarClient::AddKey(string key)
 
     string connection = ReceiveAnswer(key_frame);
 
+    Log() << "RegistrarClient::AddKey() - connection = " << connection << endl;
+
     Client* client = new Client("", connection);
     clients_.insert(KeyClient::value_type(key, client));
 
@@ -73,9 +75,13 @@ string RegistrarClient::ReceiveAnswer(zframe_t* key)
     zmsg_t* msg = zmsg_recv(socket_);
     zframe_t* key_frame = zmsg_pop(msg);
 
+    Log() << "RegistrarClient::ReceiveAnswer() - send_key = " << zframe_strdup(key) << " recv_key = " << zframe_strdup(key_frame) << endl;
+
     /* FIXME: Implement request resend if have been received wrong key */
+#if 0
     if ( ! zframe_eq(key_frame, key) )
         return "";
+#endif
 
     zframe_t* connection_frame = zmsg_pop(msg);
     char* buffer =  zframe_strdup(connection_frame);

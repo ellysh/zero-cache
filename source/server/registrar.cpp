@@ -15,7 +15,7 @@ Registrar::Registrar(string log_file, string connection) : Debug(log_file)
     socket_ = zsocket_new(context_, ZMQ_DEALER);
 
     zsocket_bind(socket_, connection.c_str());
-    zsocket_set_hwm(socket_, 1000);
+    zsocket_set_hwm(socket_, 1);
 
     zmq_pollitem_t items[1] = { { socket_, 0, ZMQ_POLLIN, 0 } };
     memcpy(&items_, &items, sizeof(items));
@@ -62,6 +62,7 @@ void Registrar::ProcessMessage()
     zframe_t* key = zmsg_pop(msg);
     char* key_str = zframe_strdup(key);
 
+    Log() << "Registrar::ProcessMessage() - key = " << key_str << endl;
     key_list_->AddKey(key_str);
 
     string connection = key_list_->GetConnection(key_str);
@@ -69,6 +70,8 @@ void Registrar::ProcessMessage()
 
     zframe_send(&key, socket_, ZFRAME_REUSE + ZFRAME_MORE);
     zstr_sendf(socket_, connection.c_str());
+
+    Log() << "Registrar::ProcessMessage() - send answer = " << connection << endl;
 
     free(key_str);
     zframe_destroy(&key);
