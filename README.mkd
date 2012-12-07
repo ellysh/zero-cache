@@ -1,5 +1,9 @@
-# 0Cache 0.3 version
+# 0Cache 0.4 version
 
 ## INTRODUCTION
 
 This is memory caching system based on 0MQ messaging library.
+
+Goal of this development is creation memory caching system for real-time
+applications. The maximum delay of cached data access must be less than
+several milliseconds for several parallel working client threads.

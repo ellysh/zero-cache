@@ -1,3 +1,7 @@
+* zero-cache 0.4
+	- Implement multithread server architecture
+	- Fix debian packaging errors
+
 * zero-cache 0.3
 	- Packaging application for debian
 
