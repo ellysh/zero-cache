@@ -5,10 +5,12 @@
 using namespace std;
 using namespace zero_cache;
 
-static const long kReadAnswerTimeout = 1000;
+static const long kReadAnswerTimeout = 10;
 
 RegistrarClient::RegistrarClient(string log_file, string connection) : Debug(log_file)
 {
+    srand(time(NULL));
+
     context_ = zctx_new();
     socket_ = zsocket_new(context_, ZMQ_DEALER);
 
@@ -51,11 +53,18 @@ void RegistrarClient::AddKey(string key)
     /* FIXME: Check counters of existing clients to limit before add new client.
      * Attach new key to one of them if possible */
 
-    zframe_t* key_frame = zframe_new(key.c_str(), key.size());
+    string connection = "";
+    zframe_t* key_frame;
+    while ( connection.empty() )
+    {
+        key_frame = zframe_new(key.c_str(), key.size());
 
-    zframe_send(&key_frame, socket_, ZFRAME_REUSE);
+        zframe_send(&key_frame, socket_, ZFRAME_REUSE);
 
-    string connection = ReceiveAnswer(key_frame);
+        connection = ReceiveAnswer(key_frame);
+
+        usleep((rand() % 1000) * 1000);
+    }
 
     Log() << "RegistrarClient::AddKey() - connection = " << connection << endl;
 
@@ -70,23 +79,30 @@ string RegistrarClient::ReceiveAnswer(zframe_t* key)
     zmq_pollitem_t items[] = { { socket_, 0, ZMQ_POLLIN, 0 } };
 
     if ( zmq_poll(items, 1, kReadAnswerTimeout) <= 0 )
-        Log() << "RegistrarClient::AddKey() - error = " << zmq_strerror(zmq_errno()) << " (" << zmq_errno << ")" << endl;
+    {
+        Log() << "RegistrarClient::ReceiveAnswer() - error = " << zmq_strerror(zmq_errno()) << " (" << zmq_errno << ")" << endl;
+        return "";
+    }
 
     zmsg_t* msg = zmsg_recv(socket_);
     zframe_t* key_frame = zmsg_pop(msg);
 
-    Log() << "RegistrarClient::ReceiveAnswer() - send_key = " << zframe_strdup(key) << " recv_key = " << zframe_strdup(key_frame) << endl;
-
-    /* FIXME: Implement request resend if have been received wrong key */
-#if 0
     if ( ! zframe_eq(key_frame, key) )
+    {
+        zframe_destroy(&key_frame);
+        zmsg_destroy(&msg);
         return "";
-#endif
+    }
 
     zframe_t* connection_frame = zmsg_pop(msg);
     char* buffer =  zframe_strdup(connection_frame);
     string connection = buffer;
+
     free(buffer);
+    zframe_destroy(&key_frame);
+    zframe_destroy(&connection_frame);
+    zmsg_destroy(&msg);
 
     return connection;
+
 }
