@@ -20,6 +20,7 @@ public:
 
     void AddKey(std::string key);
     std::string GetConnection(std::string key);
+    bool IsKeyExist(std::string key);
 
 private:
     int current_port_;

@@ -46,3 +46,11 @@ string KeyList::GetConnection(string key)
     else
         return "";
 }
+
+bool KeyList::IsKeyExist(string key)
+{
+    if ( ports_.count(key) != 0 )
+        return true;
+    else
+        return false;
+}
