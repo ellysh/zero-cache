@@ -62,15 +62,17 @@ void Registrar::ProcessMessage()
     zframe_t* key = zmsg_pop(msg);
     char* key_str = zframe_strdup(key);
 
-    bool is_key_exist = key_list_->IsKeyExist(key_str);
-
     Log() << "Registrar::ProcessMessage() - key = " << key_str << endl;
     key_list_->AddKey(key_str);
 
     string connection = key_list_->GetConnection(key_str);
 
-    if ( ! is_key_exist )
+    if ( connections_.count(connection) == 0 )
+    {
+        Log() << "zthread_new() - connection = " << connection << endl;
         zthread_new(ReactorStart, const_cast<char*>(connection.c_str()));
+        connections_.insert(connection);
+    }
 
     zframe_send(&key, socket_, ZFRAME_REUSE + ZFRAME_MORE);
     zstr_sendf(socket_, connection.c_str());

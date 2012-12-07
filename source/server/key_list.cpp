@@ -6,16 +6,7 @@
 using namespace std;
 using namespace zero_cache;
 
-KeyList::KeyList(string connection)
-{
-    size_t pos = connection.find_last_of('/') + 1;
-    string port = connection.substr(pos, connection.size());
-
-    current_port_ = atoi(port.c_str());
-    current_port_++;
-
-    host_= connection.substr(0, pos);
-}
+static const int kKeyLimit = 10;
 
 KeyList::~KeyList()
 {
@@ -29,30 +20,21 @@ void KeyList::AddKey(string key)
     if ( connections_.count(key) != 0 )
         return;
 
-    char port[10];
-    sprintf(port, "%d", current_port_);
+    if ( current_connection_ == NULL )
+        current_connection_ = new Connection(connection_str_, kKeyLimit);
+    else
+    {
+        if ( current_connection_->IsCounterLimit() )
+            current_connection_ = new Connection(current_connection_->GetString(), kKeyLimit);
+    }
 
-    string connection = host_;
-    connection += port;
-
-    connections_.insert(KeyConnection::value_type(key, connection));
-
-    /* FIXME: Increment current port on key count limit */
-    current_port_++;
+    connections_.insert(KeyConnection::value_type(key, current_connection_));
 }
 
 string KeyList::GetConnection(string key)
 {
     if ( connections_.count(key) != 0 )
-        return connections_[key];
+        return connections_[key]->GetString();
     else
         return "";
-}
-
-bool KeyList::IsKeyExist(string key)
-{
-    if ( connections_.count(key) != 0 )
-        return true;
-    else
-        return false;
 }

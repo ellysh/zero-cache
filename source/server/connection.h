@@ -12,7 +12,7 @@ public:
     Connection(std::string prev_connection, int limit);
 
     void IncrementCounter();
-    std::string GetConnection();
+    std::string GetString();
     bool IsCounterLimit();
 
 private:

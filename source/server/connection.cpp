@@ -34,7 +34,7 @@ bool Connection::IsCounterLimit()
         return false;
 }
 
-string Connection::GetConnection()
+string Connection::GetString()
 {
     return connection_;
 }
