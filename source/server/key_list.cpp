@@ -28,6 +28,7 @@ void KeyList::AddKey(string key)
             current_connection_ = new Connection(current_connection_->GetString(), kKeyLimit);
     }
 
+    current_connection_->IncrementCounter();
     connections_.insert(KeyConnection::value_type(key, current_connection_));
 }
 
