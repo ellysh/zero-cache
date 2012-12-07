@@ -19,12 +19,12 @@ KeyList::KeyList(string connection)
 
 KeyList::~KeyList()
 {
-    ports_.clear();
+    connections_.clear();
 }
 
 void KeyList::AddKey(string key)
 {
-    if ( ports_.count(key) != 0 )
+    if ( connections_.count(key) != 0 )
         return;
 
     char port[10];
@@ -33,7 +33,7 @@ void KeyList::AddKey(string key)
     string connection = host_;
     connection += port;
 
-    ports_.insert(KeyPort::value_type(key, connection));
+    connections_.insert(KeyConnection::value_type(key, connection));
 
     /* FIXME: Increment current port on key count limit */
     current_port_++;
@@ -41,15 +41,15 @@ void KeyList::AddKey(string key)
 
 string KeyList::GetConnection(string key)
 {
-    if ( ports_.count(key) != 0 )
-        return ports_[key];
+    if ( connections_.count(key) != 0 )
+        return connections_[key];
     else
         return "";
 }
 
 bool KeyList::IsKeyExist(string key)
 {
-    if ( ports_.count(key) != 0 )
+    if ( connections_.count(key) != 0 )
         return true;
     else
         return false;

@@ -12,7 +12,7 @@ namespace zero_cache
 class KeyList
 {
 private:
-    typedef std::map<std::string, std::string> KeyPort;
+    typedef std::map<std::string, std::string> KeyConnection;
 
 public:
     KeyList(std::string connection);
@@ -25,7 +25,7 @@ public:
 private:
     int current_port_;
     std::string host_;
-    KeyPort ports_;
+    KeyConnection connections_;
 
     DISALLOW_COPY_AND_ASSIGN(KeyList)
 };
