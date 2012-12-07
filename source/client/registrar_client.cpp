@@ -45,7 +45,7 @@ Client* RegistrarClient::GetClient(string key)
 
 void RegistrarClient::AddKey(string key)
 {
-    if ( clients_.count(key) !=0 )
+    if ( clients_.count(key) != 0 )
         return;
 
     /* FIXME: Check counters of existing clients to limit before add new client.

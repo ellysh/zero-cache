@@ -36,6 +36,7 @@ void KeyList::AddKey(string key)
     ports_.insert(KeyPort::value_type(key, connection));
 
     /* FIXME: Increment current port on key count limit */
+    current_port_++;
 }
 
 string KeyList::GetConnection(string key)

@@ -42,7 +42,7 @@ static void* ReactorStart(void* args)
 {
     char* connection = static_cast<char*>(args);
 
-    Reactor reactor("reactor.log", connection);
+    Reactor reactor("", connection);
 
     reactor.Start();
 }
