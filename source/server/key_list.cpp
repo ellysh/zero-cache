@@ -19,6 +19,8 @@ KeyList::KeyList(string connection)
 
 KeyList::~KeyList()
 {
+    /* FIXME: Free memory allocated for all Connection structures in
+     * connections_ map */
     connections_.clear();
 }
 

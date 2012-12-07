@@ -15,7 +15,7 @@ private:
     typedef std::map<std::string, std::string> KeyConnection;
 
 public:
-    KeyList(std::string connection);
+    explicit KeyList(std::string connection);
     ~KeyList();
 
     void AddKey(std::string key);
