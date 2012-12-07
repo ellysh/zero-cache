@@ -1,3 +1,7 @@
+* zero-cache 0.5
+	- Use one thread to process requests for several keys
+	- Use one client to access data from several keys
+
 * zero-cache 0.4
 	- Implement multithread server architecture
 	- Fix debian packaging errors
