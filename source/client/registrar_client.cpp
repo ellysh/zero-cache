@@ -2,6 +2,9 @@
 
 #include "client.h"
 
+#define STREAM Log()
+#include "speed_test.h"
+
 using namespace std;
 using namespace zero_cache;
 
@@ -28,7 +31,11 @@ void RegistrarClient::WriteData(string key, void* data, size_t size)
 {
     Log() << "RegistrarClient::WriteData() - key = " << key << " data_size = " << size << endl;
 
+    PRE_TIME_MEASURE("RegistrarClient::WriteData")
+
     GetClient(key)->WriteData(key, data, size);
+
+    POST_TIME_MEASURE
 }
 
 void* RegistrarClient::ReadData(string key)
