@@ -89,12 +89,12 @@ void Registrar::ProcessMessage()
     zmsg_destroy(&msg);
 }
 
-void Registrar::SetKeyLimit(int key_limit)
+void Registrar::SetKeyLimit(int limit)
 {
-    key_list_->SetKeyLimit(key_limit);
+    key_list_->SetKeyLimit(limit);
 }
 
-void Registrar::SetQueueSize(int queue_size)
+void Registrar::SetQueueSize(int size)
 {
-    queue_size_ = queue_size;
+    queue_size_ = size;
 }

@@ -26,7 +26,10 @@ public:
     void WriteData(std::string key, void* data, size_t size);
     void* ReadData(std::string key);
 
+    void SetQueueSize(int size);
+
 private:
+    int queue_size_;
     zctx_t* context_;
     void* socket_;
     KeyConnection connections_;

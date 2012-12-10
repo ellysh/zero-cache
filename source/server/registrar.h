@@ -22,16 +22,16 @@ public:
 
     void Start();
 
-    void SetKeyLimit(int key_limit);
-    void SetQueueSize(int queue_size);
+    void SetKeyLimit(int limit);
+    void SetQueueSize(int size);
 
 private:
+    int queue_size_;
     KeyList* key_list_;
     void* socket_;
     zmq_pollitem_t items_[1];
     zctx_t* context_;
     ConnectionSet connections_;
-    int queue_size_;
 
     void ProcessMessage();
 

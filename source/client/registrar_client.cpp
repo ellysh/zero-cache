@@ -10,7 +10,7 @@ using namespace zero_cache;
 
 static const long kReadAnswerTimeout = 10;
 
-RegistrarClient::RegistrarClient(string log_file, string connection) : Debug(log_file)
+RegistrarClient::RegistrarClient(string log_file, string connection) : Debug(log_file), queue_size_(10)
 {
     srand(time(NULL));
 
@@ -77,6 +77,7 @@ void RegistrarClient::AddKey(string key)
     if ( clients_.count(connection) == 0 )
     {
         Client* client = new Client("", connection);
+        client->SetQueueSize(queue_size_);
         clients_.insert(ConnectionClient::value_type(connection, client));
 
         Log() << "RegistrarClient::AddKey() - add client = " << client << " connection = " << connection << endl;
@@ -116,4 +117,9 @@ string RegistrarClient::ReceiveAnswer(zframe_t* key)
 
     return connection;
 
+}
+
+void RegistrarClient::SetQueueSize(int size)
+{
+    queue_size_ = size;
 }
