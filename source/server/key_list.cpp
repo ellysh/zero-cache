@@ -1,15 +1,23 @@
 #include "key_list.h"
 
+#include <algorithm>
+
 #include <stdlib.h>
 #include <stdio.h>
 
 using namespace std;
 using namespace zero_cache;
 
+static void RemoveConnection(KeyList::KeyConnection::value_type connection_pair)
+{
+    delete connection_pair.second;
+}
+
 KeyList::~KeyList()
 {
-    /* FIXME: Free memory allocated for all Connection structures in
-     * connections_ map */
+    for_each(connections_.begin(), connections_.end(),
+             RemoveConnection);
+
     connections_.clear();
 }
 

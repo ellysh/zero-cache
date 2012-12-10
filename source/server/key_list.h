@@ -12,7 +12,7 @@ namespace zero_cache
 
 class KeyList
 {
-private:
+public:
     typedef std::map<std::string, Connection*> KeyConnection;
 
 public:
