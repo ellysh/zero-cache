@@ -34,7 +34,7 @@ Registrar::~Registrar()
 
 void Registrar::Start()
 {
-    s_catch_signals ();
+    s_catch_signals();
 
     while ( ! s_interrupted )
         ProcessMessage();
@@ -56,7 +56,11 @@ void Registrar::ProcessMessage()
     /* FIXME: Split this method to submethods */
 
     if ( zmq_poll(items_, 1, -1) == -1 )
-        Log() << "Registrar::ProcessMessage() - error = " << zmq_strerror(zmq_errno()) << endl;
+    {
+        Log() << "Registrar::ProcessMessage() - error = " << zmq_strerror(zmq_errno()) << " (" << zmq_errno() << ")" << endl;
+        if ( zmq_errno() == ERR_INTERRUPT )
+            exit(0);
+    }
 
     if ( ! (items_[0].revents & ZMQ_POLLIN) )
         return;
