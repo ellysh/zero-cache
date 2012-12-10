@@ -9,7 +9,9 @@
 using namespace std;
 using namespace zero_cache;
 
-Registrar::Registrar(string log_file, string connection) : Debug(log_file)
+static int gQueueSize;
+
+Registrar::Registrar(string log_file, string connection) : Debug(log_file), queue_size_(1000)
 {
     context_ = zctx_new ();
     socket_ = zsocket_new(context_, ZMQ_DEALER);
@@ -44,6 +46,8 @@ static void* ReactorStart(void* args)
 
     Reactor reactor("", connection);
 
+    reactor.SetQueueSize(gQueueSize);
+
     reactor.Start();
 }
 
@@ -70,6 +74,7 @@ void Registrar::ProcessMessage()
     if ( connections_.count(connection) == 0 )
     {
         Log() << "zthread_new() - connection = " << connection << endl;
+        gQueueSize = queue_size_;
         zthread_new(ReactorStart, const_cast<char*>(connection.c_str()));
         connections_.insert(connection);
     }
@@ -82,4 +87,14 @@ void Registrar::ProcessMessage()
     free(key_str);
     zframe_destroy(&key);
     zmsg_destroy(&msg);
+}
+
+void Registrar::SetKeyLimit(int key_limit)
+{
+    key_list_->SetKeyLimit(key_limit);
+}
+
+void Registrar::SetQueueSize(int queue_size)
+{
+    queue_size_ = queue_size;
 }

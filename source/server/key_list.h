@@ -22,10 +22,13 @@ public:
     void AddKey(std::string key);
     std::string GetConnection(std::string key);
 
+    void SetKeyLimit(int key_limit);
+
 private:
     std::string connection_str_;
     Connection* current_connection_;
     KeyConnection connections_;
+    int key_limit_;
 
     DISALLOW_COPY_AND_ASSIGN(KeyList)
 };

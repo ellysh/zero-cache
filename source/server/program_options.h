@@ -13,7 +13,8 @@ class ProgramOptions
 public:
     ProgramOptions(char** begin, char** end) : begin_(begin), end_(end) {};
 
-    char* GetOption(const std::string& option);
+    char* GetString(const std::string& option);
+    int GetInt(const std::string& option);
     bool IsOptionExist(const std::string& option);
 
 private:

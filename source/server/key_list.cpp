@@ -6,8 +6,6 @@
 using namespace std;
 using namespace zero_cache;
 
-static const int kKeyLimit = 10;
-
 KeyList::~KeyList()
 {
     /* FIXME: Free memory allocated for all Connection structures in
@@ -21,11 +19,11 @@ void KeyList::AddKey(string key)
         return;
 
     if ( current_connection_ == NULL )
-        current_connection_ = new Connection(connection_str_, kKeyLimit);
+        current_connection_ = new Connection(connection_str_, key_limit_);
     else
     {
         if ( current_connection_->IsCounterLimit() )
-            current_connection_ = new Connection(current_connection_->GetString(), kKeyLimit);
+            current_connection_ = new Connection(current_connection_->GetString(), key_limit_);
     }
 
     current_connection_->IncrementCounter();
@@ -38,4 +36,9 @@ string KeyList::GetConnection(string key)
         return connections_[key]->GetString();
     else
         return "";
+}
+
+void KeyList::SetKeyLimit(int key_limit)
+{
+    key_limit_ = key_limit;
 }

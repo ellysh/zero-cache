@@ -29,13 +29,19 @@ int main(int argc, char *argv[])
 
     string log_file = "";
     if ( options.IsOptionExist("-l") )
-        log_file = options.GetOption("-l");
+        log_file = options.GetString("-l");
 
     string connection = "tcp://*:5570";
     if ( options.IsOptionExist("-c") )
-        connection = options.GetOption("-c");
+        connection = options.GetString("-c");
 
     Registrar registrar(log_file, connection);
+
+    if ( options.IsOptionExist("-s") )
+        registrar.SetQueueSize(options.GetInt("-s"));
+
+    if ( options.IsOptionExist("-k") )
+        registrar.SetKeyLimit(options.GetInt("-k"));
 
     registrar.Start();
 

@@ -5,7 +5,7 @@
 using namespace std;
 using namespace zero_cache;
 
-char* ProgramOptions::GetOption(const string& option)
+char* ProgramOptions::GetString(const string& option)
 {
     char ** itr = find(begin_, end_, option);
 
@@ -13,6 +13,13 @@ char* ProgramOptions::GetOption(const string& option)
         return *itr;
     else
         return 0;
+}
+
+int ProgramOptions::GetInt(const string& option)
+{
+    char* value = GetString(option);
+
+    return atoi(value);
 }
 
 bool ProgramOptions::IsOptionExist(const string& option)
