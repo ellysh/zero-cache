@@ -23,9 +23,6 @@ Socket::~Socket()
 void Socket::Bind(string connection)
 {
     zsocket_bind(socket_, connection.c_str());
-
-    /* FIXME: Set queue size through separate function */
-    zsocket_set_hwm(socket_, 1);
 }
 
 void Socket::ReceiveMsg()
@@ -35,7 +32,6 @@ void Socket::ReceiveMsg()
 
     if ( zmq_poll(items_, 1, -1) == -1 )
     {
-        //Log() << "Registrar::ProcessMessage() - error = " << zmq_strerror(zmq_errno()) << " (" << zmq_errno() << ")" << endl;
         if ( zmq_errno() == ERR_INTERRUPT )
             exit(0);
     }
