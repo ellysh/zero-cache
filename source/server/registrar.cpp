@@ -1,7 +1,5 @@
 #include "registrar.h"
 
-#include <czmq.h>
-
 #include "zsignal.h"
 #include "reactor.h"
 #include "key_list.h"
@@ -14,6 +12,7 @@ static int gQueueSize;
 Registrar::Registrar(string log_file, string connection) : Debug(log_file), queue_size_(1000)
 {
     socket_.Bind(connection);
+    socket_.SetQueueSize(1);
 
     key_list_ = new KeyList(connection);
 }

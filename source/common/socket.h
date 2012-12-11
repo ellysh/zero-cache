@@ -24,6 +24,8 @@ public:
     void ReceiveMsg();
     zframe_t* PopFrame();
 
+    void SetQueueSize(int size);
+
 private:
     zmsg_t* msg_;
     zctx_t* context_;

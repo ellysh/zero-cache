@@ -61,3 +61,8 @@ void Socket::SendString(string data)
 {
     zstr_sendf(socket_, data.c_str());
 }
+
+void Socket::SetQueueSize(int size)
+{
+    zsocket_set_hwm(socket_, size);
+}

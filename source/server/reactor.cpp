@@ -9,27 +9,13 @@ using namespace zero_cache;
 
 Reactor::Reactor(string log_file, string connection) : Debug(log_file)
 {
-    context_ = zctx_new ();
-    socket_ = zsocket_new(context_, ZMQ_DEALER);
-
-    zsocket_bind(socket_, connection.c_str());
-    zsocket_set_hwm(socket_, 1000);
-
-    zmq_pollitem_t items[1] = { { socket_, 0, ZMQ_POLLIN, 0 } };
-    memcpy(&items_, &items, sizeof(items));
-}
-
-Reactor::~Reactor()
-{
-    zsocket_destroy(context_, socket_);
-    zctx_destroy(&context_);
+    socket_.Bind(connection);
+    socket_.SetQueueSize(1000);
 }
 
 void Reactor::Start()
 {
-    s_catch_signals ();
-
-    while ( ! s_interrupted )
+    while (true)
         ProcessMessage();
 }
 
@@ -50,20 +36,14 @@ static Command DecodeCommand(zframe_t* frame)
 
 void Reactor::ProcessMessage()
 {
-    if ( zmq_poll(items_, 1, -1) == -1 )
-        Log() << "Reactor::ProcessMessage() - error = " << zmq_strerror(zmq_errno()) << endl;
+    socket_.ReceiveMsg();
 
-    if ( ! (items_[0].revents & ZMQ_POLLIN) )
-        return;
-
-    zmsg_t* msg = zmsg_recv(socket_);
-    assert( msg != NULL );
-    zframe_t* command = zmsg_pop(msg);
-    zframe_t* key = zmsg_pop(msg);
+    zframe_t* command = socket_.PopFrame();
+    zframe_t* key =  socket_.PopFrame();
     char* key_str = zframe_strdup(key);
 
     if ( DecodeCommand(command) == kWrite )
-        WriteData(key_str, msg);
+        WriteData(key_str);
 
     if ( DecodeCommand(command) == kRead )
         ReadData(key_str);
@@ -71,12 +51,11 @@ void Reactor::ProcessMessage()
     free(key_str);
     zframe_destroy(&key);
     zframe_destroy(&command);
-    zmsg_destroy(&msg);
 }
 
-void Reactor::WriteData(char* key_str, zmsg_t* msg)
+void Reactor::WriteData(char* key_str)
 {
-    zframe_t* data = zmsg_pop(msg);
+    zframe_t* data = socket_.PopFrame();
 
     Log() << "write: key = " << key_str;
     PrintFrame(data);
@@ -100,7 +79,7 @@ void Reactor::ReadData(char* key_str)
 
     PrintFrame(data);
 
-    zframe_send(&data, socket_, ZFRAME_REUSE);
+    socket_.SendFrame(data, ZFRAME_REUSE);
 
     if ( is_data_empty )
         zframe_destroy(&data);
@@ -108,5 +87,5 @@ void Reactor::ReadData(char* key_str)
 
 void Reactor::SetQueueSize(int size)
 {
-    zsocket_set_hwm(socket_, size);
+    socket_.SetQueueSize(size);
 }
