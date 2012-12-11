@@ -30,22 +30,28 @@ void Socket::Bind(string connection)
     zsocket_bind(socket_, connection.c_str());
 }
 
-void Socket::ReceiveMsg()
+bool Socket::ReceiveMsg(long timeout)
 {
     if ( msg_ != NULL )
         zmsg_destroy(&msg_);
 
-    if ( zmq_poll(items_, 1, -1) == -1 )
+    int result = zmq_poll(items_, 1, timeout);
+
+    if ( result == 0 )
+        return false;
+
+    if (result == -1)
     {
         if ( zmq_errno() == ERR_INTERRUPT )
             exit(0);
     }
 
     if ( ! (items_[0].revents & ZMQ_POLLIN) )
-        return;
+        return false;
 
     msg_ = zmsg_recv(socket_);
     assert( msg_ != NULL );
+    return true;
 }
 
 zframe_t* Socket::PopFrame()

@@ -21,7 +21,7 @@ public:
     void SendFrame(zframe_t* frame, int flags);
     void SendString(std::string data);
 
-    void ReceiveMsg();
+    bool ReceiveMsg(long timeout = -1);
     zframe_t* PopFrame();
 
     void SetQueueSize(int size);

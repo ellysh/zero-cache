@@ -77,7 +77,8 @@ void RegistrarClient::AddKey(string key)
 
 string RegistrarClient::ReceiveAnswer(zframe_t* key)
 {
-    socket_.ReceiveMsg();
+    if ( ! socket_.ReceiveMsg(kReadAnswerTimeout) )
+        return "";
 
     zframe_t* key_frame = socket_.PopFrame();
 
