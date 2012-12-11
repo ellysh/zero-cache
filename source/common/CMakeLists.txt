@@ -3,6 +3,7 @@ link_directories(${COMMON_LIBDIR})
 
 set(common_LIB_SRCS
     debug.cpp
+    functions.cpp
     socket.cpp)
 
 add_library(common SHARED ${common_LIB_SRCS})
