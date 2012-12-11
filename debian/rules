@@ -27,7 +27,7 @@ build-stamp: configure-stamp
 
 	# Add here commands to compile the package.
 	$(MAKE)
-	docbook-to-man debian/manpage.sgml > libplanar.1
+	docbook-to-man debian/manpage.sgml > zero-cache.1
 
 	touch $@
 

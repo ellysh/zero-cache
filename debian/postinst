@@ -1,5 +1,5 @@
 #!/bin/sh
-# postinst script for libplanar
+# postinst script for zero-cache
 #
 # see: dh_installdeb(1)
 
