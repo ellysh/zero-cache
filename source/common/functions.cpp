@@ -12,7 +12,7 @@ string zero_cache::IncrementPort(string connection, int increment)
     string port = connection.substr(pos, connection.size());
 
     int num_port = atoi(port.c_str());
-    num_port++;
+    num_port = num_port + increment;
 
     char new_port[100];
     sprintf(new_port, "%d", num_port);

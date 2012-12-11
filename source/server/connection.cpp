@@ -7,7 +7,7 @@ using namespace zero_cache;
 
 Connection::Connection(string connection, int limit) : limit_(limit), counter_(1)
 {
-    connection_ = IncrementPort(connection, 1);
+    connection_ = IncrementPort(connection, 2);
 }
 
 void Connection::IncrementCounter()

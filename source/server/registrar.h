@@ -2,7 +2,7 @@
 #define REGISTRAR_H
 
 #include "types_zcache.h"
-#include "socket.h"
+#include "socket_double.h"
 #include "debug.h"
 
 namespace zero_cache
@@ -24,7 +24,7 @@ public:
 private:
     int queue_size_;
     KeyList* key_list_;
-    Socket socket_;
+    SocketDouble socket_;
 
     void ProcessMessage();
 
