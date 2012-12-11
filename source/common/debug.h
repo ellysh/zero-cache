@@ -13,7 +13,7 @@ class Debug
 {
 public:
     Debug(std::string log_file);
-    ~Debug();
+    virtual ~Debug();
 
     std::ostream& Log();
     void Log(const char* fmt, ...);

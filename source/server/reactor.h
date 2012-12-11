@@ -1,7 +1,6 @@
 #ifndef REACTOR_H
 #define REACTOR_H
 
-#include "types_zcache.h"
 #include "debug.h"
 #include "container.h"
 #include "socket.h"
@@ -26,8 +25,6 @@ private:
     void ProcessMessage();
     void WriteData(char* key_str);
     void ReadData(char* key_str);
-
-    DISALLOW_COPY_AND_ASSIGN(Reactor)
 };
 
 }

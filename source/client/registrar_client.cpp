@@ -14,17 +14,8 @@ RegistrarClient::RegistrarClient(string log_file, string connection) : Debug(log
 {
     srand(time(NULL));
 
-    context_ = zctx_new();
-    socket_ = zsocket_new(context_, ZMQ_DEALER);
-
-    zsocket_connect(socket_, connection.c_str());
-    zsocket_set_hwm(socket_, 1);
-}
-
-RegistrarClient::~RegistrarClient()
-{
-    zsocket_destroy(context_, socket_);
-    zctx_destroy(&context_);
+    socket_.Connect(connection);
+    socket_.SetQueueSize(1);
 }
 
 void RegistrarClient::WriteData(string key, void* data, size_t size)
@@ -62,9 +53,7 @@ void RegistrarClient::AddKey(string key)
     while ( connection.empty() )
     {
         key_frame = zframe_new(key.c_str(), key.size());
-
-        zframe_send(&key_frame, socket_, ZFRAME_REUSE);
-
+        socket_.SendFrame(key_frame, ZFRAME_REUSE);
         connection = ReceiveAnswer(key_frame);
 
         usleep((rand() % 1000) * 1000);
@@ -88,35 +77,25 @@ void RegistrarClient::AddKey(string key)
 
 string RegistrarClient::ReceiveAnswer(zframe_t* key)
 {
-    zmq_pollitem_t items[] = { { socket_, 0, ZMQ_POLLIN, 0 } };
+    socket_.ReceiveMsg();
 
-    if ( zmq_poll(items, 1, kReadAnswerTimeout) <= 0 )
-    {
-        Log() << "RegistrarClient::ReceiveAnswer() - error = " << zmq_strerror(zmq_errno()) << " (" << zmq_errno << ")" << endl;
-        return "";
-    }
-
-    zmsg_t* msg = zmsg_recv(socket_);
-    zframe_t* key_frame = zmsg_pop(msg);
+    zframe_t* key_frame = socket_.PopFrame();
 
     if ( ! zframe_eq(key_frame, key) )
     {
         zframe_destroy(&key_frame);
-        zmsg_destroy(&msg);
         return "";
     }
 
-    zframe_t* connection_frame = zmsg_pop(msg);
+    zframe_t* connection_frame = socket_.PopFrame();
     char* buffer =  zframe_strdup(connection_frame);
     string connection = buffer;
 
     free(buffer);
     zframe_destroy(&key_frame);
     zframe_destroy(&connection_frame);
-    zmsg_destroy(&msg);
 
     return connection;
-
 }
 
 void RegistrarClient::SetQueueSize(int size)

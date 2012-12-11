@@ -3,10 +3,9 @@
 
 #include <string>
 #include <map>
-#include <czmq.h>
 
 #include "debug.h"
-#include "types_zcache.h"
+#include "socket.h"
 
 namespace zero_cache
 {
@@ -21,7 +20,7 @@ private:
 
 public:
     RegistrarClient(std::string log_file = "", std::string connection = "tcp://localhost:5570");
-    virtual ~RegistrarClient();
+    virtual ~RegistrarClient() {};
 
     void WriteData(std::string key, void* data, size_t size);
     void* ReadData(std::string key);
@@ -30,16 +29,13 @@ public:
 
 private:
     int queue_size_;
-    zctx_t* context_;
-    void* socket_;
+    Socket socket_;
     KeyConnection connections_;
     ConnectionClient clients_;
 
     void AddKey(std::string key);
     Client* GetClient(std::string key);
     std::string ReceiveAnswer(zframe_t* key);
-
-    DISALLOW_COPY_AND_ASSIGN(RegistrarClient);
 };
 
 }

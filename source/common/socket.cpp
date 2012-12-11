@@ -20,6 +20,11 @@ Socket::~Socket()
     zctx_destroy(&context_);
 }
 
+void Socket::Connect(string connection)
+{
+    zsocket_connect(socket_, connection.c_str());
+}
+
 void Socket::Bind(string connection)
 {
     zsocket_bind(socket_, connection.c_str());
