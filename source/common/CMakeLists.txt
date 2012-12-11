@@ -16,4 +16,5 @@ install(TARGETS common DESTINATION lib/${PROJECT_NAME})
 install(FILES
             debug.h
             types_zcache.h
+            socket.h
         DESTINATION include/${PROJECT_NAME})
