@@ -3,6 +3,7 @@
 #include <czmq.h>
 
 #include "zsignal.h"
+#include "functions.h"
 
 using namespace std;
 using namespace zero_cache;
@@ -40,7 +41,7 @@ void Reactor::ProcessMessage()
 
     zframe_t* command = socket_.PopFrame();
     zframe_t* key =  socket_.PopFrame();
-    char* key_str = zframe_strdup(key);
+    string key_str = FrameToString(key);
 
     if ( DecodeCommand(command) == kWrite )
         WriteData(key_str);
@@ -48,27 +49,26 @@ void Reactor::ProcessMessage()
     if ( DecodeCommand(command) == kRead )
         ReadData(key_str);
 
-    free(key_str);
     zframe_destroy(&key);
     zframe_destroy(&command);
 }
 
-void Reactor::WriteData(char* key_str)
+void Reactor::WriteData(string& key)
 {
     zframe_t* data = socket_.PopFrame();
 
-    Log() << "write: key = " << key_str;
+    Log() << "write: key = " << key;
     PrintFrame(data);
 
-    container_.WriteData(string(key_str), data);
+    container_.WriteData(key, data);
     zframe_destroy(&data);
 }
 
-void Reactor::ReadData(char* key_str)
+void Reactor::ReadData(string& key)
 {
-    Log() << "read: key = " << key_str;
+    Log() << "read: key = " << key;
 
-    zframe_t* data = container_.ReadData(string(key_str));
+    zframe_t* data = container_.ReadData(key);
     bool is_data_empty = false;
 
     if ( data == NULL )

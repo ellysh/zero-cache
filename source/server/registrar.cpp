@@ -3,6 +3,7 @@
 #include "zsignal.h"
 #include "reactor.h"
 #include "key_list.h"
+#include "functions.h"
 
 using namespace std;
 using namespace zero_cache;
@@ -46,7 +47,7 @@ void Registrar::ProcessMessage()
     socket_.ReceiveMsg();
 
     zframe_t* key = socket_.PopFrame();
-    char* key_str = zframe_strdup(key);
+    string key_str = FrameToString(key);
 
     Log() << "Registrar::ProcessMessage() - key = " << key_str << endl;
     string connection = key_list_->GetConnection(key_str);
@@ -66,7 +67,6 @@ void Registrar::ProcessMessage()
 
     Log() << "Registrar::ProcessMessage() - send answer = " << connection << endl;
 
-    free(key_str);
     zframe_destroy(&key);
 }
 

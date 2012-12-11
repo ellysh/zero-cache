@@ -1,6 +1,7 @@
 #include "registrar_client.h"
 
 #include "client.h"
+#include "functions.h"
 
 #define STREAM Log()
 #include "speed_test.h"
@@ -89,10 +90,8 @@ string RegistrarClient::ReceiveAnswer(zframe_t* key)
     }
 
     zframe_t* connection_frame = socket_.PopFrame();
-    char* buffer =  zframe_strdup(connection_frame);
-    string connection = buffer;
+    string connection = FrameToString(connection_frame);
 
-    free(buffer);
     zframe_destroy(&key_frame);
     zframe_destroy(&connection_frame);
 

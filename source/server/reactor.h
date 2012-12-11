@@ -1,6 +1,8 @@
 #ifndef REACTOR_H
 #define REACTOR_H
 
+#include <string>
+
 #include "debug.h"
 #include "container.h"
 #include "socket.h"
@@ -23,8 +25,8 @@ private:
     Container container_;
 
     void ProcessMessage();
-    void WriteData(char* key_str);
-    void ReadData(char* key_str);
+    void WriteData(std::string& key);
+    void ReadData(std::string& key);
 };
 
 }
