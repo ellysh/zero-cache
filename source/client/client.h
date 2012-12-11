@@ -6,6 +6,7 @@
 
 #include "debug.h"
 #include "types_zcache.h"
+#include "socket.h"
 
 namespace zero_cache
 {
@@ -22,8 +23,7 @@ public:
     void SetQueueSize(int size);
 
 private:
-    zctx_t* context_;
-    void* socket_;
+    Socket socket_;
     zframe_t* command_frame_;
     zframe_t* key_frame_;
     zframe_t* data_frame_;
