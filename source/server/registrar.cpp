@@ -13,14 +13,7 @@ static int gQueueSize;
 
 Registrar::Registrar(string log_file, string connection) : Debug(log_file), queue_size_(1000)
 {
-    context_ = zctx_new ();
-    socket_ = zsocket_new(context_, ZMQ_DEALER);
-
-    zsocket_bind(socket_, connection.c_str());
-    zsocket_set_hwm(socket_, 1);
-
-    zmq_pollitem_t items[1] = { { socket_, 0, ZMQ_POLLIN, 0 } };
-    memcpy(&items_, &items, sizeof(items));
+    socket_.Bind(connection);
 
     key_list_ = new KeyList(connection);
 }
@@ -28,8 +21,6 @@ Registrar::Registrar(string log_file, string connection) : Debug(log_file), queu
 Registrar::~Registrar()
 {
     delete key_list_;
-    zsocket_destroy(context_, socket_);
-    zctx_destroy(&context_);
 }
 
 void Registrar::Start()
@@ -53,21 +44,9 @@ static void* ReactorStart(void* args)
 
 void Registrar::ProcessMessage()
 {
-    /* FIXME: Split this method to submethods */
+    socket_.ReceiveMsg();
 
-    if ( zmq_poll(items_, 1, -1) == -1 )
-    {
-        Log() << "Registrar::ProcessMessage() - error = " << zmq_strerror(zmq_errno()) << " (" << zmq_errno() << ")" << endl;
-        if ( zmq_errno() == ERR_INTERRUPT )
-            exit(0);
-    }
-
-    if ( ! (items_[0].revents & ZMQ_POLLIN) )
-        return;
-
-    zmsg_t* msg = zmsg_recv(socket_);
-    assert( msg != NULL );
-    zframe_t* key = zmsg_pop(msg);
+    zframe_t* key = socket_.PopFrame();
     char* key_str = zframe_strdup(key);
 
     Log() << "Registrar::ProcessMessage() - key = " << key_str << endl;
@@ -83,14 +62,13 @@ void Registrar::ProcessMessage()
         zthread_new(ReactorStart, const_cast<char*>(connection.c_str()));
     }
 
-    zframe_send(&key, socket_, ZFRAME_REUSE + ZFRAME_MORE);
-    zstr_sendf(socket_, connection.c_str());
+    socket_.SendFrame(key, ZFRAME_REUSE + ZFRAME_MORE);
+    socket_.SendString(connection);
 
     Log() << "Registrar::ProcessMessage() - send answer = " << connection << endl;
 
     free(key_str);
     zframe_destroy(&key);
-    zmsg_destroy(&msg);
 }
 
 void Registrar::SetKeyLimit(int limit)

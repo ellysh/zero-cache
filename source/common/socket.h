@@ -17,7 +17,10 @@ public:
 
     void Connect(std::string connection);
     void Bind(std::string connection);
-    void SendFrame(zframe_t* frame);
+
+    void SendFrame(zframe_t* frame, int flags);
+    void SendString(std::string data);
+
     void ReceiveMsg();
     zframe_t* PopFrame();
 

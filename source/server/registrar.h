@@ -2,6 +2,7 @@
 #define REGISTRAR_H
 
 #include "types_zcache.h"
+#include "socket.h"
 #include "debug.h"
 
 namespace zero_cache
@@ -23,9 +24,7 @@ public:
 private:
     int queue_size_;
     KeyList* key_list_;
-    void* socket_;
-    zmq_pollitem_t items_[1];
-    zctx_t* context_;
+    Socket socket_;
 
     void ProcessMessage();
 
