@@ -29,7 +29,8 @@ public:
 private:
     zmsg_t* msg_;
     zctx_t* context_;
-    void* socket_;
+    void* in_socket_;
+    void* out_socket_;
     zmq_pollitem_t items_[1];
 
     DISALLOW_COPY_AND_ASSIGN(Socket)

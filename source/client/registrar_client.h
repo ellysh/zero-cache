@@ -5,7 +5,7 @@
 #include <map>
 
 #include "debug.h"
-#include "socket_double.h"
+#include "socket.h"
 
 namespace zero_cache
 {
@@ -29,7 +29,7 @@ public:
 
 private:
     int queue_size_;
-    SocketDouble socket_;
+    Socket socket_;
     KeyConnection connections_;
     ConnectionClient clients_;
 

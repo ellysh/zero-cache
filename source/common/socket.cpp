@@ -1,6 +1,7 @@
 #include "socket.h"
 
 #include "zsignal.h"
+#include "functions.h"
 
 using namespace std;
 using namespace zero_cache;
@@ -8,26 +9,40 @@ using namespace zero_cache;
 Socket::Socket() : msg_(NULL)
 {
     context_ = zctx_new ();
-    socket_ = zsocket_new(context_, ZMQ_DEALER);
+    in_socket_ = zsocket_new(context_, ZMQ_DEALER);
+    out_socket_ = zsocket_new(context_, ZMQ_DEALER);
 
-    zmq_pollitem_t items[1] = { { socket_, 0, ZMQ_POLLIN, 0 } };
+    zmq_pollitem_t items[1] = { { in_socket_, 0, ZMQ_POLLIN, 0 } };
     memcpy(&items_, &items, sizeof(items));
 }
 
 Socket::~Socket()
 {
-    zsocket_destroy(context_, socket_);
+    zsocket_destroy(context_, out_socket_);
+    zsocket_destroy(context_, in_socket_);
     zctx_destroy(&context_);
 }
 
+#include <iostream>
+
 void Socket::Connect(string connection)
 {
-    zsocket_connect(socket_, connection.c_str());
+    zsocket_connect(out_socket_, connection.c_str());
+
+    string in_connection = IncrementPort(connection, 1);
+    zsocket_connect(in_socket_, in_connection.c_str());
+
+    cout << "Socket::Connect() - out_connection = " << connection << " in_connection = " << in_connection << endl;
 }
 
 void Socket::Bind(string connection)
 {
-    zsocket_bind(socket_, connection.c_str());
+    zsocket_bind(in_socket_, connection.c_str());
+
+    string out_connection = IncrementPort(connection, 1);
+    zsocket_bind(out_socket_, out_connection.c_str());
+
+    cout << "Socket::Bind() - in_connection = " << connection << " out_connection = " << out_connection << endl;
 }
 
 bool Socket::ReceiveMsg(long timeout)
@@ -49,7 +64,7 @@ bool Socket::ReceiveMsg(long timeout)
     if ( ! (items_[0].revents & ZMQ_POLLIN) )
         return false;
 
-    msg_ = zmsg_recv(socket_);
+    msg_ = zmsg_recv(in_socket_);
     assert( msg_ != NULL );
     return true;
 }
@@ -61,15 +76,16 @@ zframe_t* Socket::PopFrame()
 
 void Socket::SendFrame(zframe_t* frame, int flags)
 {
-    zframe_send(&frame, socket_, flags);
+    zframe_send(&frame, out_socket_, flags);
 }
 
 void Socket::SendString(string data)
 {
-    zstr_sendf(socket_, data.c_str());
+    zstr_sendf(out_socket_, data.c_str());
 }
 
 void Socket::SetQueueSize(int size)
 {
-    zsocket_set_hwm(socket_, size);
+    zsocket_set_hwm(in_socket_, size);
+    zsocket_set_hwm(out_socket_, size);
 }
