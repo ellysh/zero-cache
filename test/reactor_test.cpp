@@ -15,7 +15,7 @@ void* WriteLoop(void* args)
     while (true)
     {
         client.WriteData(data, args, 1);
-        usleep(10);
+        usleep(500);
     }
 }
 
