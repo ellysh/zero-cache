@@ -5,7 +5,7 @@
 
 #include "debug.h"
 #include "container.h"
-#include "socket.h"
+#include "socket_double.h"
 
 namespace zero_cache
 {
@@ -21,7 +21,7 @@ public:
     void SetQueueSize(int size);
 
 private:
-    Socket socket_;
+    SocketDouble socket_;
     Container container_;
 
     void ProcessMessage();
