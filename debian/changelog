@@ -1,3 +1,12 @@
+zero-cache (0.6) precise; urgency=low
+
+  * Implement bidirectional data transmission with publisher-subscriber pattern
+  * Encapsulate socket operations in the Socket class
+  * Fix bug with passing queue size for clients and reactors
+  * Fix bug with application interruption on Ctrl-C pressing
+
+ -- Ilya Shpigor <petrsum@gmail.com>  Wed, 12 Dec 2012 17:27:28 +0400
+
 zero-cache (0.5) precise; urgency=low
 
   * Use one thread to process requests for several keys

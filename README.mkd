@@ -1,4 +1,4 @@
-# 0Cache 0.5 version
+# 0Cache 0.6 version
 
 ## INTRODUCTION
 

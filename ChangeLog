@@ -1,3 +1,9 @@
+* zero-cache 0.6
+	- Implement bidirectional data transmission with publisher-subscriber pattern
+	- Encapsulate socket operations in the Socket class
+	- Fix bug with passing queue size for clients and reactors
+	- Fix bug with application interruption on Ctrl-C pressing
+
 * zero-cache 0.5
 	- Use one thread to process requests for several keys
 	- Use one client to access data from several keys
