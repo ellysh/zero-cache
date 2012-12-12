@@ -1,6 +1,8 @@
 #ifndef REGISTRAR_H
 #define REGISTRAR_H
 
+#include <set>
+
 #include "types_zcache.h"
 #include "socket.h"
 #include "debug.h"
@@ -12,6 +14,9 @@ class KeyList;
 
 class Registrar : protected Debug
 {
+private:
+    typedef std::set<std::string> ConnectionSet;
+
 public:
     Registrar(std::string log_file, std::string connection);
     virtual ~Registrar();
@@ -23,8 +28,9 @@ public:
 
 private:
     int queue_size_;
-    KeyList* key_list_;
     Socket socket_;
+    KeyList* key_list_;
+    ConnectionSet connections_;
 
     void ProcessMessage();
 

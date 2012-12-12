@@ -10,6 +10,7 @@ using namespace std;
 using namespace zero_cache;
 
 static const long kReadAnswerTimeout = 10;
+static const long kInitServerDelay = 1000;
 
 RegistrarClient::RegistrarClient(string log_file, string connection) : Debug(log_file), queue_size_(10)
 {
@@ -23,7 +24,7 @@ void RegistrarClient::WriteData(string key, void* data, size_t size)
 {
     Log() << "RegistrarClient::WriteData() - key = " << key << " data_size = " << size << endl;
 
-    PRE_TIME_MEASURE("RegistrarClient::WriteData")
+    PRE_TIME_MEASURE("RegistrarClient::WriteData() ")
 
     GetClient(key)->WriteData(key, data, size);
 
@@ -71,6 +72,7 @@ void RegistrarClient::AddKey(string key)
         clients_.insert(ConnectionClient::value_type(connection, client));
 
         Log() << "RegistrarClient::AddKey() - add client = " << client << " connection = " << connection << endl;
+        usleep(kInitServerDelay);
     }
 
     zframe_destroy(&key_frame);

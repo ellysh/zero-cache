@@ -50,16 +50,16 @@ void Registrar::ProcessMessage()
     string key_str = FrameToString(key);
 
     Log() << "Registrar::ProcessMessage() - key = " << key_str << endl;
+    key_list_->AddKey(key_str);
+
     string connection = key_list_->GetConnection(key_str);
 
-    if ( connection.empty() )
+    if ( connections_.count(connection) == 0 )
     {
-        key_list_->AddKey(key_str);
-        connection = key_list_->GetConnection(key_str);
-
         Log() << "zthread_new() - connection = " << connection << endl;
         gQueueSize = queue_size_;
         zthread_new(ReactorStart, const_cast<char*>(connection.c_str()));
+        connections_.insert(connection);
     }
 
     socket_.SendFrame(key, ZFRAME_REUSE + ZFRAME_MORE);

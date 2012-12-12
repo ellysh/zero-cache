@@ -9,8 +9,12 @@ using namespace zero_cache;
 Socket::Socket() : msg_(NULL)
 {
     context_ = zctx_new ();
-    in_socket_ = zsocket_new(context_, ZMQ_DEALER);
-    out_socket_ = zsocket_new(context_, ZMQ_DEALER);
+
+    in_socket_ = zsocket_new(context_, ZMQ_SUB);
+    /* FIXME: Is this subscription to all incoming messagees correct? */
+    zmq_setsockopt(in_socket_, ZMQ_SUBSCRIBE, "", 0);
+
+    out_socket_ = zsocket_new(context_, ZMQ_PUB);
 
     zmq_pollitem_t items[1] = { { in_socket_, 0, ZMQ_POLLIN, 0 } };
     memcpy(&items_, &items, sizeof(items));
@@ -23,16 +27,12 @@ Socket::~Socket()
     zctx_destroy(&context_);
 }
 
-#include <iostream>
-
 void Socket::Connect(string connection)
 {
     zsocket_connect(out_socket_, connection.c_str());
 
     string in_connection = IncrementPort(connection, 1);
     zsocket_connect(in_socket_, in_connection.c_str());
-
-    cout << "Socket::Connect() - out_connection = " << connection << " in_connection = " << in_connection << endl;
 }
 
 void Socket::Bind(string connection)
@@ -41,8 +41,6 @@ void Socket::Bind(string connection)
 
     string out_connection = IncrementPort(connection, 1);
     zsocket_bind(out_socket_, out_connection.c_str());
-
-    cout << "Socket::Bind() - in_connection = " << connection << " out_connection = " << out_connection << endl;
 }
 
 bool Socket::ReceiveMsg(long timeout)
