@@ -20,7 +20,6 @@ void* WriteLoop(void* args)
         usleep(1000);
 
         result = static_cast<char*>(client.ReadData(key));
-        cout << "WriteLoop() - result = " << result << " key = " << key << endl;
         assert( ! memcmp(result, key, sizeof(result)) );
         usleep(1000);
     }

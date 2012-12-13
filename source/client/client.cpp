@@ -44,7 +44,12 @@ void* Client::ReadData(string key)
 
     SendReadRequest(key);
 
-    return ReceiveReadAnswer();
+    void* result = NULL;
+
+    while ( result == NULL )
+        result = ReceiveReadAnswer();
+
+    return result;
 }
 
 void Client::SendReadRequest(string key)
@@ -63,11 +68,18 @@ void* Client::ReceiveReadAnswer()
     if ( ! socket_.ReceiveMsg(kReadAnswerTimeout) )
         return NULL;
 
-    /* FIXME: Check key value of the received message */
+    zframe_t* key_frame = socket_.PopFrame();
+
+    if ( ! zframe_eq(key_frame, key_frame_) )
+    {
+        zframe_destroy(&key_frame);
+        return NULL;
+    }
 
     zframe_t* frame = socket_.PopFrame();
     void* data = malloc(zframe_size(frame));
     memcpy(data, zframe_data(frame), zframe_size(frame));
+    zframe_destroy(&frame);
 
     return data;
 }

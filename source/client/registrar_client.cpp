@@ -53,6 +53,8 @@ Client* RegistrarClient::GetClient(string key)
 
 void RegistrarClient::AddKey(string key)
 {
+    /* FIXME: Split this method to sub-methods */
+
     if ( connections_.count(key) != 0 )
         return;
 

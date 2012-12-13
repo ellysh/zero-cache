@@ -79,6 +79,8 @@ void Reactor::ReadData(string& key)
 
     PrintFrame(data);
 
+    zframe_t* key_frame = zframe_new(key.c_str(), key.size());
+    socket_.SendFrame(key_frame, ZFRAME_MORE);
     socket_.SendFrame(data, ZFRAME_REUSE);
 
     if ( is_data_empty )
