@@ -12,12 +12,16 @@ using namespace zero_cache;
 static const long kReadAnswerTimeout = 10;
 static const long kInitServerDelay = 1000;
 
-RegistrarClient::RegistrarClient(string log_file, string connection) : Debug(log_file), queue_size_(10)
+static SocketType gSocketType;
+
+RegistrarClient::RegistrarClient(string log_file, string connection, SocketType type) : Debug(log_file), socket_(type), queue_size_(10)
 {
     srand(time(NULL));
 
     socket_.Connect(connection);
     socket_.SetQueueSize(1);
+
+    gSocketType = type;
 }
 
 void RegistrarClient::WriteData(string key, void* data, size_t size)
@@ -75,7 +79,7 @@ void RegistrarClient::AddKey(string key)
 
     if ( clients_.count(connection) == 0 )
     {
-        Client* client = new Client("", connection);
+        Client* client = new Client("", connection, gSocketType);
         client->SetQueueSize(queue_size_);
         clients_.insert(ConnectionClient::value_type(connection, client));
 

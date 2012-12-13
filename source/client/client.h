@@ -14,7 +14,7 @@ namespace zero_cache
 class Client : protected Debug
 {
 public:
-    Client(std::string log_file = "", std::string connection = "tcp://localhost:5570");
+    Client(std::string log_file, std::string connection, SocketType type);
     virtual ~Client();
 
     void WriteData(std::string key, void* data, size_t size);

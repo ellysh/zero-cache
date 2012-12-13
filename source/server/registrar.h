@@ -18,7 +18,7 @@ private:
     typedef std::set<std::string> ConnectionSet;
 
 public:
-    Registrar(std::string log_file, std::string connection);
+    Registrar(std::string log_file, std::string connection, SocketType type = kDealer);
     virtual ~Registrar();
 
     void Start();

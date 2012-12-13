@@ -13,7 +13,7 @@ namespace zero_cache
 class Reactor : protected Debug
 {
 public:
-    Reactor(std::string log_file, std::string connection);
+    Reactor(std::string log_file, std::string connection, SocketType type = kDealer);
     virtual ~Reactor() {};
 
     void Start();

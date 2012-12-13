@@ -34,7 +34,7 @@ void CheckData(RegistrarClient& client)
 
 int main()
 {
-    RegistrarClient client("get_test.log", "ipc:///tmp/0");
+    RegistrarClient client("get_test.log", "ipc:///tmp/0", kDealer);
 
     cout << "Start test..." << endl;
 

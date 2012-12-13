@@ -5,7 +5,7 @@ using namespace zero_cache;
 
 static const long kReadAnswerTimeout = 1000;
 
-Client::Client(string log_file, string connection) : Debug(log_file)
+Client::Client(string log_file, string connection, SocketType type) : Debug(log_file), socket_(type)
 {
     srand(time(NULL));
     socket_.Connect(connection);
