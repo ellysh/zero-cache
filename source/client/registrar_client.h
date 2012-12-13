@@ -5,6 +5,7 @@
 #include <map>
 
 #include "debug.h"
+#include "types_zcache.h"
 #include "socket.h"
 
 namespace zero_cache

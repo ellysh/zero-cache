@@ -1,5 +1,5 @@
-#ifndef TYPES_H
-#define TYPES_H
+#ifndef TYPES_ZCACHE_H
+#define TYPES_ZCACHE_H
 
 namespace zero_cache
 {

@@ -6,6 +6,7 @@
 #include "debug.h"
 #include "container.h"
 #include "socket.h"
+#include "types_zcache.h"
 
 namespace zero_cache
 {
