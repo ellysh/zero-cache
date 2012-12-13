@@ -14,6 +14,7 @@ void PrintUsage()
     cout << "\t-c CONNECTION\t\tSet connection string" << endl;
     cout << "\t-l FILE\t\t\tSet log file name" << endl;
     cout << "\t-s SIZE\t\t\tSet size of the input queue" << endl;
+    cout << "\t-p\t\t\tUse publisher-subscriber socket type" << endl;
     cout << "\t-h\t\t\tPrint option help" << endl;
 }
 
@@ -35,7 +36,11 @@ int main(int argc, char *argv[])
     if ( options.IsOptionExist("-c") )
         connection = options.GetString("-c");
 
-    Registrar registrar(log_file, connection);
+    SocketType type = kDealer;
+    if ( options.IsOptionExist("-p") )
+        type = kPubSub;
+
+    Registrar registrar(log_file, connection, type);
 
     if ( options.IsOptionExist("-s") )
         registrar.SetQueueSize(options.GetInt("-s"));
