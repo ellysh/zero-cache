@@ -1,5 +1,7 @@
 #include "registrar_client.h"
 
+#include <algorithm>
+
 #include "client.h"
 #include "functions.h"
 
@@ -22,6 +24,19 @@ RegistrarClient::RegistrarClient(string log_file, string connection, SocketType 
     socket_.SetQueueSize(1);
 
     gSocketType = type;
+}
+
+static void RemoveClient(RegistrarClient::ConnectionClient::value_type client_pair)
+{
+    delete client_pair.second;
+}
+
+RegistrarClient::~RegistrarClient()
+{
+    for_each(clients_.begin(), clients_.end(),
+             RemoveClient);
+
+    clients_.clear();
 }
 
 void RegistrarClient::WriteData(string key, void* data, size_t size)

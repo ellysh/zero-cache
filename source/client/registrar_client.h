@@ -15,13 +15,13 @@ class Client;
 
 class RegistrarClient : protected Debug
 {
-private:
+public:
     typedef std::map<std::string, std::string> KeyConnection;
     typedef std::map<std::string, Client*> ConnectionClient;
 
 public:
     RegistrarClient(std::string log_file, std::string connection, SocketType type);
-    virtual ~RegistrarClient() {};
+    virtual ~RegistrarClient();
 
     void WriteData(std::string key, void* data, size_t size);
     void* ReadData(std::string key);

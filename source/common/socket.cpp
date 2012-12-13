@@ -8,7 +8,7 @@ using namespace zero_cache;
 
 Socket::Socket(SocketType type) : msg_(NULL)
 {
-    context_ = zctx_new ();
+    context_ = zctx_new();
 
     if ( type == kDealer )
     {
