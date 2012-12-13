@@ -13,7 +13,8 @@ Makefile
 # Binaries
 *.so
 zero-cache
-reactor_test
+read_test
+speed_test
 memory_leak_test
 get_test
 

@@ -35,7 +35,13 @@ void* RegistrarClient::ReadData(string key)
 {
     Log() << "RegistrarClient::ReadData() - key = " << key << endl;
 
-    return GetClient(key)->ReadData(key);
+    PRE_TIME_MEASURE("RegistrarClient::ReadData() ")
+
+    void* result = GetClient(key)->ReadData(key);
+
+    POST_TIME_MEASURE
+
+    return result;
 }
 
 Client* RegistrarClient::GetClient(string key)

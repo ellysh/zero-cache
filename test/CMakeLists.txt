@@ -2,14 +2,14 @@ include_directories(${COMMON_INCLUDE_DIRS})
 link_directories(${COMMON_LIBDIR})
 
 
-set(reactor_test_SRCS
-    reactor_test.cpp)
+set(speed_test_SRCS
+    speed_test.cpp)
 
-add_executable(reactor_test ${reactor_test_SRCS})
+add_executable(speed_test ${speed_test_SRCS})
 
-target_link_libraries(reactor_test zero_cache)
+target_link_libraries(speed_test zero_cache)
 
-install(TARGETS reactor_test DESTINATION bin)
+install(TARGETS speed_test DESTINATION bin)
 
 
 set(memory_leak_test_SRCS
@@ -30,3 +30,13 @@ add_executable(get_test ${get_test_SRCS})
 target_link_libraries(get_test zero_cache)
 
 install(TARGETS get_test DESTINATION bin)
+
+
+set(read_test_SRCS
+    read_test.cpp)
+
+add_executable(read_test ${read_test_SRCS})
+
+target_link_libraries(read_test zero_cache)
+
+install(TARGETS read_test DESTINATION bin)

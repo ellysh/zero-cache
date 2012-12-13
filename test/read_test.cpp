@@ -9,13 +9,20 @@ using namespace zero_cache;
 
 void* WriteLoop(void* args)
 {
-    const char* data = static_cast<char*>(args);
-    RegistrarClient client(data, "ipc:///tmp/0");
+    const char* key = static_cast<char*>(args);
+    RegistrarClient client(key, "ipc:///tmp/0");
+
+    char* result;
 
     while (true)
     {
-        client.WriteData(data, args, 1);
-        usleep(500);
+        client.WriteData(key, args, sizeof(args));
+        usleep(1000);
+
+        result = static_cast<char*>(client.ReadData(key));
+        cout << "WriteLoop() - result = " << result << " key = " << key << endl;
+        assert( ! memcmp(result, key, sizeof(result)) );
+        usleep(1000);
     }
 }
 
