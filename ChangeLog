@@ -1,3 +1,7 @@
+* zero-cache 0.7
+	- Support both dealer and publisher-subscriber types of sockets
+	- Fix bugs with read from cache operation
+
 * zero-cache 0.6
 	- Implement bidirectional data transmission with publisher-subscriber pattern
 	- Encapsulate socket operations in the Socket class
