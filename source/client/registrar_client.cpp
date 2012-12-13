@@ -78,10 +78,9 @@ void RegistrarClient::AddKey(string key)
         return;
 
     string connection = "";
-    zframe_t* key_frame;
+    zframe_t* key_frame = zframe_new(key.c_str(), key.size());
     while ( connection.empty() )
     {
-        key_frame = zframe_new(key.c_str(), key.size());
         socket_.SendFrame(key_frame, ZFRAME_REUSE);
         connection = ReceiveAnswer(key_frame);
 
