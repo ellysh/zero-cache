@@ -17,6 +17,12 @@ enum Command
     kRead
 };
 
+enum SocketType
+{
+    kDealer = 0,
+    kPubSub
+};
+
 }
 
 #endif

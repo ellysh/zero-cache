@@ -12,7 +12,7 @@ namespace zero_cache
 class Socket
 {
 public:
-    Socket();
+    explicit Socket(SocketType type = kDealer);
     virtual ~Socket();
 
     void Connect(std::string connection);

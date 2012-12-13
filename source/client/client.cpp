@@ -7,6 +7,7 @@ static const long kReadAnswerTimeout = 1000;
 
 Client::Client(string log_file, string connection) : Debug(log_file)
 {
+    srand(time(NULL));
     socket_.Connect(connection);
     socket_.SetQueueSize(10);
 
@@ -42,12 +43,14 @@ void* Client::ReadData(string key)
 {
     Log() << "Client::ReadData() - key = " << key << endl;
 
-    SendReadRequest(key);
-
     void* result = NULL;
 
     while ( result == NULL )
+    {
+        SendReadRequest(key);
         result = ReceiveReadAnswer();
+        usleep(rand() % 1000);
+    }
 
     return result;
 }
