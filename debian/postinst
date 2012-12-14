@@ -21,6 +21,7 @@ set -e
 case "$1" in
     configure)
         ldconfig
+        chmod 777 /var/run/zero-cache
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)

@@ -31,3 +31,4 @@ bin/deb/
 build-stamp
 configure-stamp
 debian/files
+*.debhelper

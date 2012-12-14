@@ -1,0 +1,2 @@
+var/log/zero-cache
+var/run/zero-cache

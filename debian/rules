@@ -69,6 +69,7 @@ binary-arch: build install
 	dh_install
 	dh_installmenu
 	dh_installman
+	dh_installinit
 
 	dh_installman
 	dh_link
