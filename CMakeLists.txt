@@ -12,7 +12,6 @@ project(zero-cache)
 if(UNIX)
   find_package(ZMQ REQUIRED)
   find_package(CZMQ REQUIRED)
-  include_directories( ${Boost_INCLUDE_DIR} )
 endif(UNIX)
 
 if(UNIX)
