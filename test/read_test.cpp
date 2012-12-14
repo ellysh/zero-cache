@@ -10,7 +10,7 @@ using namespace zero_cache;
 void* WriteLoop(void* args)
 {
     const char* key = static_cast<char*>(args);
-    RegistrarClient client(key, "ipc:///tmp/0", kDealer);
+    RegistrarClient client(key, "ipc:///var/run/zero-cache/0", kDealer);
 
     char* result;
 

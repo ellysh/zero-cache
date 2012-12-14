@@ -10,7 +10,7 @@ using namespace zero_cache;
 void* WriteOperation(void* args)
 {
     char* key = static_cast<char*>(args);
-    RegistrarClient client("write.log", "ipc:///tmp/0", kDealer);
+    RegistrarClient client("write.log", "ipc:///var/run/zero-cache/0", kDealer);
 
     client.WriteData(key, key, sizeof(key));
 }
@@ -19,7 +19,7 @@ void* ReadOperation(void* args)
 {
     usleep(3 * 1000 * 1000);
     const char* key = static_cast<char*>(args);
-    RegistrarClient client("read.log", "ipc:///tmp/0", kDealer);
+    RegistrarClient client("read.log", "ipc:///var/run/zero-cache/0", kDealer);
 
     char* result;
     result = static_cast<char*>(client.ReadData(key));
