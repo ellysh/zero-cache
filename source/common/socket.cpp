@@ -45,9 +45,11 @@ void Socket::Connect(string connection)
 void Socket::Bind(string connection)
 {
     zsocket_bind(in_socket_, connection.c_str());
+    SetPermission(connection);
 
     string out_connection = IncrementPort(connection, 1);
     zsocket_bind(out_socket_, out_connection.c_str());
+    SetPermission(out_connection);
 }
 
 bool Socket::ReceiveMsg(long timeout)
