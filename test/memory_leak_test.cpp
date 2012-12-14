@@ -3,7 +3,6 @@
 #include <czmq.h>
 
 #include "registrar_client.h"
-#include "speed_test.h"
 
 using namespace std;
 using namespace zero_cache;
@@ -17,9 +16,7 @@ void* WriteLoop(void* args)
 
     while (true)
     {
-        PRE_TIME_MEASURE(data)
         client.WriteData(data, &kData, sizeof(kData));
-        POST_TIME_MEASURE
         usleep(100);
     }
 }
