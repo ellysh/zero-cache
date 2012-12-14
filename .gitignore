@@ -17,6 +17,7 @@ read_test
 speed_test
 memory_leak_test
 get_test
+cross_test
 
 # debian build files
 debian/*~

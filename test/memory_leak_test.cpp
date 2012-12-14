@@ -11,12 +11,12 @@ static char kData[1000];
 
 void* WriteLoop(void* args)
 {
-    const char* data = static_cast<char*>(args);
-    RegistrarClient client(data, "ipc:///tmp/0", kDealer);
+    const char* key = static_cast<char*>(args);
+    RegistrarClient client(key, "ipc:///tmp/0", kDealer);
 
     while (true)
     {
-        client.WriteData(data, &kData, sizeof(kData));
+        client.WriteData(key, &kData, sizeof(kData));
         usleep(100);
     }
 }

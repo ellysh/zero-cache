@@ -40,3 +40,13 @@ add_executable(read_test ${read_test_SRCS})
 target_link_libraries(read_test zero_cache)
 
 install(TARGETS read_test DESTINATION bin)
+
+
+set(cross_test_SRCS
+    cross_test.cpp)
+
+add_executable(cross_test ${cross_test_SRCS})
+
+target_link_libraries(cross_test zero_cache)
+
+install(TARGETS cross_test DESTINATION bin)
