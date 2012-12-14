@@ -50,3 +50,13 @@ add_executable(cross_test ${cross_test_SRCS})
 target_link_libraries(cross_test zero_cache)
 
 install(TARGETS cross_test DESTINATION bin)
+
+
+set(tcp_test_SRCS
+    tcp_test.cpp)
+
+add_executable(tcp_test ${tcp_test_SRCS})
+
+target_link_libraries(tcp_test zero_cache)
+
+install(TARGETS tcp_test DESTINATION bin)
