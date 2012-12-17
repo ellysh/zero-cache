@@ -27,14 +27,14 @@ void KeyList::AddKey(string key)
         return;
 
     if ( current_connection_ == NULL )
-        current_connection_ = new Connection(connection_str_, key_limit_);
+        current_connection_ = new ConnectionCounter(connection_str_, key_limit_);
     else
     {
-        if ( current_connection_->IsCounterLimit() )
-            current_connection_ = new Connection(current_connection_->GetString(), key_limit_);
+        if ( current_connection_->IsLimit() )
+            current_connection_ = new ConnectionCounter(current_connection_->GetString(), key_limit_);
     }
 
-    current_connection_->IncrementCounter();
+    current_connection_->Increment();
     connections_.insert(KeyConnection::value_type(key, current_connection_));
 }
 

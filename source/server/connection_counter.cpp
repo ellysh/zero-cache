@@ -1,21 +1,21 @@
-#include "connection.h"
+#include "connection_counter.h"
 
 #include "functions.h"
 
 using namespace std;
 using namespace zero_cache;
 
-Connection::Connection(string connection, int limit) : limit_(limit), counter_(1)
+ConnectionCounter::ConnectionCounter(string connection, int limit) : limit_(limit), counter_(1)
 {
     connection_ = IncrementPort(connection, 2);
 }
 
-void Connection::IncrementCounter()
+void ConnectionCounter::Increment()
 {
     counter_++;
 }
 
-bool Connection::IsCounterLimit()
+bool ConnectionCounter::IsLimit()
 {
     if ( counter_ >= limit_ )
         return true;
@@ -23,7 +23,7 @@ bool Connection::IsCounterLimit()
         return false;
 }
 
-string Connection::GetString()
+string ConnectionCounter::GetString()
 {
     return connection_;
 }
