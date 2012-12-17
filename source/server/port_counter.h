@@ -1,15 +1,15 @@
-#ifndef CONNECTION_COUNTER_H
-#define CONNECTION_COUNTER_H
+#ifndef PORT_COUNTER_H
+#define PORT_COUNTER_H
 
 #include <string>
 
 namespace zero_cache
 {
 
-class ConnectionCounter
+class PortCounter
 {
 public:
-    ConnectionCounter(std::string prev_connection, int limit);
+    PortCounter(std::string prev_connection, int limit);
 
     void Increment();
     std::string GetString();

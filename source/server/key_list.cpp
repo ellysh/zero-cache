@@ -8,40 +8,40 @@
 using namespace std;
 using namespace zero_cache;
 
-static void RemoveConnection(KeyList::KeyConnection::value_type connection_pair)
+static void RemovePort(KeyList::KeyPort::value_type port_pair)
 {
-    delete connection_pair.second;
+    delete port_pair.second;
 }
 
 KeyList::~KeyList()
 {
-    for_each(connections_.begin(), connections_.end(),
-             RemoveConnection);
+    for_each(ports_.begin(), ports_.end(),
+             RemovePort);
 
-    connections_.clear();
+    ports_.clear();
 }
 
 void KeyList::AddKey(string key)
 {
-    if ( connections_.count(key) != 0 )
+    if ( ports_.count(key) != 0 )
         return;
 
-    if ( current_connection_ == NULL )
-        current_connection_ = new ConnectionCounter(connection_str_, key_limit_);
+    if ( current_counter_ == NULL )
+        current_counter_ = new PortCounter(connection_str_, key_limit_);
     else
     {
-        if ( current_connection_->IsLimit() )
-            current_connection_ = new ConnectionCounter(current_connection_->GetString(), key_limit_);
+        if ( current_counter_->IsLimit() )
+            current_counter_ = new PortCounter(current_counter_->GetString(), key_limit_);
     }
 
-    current_connection_->Increment();
-    connections_.insert(KeyConnection::value_type(key, current_connection_));
+    current_counter_->Increment();
+    ports_.insert(KeyPort::value_type(key, current_counter_));
 }
 
 string KeyList::GetConnection(string key)
 {
-    if ( connections_.count(key) != 0 )
-        return connections_[key]->GetString();
+    if ( ports_.count(key) != 0 )
+        return ports_[key]->GetString();
     else
         return "";
 }

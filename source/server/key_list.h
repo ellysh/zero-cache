@@ -4,7 +4,7 @@
 #include <string>
 #include <map>
 
-#include "connection_counter.h"
+#include "port_counter.h"
 #include "types_zcache.h"
 
 namespace zero_cache
@@ -13,10 +13,10 @@ namespace zero_cache
 class KeyList
 {
 public:
-    typedef std::map<std::string, ConnectionCounter*> KeyConnection;
+    typedef std::map<std::string, PortCounter*> KeyPort;
 
 public:
-    explicit KeyList(std::string connection) : connection_str_(connection), current_connection_(NULL) {};
+    explicit KeyList(std::string connection) : connection_str_(connection), current_counter_(NULL) {};
     ~KeyList();
 
     void AddKey(std::string key);
@@ -26,8 +26,8 @@ public:
 
 private:
     std::string connection_str_;
-    ConnectionCounter* current_connection_;
-    KeyConnection connections_;
+    PortCounter* current_counter_;
+    KeyPort ports_;
     int key_limit_;
 
     DISALLOW_COPY_AND_ASSIGN(KeyList)
