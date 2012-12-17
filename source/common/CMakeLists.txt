@@ -2,6 +2,7 @@ include_directories(${COMMON_INCLUDE_DIRS})
 link_directories(${COMMON_LIBDIR})
 
 set(common_LIB_SRCS
+    connection.cpp
     debug.cpp
     functions.cpp
     socket.cpp)

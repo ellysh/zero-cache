@@ -9,6 +9,7 @@ using namespace zero_cache;
 
 string zero_cache::IncrementPort(string connection, int increment)
 {
+    /* FIXME: Add checking to TCP connection type */
     size_t pos = connection.find_last_of('/') + 1;
     string port = connection.substr(pos, connection.size());
 
