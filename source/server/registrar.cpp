@@ -56,7 +56,7 @@ void Registrar::ProcessMessage()
     Log() << "Registrar::ProcessMessage() - key = " << key_str << endl;
     key_list_->AddKey(key_str);
 
-    string connection = key_list_->GetConnection(key_str);
+    string connection = key_list_->GetPort(key_str);
 
     if ( connections_.count(connection) == 0 )
     {

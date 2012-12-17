@@ -20,7 +20,7 @@ public:
     ~KeyList();
 
     void AddKey(std::string key);
-    std::string GetConnection(std::string key);
+    std::string GetPort(std::string key);
 
     void SetKeyLimit(int key_limit);
 
