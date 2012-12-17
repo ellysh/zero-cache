@@ -87,11 +87,6 @@ void Socket::SendFrame(zframe_t* frame, int flags)
     zframe_send(&frame, out_socket_, flags);
 }
 
-void Socket::SendString(string data)
-{
-    zstr_sendf(out_socket_, data.c_str());
-}
-
 void Socket::SetQueueSize(int size)
 {
     zsocket_set_hwm(in_socket_, size);
