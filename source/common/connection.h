@@ -16,7 +16,7 @@ public:
     void SetPort(int port);
 
 private:
-    std::string connection_;
+    std::string host_;
     int port_;
 };
 
