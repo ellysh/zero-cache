@@ -17,7 +17,7 @@ Registrar::Registrar(string log_file, Connection connection, SocketType type) : 
     socket_.Bind(connection);
     socket_.SetQueueSize(1);
 
-    key_list_ = new KeyList(connection.GetString());
+    key_list_ = new KeyList(connection);
 
     gSocketType = type;
 }

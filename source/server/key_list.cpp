@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "connection.h"
+
 using namespace std;
 using namespace zero_cache;
 
@@ -27,7 +29,7 @@ void KeyList::AddKey(string key)
         return;
 
     if ( current_counter_ == NULL )
-        current_counter_ = new PortCounter(connection_str_, key_limit_);
+        current_counter_ = new PortCounter(connection_.GetString(), key_limit_);
     else
     {
         if ( current_counter_->IsLimit() )
