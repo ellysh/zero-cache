@@ -32,12 +32,13 @@ public:
 private:
     Socket socket_;
     int queue_size_;
+    Connection connection_;
     KeyConnection connections_;
     ConnectionClient clients_;
 
     void AddKey(std::string key);
     Client* GetClient(std::string key);
-    std::string ReceiveAnswer(zframe_t* key);
+    int ReceiveAnswer(zframe_t* key);
 };
 
 }

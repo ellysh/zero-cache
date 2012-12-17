@@ -11,6 +11,8 @@ private: \
     TypeName(const TypeName&);               \
     TypeName& operator=(const TypeName&);
 
+static const int kEmptyPort = -1;
+
 enum Command
 {
     kWrite = 0,

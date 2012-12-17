@@ -4,6 +4,7 @@
 
 #include "client.h"
 #include "functions.h"
+#include "types_zcache.h"
 
 #define STREAM Log()
 #include "speed_test.h"
@@ -17,7 +18,7 @@ static const long kInitServerDelay = 1000;
 static SocketType gSocketType;
 
 RegistrarClient::RegistrarClient(string log_file, Connection connection, SocketType type) :
-    Debug(log_file), socket_(type), queue_size_(10)
+    Debug(log_file), socket_(type), queue_size_(10), connection_(connection)
 {
     srand(time(NULL));
 
@@ -78,53 +79,55 @@ void RegistrarClient::AddKey(string key)
     if ( connections_.count(key) != 0 )
         return;
 
-    string connection = "";
+    int port = kEmptyPort;
     zframe_t* key_frame = zframe_new(key.c_str(), key.size());
-    while ( connection.empty() )
+    while ( port == kEmptyPort )
     {
         socket_.SendFrame(key_frame, ZFRAME_REUSE);
-        connection = ReceiveAnswer(key_frame);
+        port = ReceiveAnswer(key_frame);
 
         usleep((rand() % 1000) * 1000);
     }
 
-    Log() << "RegistrarClient::AddKey() - add key = " << key << " connection = " << connection << endl;
+    Connection connection(connection_);
+    connection.SetPort(port);
+    Log() << "RegistrarClient::AddKey() - add key = " << key << " connection = " << connection.GetString() << endl;
 
-    connections_.insert(KeyConnection::value_type(key, connection));
+    connections_.insert(KeyConnection::value_type(key, connection.GetString()));
 
-    if ( clients_.count(connection) == 0 )
+    if ( clients_.count(connection.GetString()) == 0 )
     {
         Client* client = new Client("", Connection(connection), gSocketType);
         client->SetQueueSize(queue_size_);
-        clients_.insert(ConnectionClient::value_type(connection, client));
+        clients_.insert(ConnectionClient::value_type(connection.GetString(), client));
 
-        Log() << "RegistrarClient::AddKey() - add client = " << client << " connection = " << connection << endl;
+        Log() << "RegistrarClient::AddKey() - add client = " << client << " connection = " << connection.GetString() << endl;
         usleep(kInitServerDelay);
     }
 
     zframe_destroy(&key_frame);
 }
 
-string RegistrarClient::ReceiveAnswer(zframe_t* key)
+int RegistrarClient::ReceiveAnswer(zframe_t* key)
 {
     if ( ! socket_.ReceiveMsg(kReadAnswerTimeout) )
-        return "";
+        return kEmptyPort;
 
     zframe_t* key_frame = socket_.PopFrame();
 
     if ( ! zframe_eq(key_frame, key) )
     {
         zframe_destroy(&key_frame);
-        return "";
+        return kEmptyPort;
     }
 
     zframe_t* connection_frame = socket_.PopFrame();
-    string connection = FrameToString(connection_frame);
+    int port = FrameToInt(connection_frame);
 
     zframe_destroy(&key_frame);
     zframe_destroy(&connection_frame);
 
-    return connection;
+    return port;
 }
 
 void RegistrarClient::SetQueueSize(int size)

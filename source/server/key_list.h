@@ -10,8 +10,6 @@
 namespace zero_cache
 {
 
-static const int kEmptyPort = -1;
-
 class Connection;
 
 class KeyList

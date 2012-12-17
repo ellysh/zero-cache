@@ -24,7 +24,15 @@ string zero_cache::IncrementPort(string connection, int increment)
     return result;
 }
 
-string zero_cache::FrameToString(zframe_t* frame)
+int zero_cache::FrameToInt(zframe_t* frame)
+{
+    byte* buffer = zframe_data(frame);
+    int result = *buffer;
+
+    return result;
+}
+
+std::string zero_cache::FrameToString(zframe_t* frame)
 {
     char* buffer =  zframe_strdup(frame);
     string result = buffer;
