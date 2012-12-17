@@ -5,9 +5,9 @@
 using namespace std;
 using namespace zero_cache;
 
-PortCounter::PortCounter(string connection, int limit) : limit_(limit), counter_(1)
+PortCounter::PortCounter(int port, int limit) : limit_(limit), counter_(1)
 {
-    connection_ = IncrementPort(connection, 2);
+    port_ = port + 2;
 }
 
 void PortCounter::Increment()
@@ -23,7 +23,7 @@ bool PortCounter::IsLimit()
         return false;
 }
 
-string PortCounter::GetString()
+int PortCounter::GetPort()
 {
-    return connection_;
+    return port_;
 }

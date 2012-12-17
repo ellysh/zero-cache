@@ -29,23 +29,23 @@ void KeyList::AddKey(string key)
         return;
 
     if ( current_counter_ == NULL )
-        current_counter_ = new PortCounter(connection_.GetString(), key_limit_);
+        current_counter_ = new PortCounter(connection_.GetPort(), key_limit_);
     else
     {
         if ( current_counter_->IsLimit() )
-            current_counter_ = new PortCounter(current_counter_->GetString(), key_limit_);
+            current_counter_ = new PortCounter(current_counter_->GetPort(), key_limit_);
     }
 
     current_counter_->Increment();
     ports_.insert(KeyPort::value_type(key, current_counter_));
 }
 
-string KeyList::GetPort(string key)
+int KeyList::GetPort(string key)
 {
     if ( ports_.count(key) != 0 )
-        return ports_[key]->GetString();
+        return ports_[key]->GetPort();
     else
-        return "";
+        return kEmptyPort;
 }
 
 void KeyList::SetKeyLimit(int key_limit)

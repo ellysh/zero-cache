@@ -12,7 +12,8 @@ using namespace zero_cache;
 static int gQueueSize;
 static SocketType gSocketType;
 
-Registrar::Registrar(string log_file, Connection connection, SocketType type) : Debug(log_file), socket_(type), queue_size_(1000)
+Registrar::Registrar(string log_file, Connection connection, SocketType type) :
+    Debug(log_file), socket_(type), queue_size_(1000), connection_(connection)
 {
     socket_.Bind(connection);
     socket_.SetQueueSize(1);
@@ -56,22 +57,24 @@ void Registrar::ProcessMessage()
     Log() << "Registrar::ProcessMessage() - key = " << key_str << endl;
     key_list_->AddKey(key_str);
 
-    string connection = key_list_->GetPort(key_str);
+    int port = key_list_->GetPort(key_str);
 
-    if ( connections_.count(connection) == 0 )
+    if ( ports_.count(port) == 0 )
     {
-        Log() << "zthread_new() - connection = " << connection << endl;
+        Connection connection(connection_);
+        connection.SetPort(port);
+
+        Log() << "zthread_new() - connection = " << connection.GetString() << endl;
         gQueueSize = queue_size_;
-        zthread_new(ReactorStart, const_cast<char*>(connection.c_str()));
-        connections_.insert(connection);
+        zthread_new(ReactorStart, const_cast<char*>(connection.GetString().c_str()));
+        ports_.insert(port);
     }
 
-    socket_.SendFrame(key, ZFRAME_REUSE + ZFRAME_MORE);
-    socket_.SendString(connection);
+    zframe_t* port_frame = zframe_new(&port, sizeof(port));
+    socket_.SendFrame(key, ZFRAME_MORE);
+    socket_.SendFrame(port_frame, 0);
 
-    Log() << "Registrar::ProcessMessage() - send answer = " << connection << endl;
-
-    zframe_destroy(&key);
+    Log() << "Registrar::ProcessMessage() - send answer = " << port << endl;
 }
 
 void Registrar::SetKeyLimit(int limit)

@@ -10,6 +10,8 @@
 namespace zero_cache
 {
 
+static const int kEmptyPort = -1;
+
 class Connection;
 
 class KeyList
@@ -22,7 +24,7 @@ public:
     ~KeyList();
 
     void AddKey(std::string key);
-    std::string GetPort(std::string key);
+    int GetPort(std::string key);
 
     void SetKeyLimit(int key_limit);
 

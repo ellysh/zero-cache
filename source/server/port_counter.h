@@ -9,16 +9,16 @@ namespace zero_cache
 class PortCounter
 {
 public:
-    PortCounter(std::string prev_connection, int limit);
+    PortCounter(int port, int limit);
 
     void Increment();
-    std::string GetString();
+    int GetPort();
     bool IsLimit();
 
 private:
     int limit_;
     int counter_;
-    std::string connection_;
+    int port_;
 };
 
 }

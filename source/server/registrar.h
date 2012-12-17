@@ -16,7 +16,7 @@ class KeyList;
 class Registrar : protected Debug
 {
 private:
-    typedef std::set<std::string> ConnectionSet;
+    typedef std::set<int> PortSet;
 
 public:
     Registrar(std::string log_file, Connection connection, SocketType type = kDealer);
@@ -28,10 +28,11 @@ public:
     void SetQueueSize(int size);
 
 private:
-    int queue_size_;
     Socket socket_;
+    int queue_size_;
+    Connection connection_;
     KeyList* key_list_;
-    ConnectionSet connections_;
+    PortSet ports_;
 
     void ProcessMessage();
 
