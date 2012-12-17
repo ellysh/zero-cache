@@ -10,10 +10,10 @@ class Connection
 {
 public:
     explicit Connection(std::string connection);
+    std::string GetString();
 
 private:
-    std::string host_;
-    int port_;
+    std::string connection_;
 };
 
 }
