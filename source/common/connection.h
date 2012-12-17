@@ -11,6 +11,7 @@ class Connection
 public:
     explicit Connection(std::string connection);
     std::string GetString();
+    std::string GetPort();
 
 private:
     std::string connection_;

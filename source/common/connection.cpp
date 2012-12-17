@@ -12,3 +12,12 @@ string Connection::GetString()
 {
     return connection_;
 }
+
+string Connection::GetPort()
+{
+    size_t pos = connection_.find_last_of('/') + 1;
+
+    string port = connection_.substr(pos, connection_.size());
+
+    return port;
+}
