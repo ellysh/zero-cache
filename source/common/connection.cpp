@@ -8,8 +8,13 @@ using namespace zero_cache;
 
 Connection::Connection(std::string connection)
 {
-    /* FIXME: Add checking to TCP connection type */
-    size_t pos = connection.find_last_of('/') + 1;
+    size_t pos;
+    if ( connection.find("tcp") != string::npos )
+        pos = connection.find_last_of(':') + 1;
+    else if ( connection.find("ipc") != string::npos )
+        pos = connection.find_last_of('/') + 1;
+    else
+        exit(1);
 
     string port = connection.substr(pos, connection.size());
 

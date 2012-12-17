@@ -39,8 +39,11 @@ void Socket::Connect(Connection connection)
 {
     zsocket_connect(out_socket_, connection.GetString().c_str());
 
-    string in_connection = IncrementPort(connection.GetString(), 1);
-    zsocket_connect(in_socket_, in_connection.c_str());
+    Connection in_connection(connection);
+    int port = connection.GetPort() + 1;
+    in_connection.SetPort(port);
+
+    zsocket_connect(in_socket_, in_connection.GetString().c_str());
 }
 
 void Socket::Bind(Connection connection)
@@ -48,9 +51,12 @@ void Socket::Bind(Connection connection)
     zsocket_bind(in_socket_, connection.GetString().c_str());
     SetPermission(connection.GetString());
 
-    string out_connection = IncrementPort(connection.GetString(), 1);
-    zsocket_bind(out_socket_, out_connection.c_str());
-    SetPermission(out_connection);
+    Connection out_connection(connection);
+    int port = connection.GetPort() + 1;
+    out_connection.SetPort(port);
+
+    zsocket_bind(out_socket_, out_connection.GetString().c_str());
+    SetPermission(out_connection.GetString());
 }
 
 bool Socket::ReceiveMsg(long timeout)
