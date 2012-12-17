@@ -9,7 +9,7 @@ namespace zero_cache
 class Connection
 {
 public:
-    explicit Connection(std::string connection);
+    Connection(std::string connection);
     std::string GetString();
 
 private:

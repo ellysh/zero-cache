@@ -16,11 +16,12 @@ static const long kInitServerDelay = 1000;
 
 static SocketType gSocketType;
 
-RegistrarClient::RegistrarClient(string log_file, string connection, SocketType type) : Debug(log_file), socket_(type), queue_size_(10)
+RegistrarClient::RegistrarClient(string log_file, Connection connection, SocketType type) :
+    Debug(log_file), socket_(type), queue_size_(10)
 {
     srand(time(NULL));
 
-    socket_.Connect(connection);
+    socket_.Connect(connection.GetString());
     socket_.SetQueueSize(1);
 
     gSocketType = type;

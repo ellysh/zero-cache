@@ -7,6 +7,7 @@
 #include "debug.h"
 #include "types_zcache.h"
 #include "socket.h"
+#include "connection.h"
 
 namespace zero_cache
 {
@@ -20,7 +21,7 @@ public:
     typedef std::map<std::string, Client*> ConnectionClient;
 
 public:
-    RegistrarClient(std::string log_file, std::string connection, SocketType type);
+    RegistrarClient(std::string log_file, Connection connection, SocketType type);
     virtual ~RegistrarClient();
 
     void WriteData(std::string key, void* data, size_t size);
@@ -29,8 +30,8 @@ public:
     void SetQueueSize(int size);
 
 private:
-    int queue_size_;
     Socket socket_;
+    int queue_size_;
     KeyConnection connections_;
     ConnectionClient clients_;
 
