@@ -10,7 +10,7 @@ static const long kReadAnswerTimeout = 1000;
 Client::Client(string log_file, Connection connection, SocketType type) : Debug(log_file), socket_(type)
 {
     srand(time(NULL));
-    socket_.Connect(connection.GetString());
+    socket_.Connect(connection);
     socket_.SetQueueSize(10);
 
     char empty;

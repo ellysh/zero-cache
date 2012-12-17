@@ -21,7 +21,7 @@ RegistrarClient::RegistrarClient(string log_file, Connection connection, SocketT
 {
     srand(time(NULL));
 
-    socket_.Connect(connection.GetString());
+    socket_.Connect(connection);
     socket_.SetQueueSize(1);
 
     gSocketType = type;
