@@ -6,6 +6,7 @@
 #include "types_zcache.h"
 #include "socket.h"
 #include "debug.h"
+#include "connection.h"
 
 namespace zero_cache
 {
@@ -18,7 +19,7 @@ private:
     typedef std::set<std::string> ConnectionSet;
 
 public:
-    Registrar(std::string log_file, std::string connection, SocketType type = kDealer);
+    Registrar(std::string log_file, Connection connection, SocketType type = kDealer);
     virtual ~Registrar();
 
     void Start();

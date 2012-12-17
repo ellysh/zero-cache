@@ -2,6 +2,7 @@
 
 #include "zsignal.h"
 #include "functions.h"
+#include "connection.h"
 
 using namespace std;
 using namespace zero_cache;
@@ -34,20 +35,20 @@ Socket::~Socket()
     zctx_destroy(&context_);
 }
 
-void Socket::Connect(string connection)
+void Socket::Connect(Connection connection)
 {
-    zsocket_connect(out_socket_, connection.c_str());
+    zsocket_connect(out_socket_, connection.GetString().c_str());
 
-    string in_connection = IncrementPort(connection, 1);
+    string in_connection = IncrementPort(connection.GetString(), 1);
     zsocket_connect(in_socket_, in_connection.c_str());
 }
 
-void Socket::Bind(string connection)
+void Socket::Bind(Connection connection)
 {
-    zsocket_bind(in_socket_, connection.c_str());
-    SetPermission(connection);
+    zsocket_bind(in_socket_, connection.GetString().c_str());
+    SetPermission(connection.GetString());
 
-    string out_connection = IncrementPort(connection, 1);
+    string out_connection = IncrementPort(connection.GetString(), 1);
     zsocket_bind(out_socket_, out_connection.c_str());
     SetPermission(out_connection);
 }

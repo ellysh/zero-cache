@@ -4,6 +4,7 @@
 #include "reactor.h"
 #include "key_list.h"
 #include "functions.h"
+#include "connection.h"
 
 using namespace std;
 using namespace zero_cache;
@@ -11,12 +12,12 @@ using namespace zero_cache;
 static int gQueueSize;
 static SocketType gSocketType;
 
-Registrar::Registrar(string log_file, string connection, SocketType type) : Debug(log_file), socket_(type), queue_size_(1000)
+Registrar::Registrar(string log_file, Connection connection, SocketType type) : Debug(log_file), socket_(type), queue_size_(1000)
 {
     socket_.Bind(connection);
     socket_.SetQueueSize(1);
 
-    key_list_ = new KeyList(connection);
+    key_list_ = new KeyList(connection.GetString());
 
     gSocketType = type;
 }
@@ -38,7 +39,7 @@ static void* ReactorStart(void* args)
 {
     char* connection = static_cast<char*>(args);
 
-    Reactor reactor("", connection, gSocketType);
+    Reactor reactor("", Connection(connection), gSocketType);
 
     reactor.SetQueueSize(gQueueSize);
 

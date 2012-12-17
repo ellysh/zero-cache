@@ -9,14 +9,16 @@
 namespace zero_cache
 {
 
+class Connection;
+
 class Socket
 {
 public:
     explicit Socket(SocketType type = kDealer);
     virtual ~Socket();
 
-    void Connect(std::string connection);
-    void Bind(std::string connection);
+    void Connect(Connection connection);
+    void Bind(Connection connection);
 
     void SendFrame(zframe_t* frame, int flags);
     void SendString(std::string data);
