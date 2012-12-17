@@ -10,10 +10,9 @@ using namespace zero_cache;
 
 int zero_cache::FrameToInt(zframe_t* frame)
 {
-    byte* buffer = zframe_data(frame);
-    int result = *buffer;
+    int* result = (int*)zframe_data(frame);
 
-    return result;
+    return *result;
 }
 
 std::string zero_cache::FrameToString(zframe_t* frame)
