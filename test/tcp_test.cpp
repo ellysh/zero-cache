@@ -26,7 +26,7 @@ void CheckData(RegistrarClient& client)
 
 int main()
 {
-    RegistrarClient client("tcp_test.log", Connection("tcp://localhost:5570"), kDealer);
+    RegistrarClient client("tcp_test.log", "tcp://localhost:5570", kDealer);
 
     cout << "Start test..." << endl;
 

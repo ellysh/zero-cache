@@ -97,7 +97,7 @@ void RegistrarClient::AddKey(string key)
 
     if ( clients_.count(connection.GetString()) == 0 )
     {
-        Client* client = new Client("", Connection(connection), gSocketType);
+        Client* client = new Client("", connection, gSocketType);
         client->SetQueueSize(queue_size_);
         clients_.insert(ConnectionClient::value_type(connection.GetString(), client));
 

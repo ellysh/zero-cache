@@ -34,7 +34,7 @@ void CheckData(RegistrarClient& client)
 
 int main()
 {
-    RegistrarClient client("get_test.log", Connection("ipc:///var/run/zero-cache/0"), kDealer);
+    RegistrarClient client("get_test.log", "ipc:///var/run/zero-cache/0", kDealer);
 
     cout << "Start test..." << endl;
 

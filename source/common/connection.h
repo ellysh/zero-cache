@@ -9,7 +9,8 @@ namespace zero_cache
 class Connection
 {
 public:
-    explicit Connection(std::string connection);
+    Connection(std::string connection);
+    Connection(const char* connection);
 
     std::string GetString();
     int GetPort();
@@ -18,6 +19,8 @@ public:
 private:
     std::string host_;
     int port_;
+
+    void Constructor(std::string connection);
 };
 
 }

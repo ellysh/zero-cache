@@ -6,7 +6,17 @@
 using namespace std;
 using namespace zero_cache;
 
-Connection::Connection(std::string connection)
+Connection::Connection(string connection)
+{
+    Constructor(connection);
+}
+
+Connection::Connection(const char* connection)
+{
+    Constructor(connection);
+}
+
+void Connection::Constructor(string connection)
 {
     size_t pos;
     if ( connection.find("tcp") != string::npos )

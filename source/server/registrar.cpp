@@ -40,7 +40,7 @@ static void* ReactorStart(void* args)
 {
     char* connection = static_cast<char*>(args);
 
-    Reactor reactor("", Connection(connection), gSocketType);
+    Reactor reactor("", connection, gSocketType);
 
     reactor.SetQueueSize(gQueueSize);
 

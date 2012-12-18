@@ -12,7 +12,7 @@ static char kData[1000];
 void* WriteLoop(void* args)
 {
     const char* key = static_cast<char*>(args);
-    RegistrarClient client(key, Connection("ipc:///var/run/zero-cache/0"), kDealer);
+    RegistrarClient client(key, "ipc:///var/run/zero-cache/0", kDealer);
 
     while (true)
     {
