@@ -9,6 +9,7 @@
 using namespace std;
 using namespace zero_cache;
 
+static const size_t kFileNamePos = 6;
 
 int zero_cache::FrameToInt(zframe_t* frame)
 {
@@ -39,6 +40,9 @@ int zero_cache::StringToInt(string& value)
 
 void zero_cache::SetPermission(string connection)
 {
-    string file = connection.substr(6, connection.size());
+    if ( connection.size() <= kFileNamePos )
+        return;
+
+    string file = connection.substr(kFileNamePos, connection.size());
     chmod(file.c_str(), S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
 }
