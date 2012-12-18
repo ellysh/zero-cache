@@ -3,6 +3,7 @@ link_directories(${COMMON_LIBDIR})
 
 set(zero_cache_LIB_SRCS
     client.cpp
+    client_list.cpp
     registrar_client.cpp)
 
 add_library(zero_cache SHARED ${zero_cache_LIB_SRCS})
