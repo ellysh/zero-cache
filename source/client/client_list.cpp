@@ -53,20 +53,15 @@ void ClientList::CreateClient(string key, int port)
     {
         Client* client = new Client("", connection, type_);
         client->SetQueueSize(queue_size_);
-        AddClient(port, client);
+        clients_.insert(PortClient::value_type(port, client));
 
         usleep(kInitServerDelay);
     }
 }
 
-void ClientList::AddClient(int port, Client* client)
-{
-    clients_.insert(PortClient::value_type(port, client));
-}
-
 bool ClientList::IsPortExist(int port)
 {
-    if ( clients_.count(port)  != 0 )
+    if ( clients_.count(port) != 0 )
         return true;
     else
         return false;

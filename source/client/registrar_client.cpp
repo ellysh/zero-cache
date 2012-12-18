@@ -2,7 +2,6 @@
 
 #include "client.h"
 #include "functions.h"
-#include "types_zcache.h"
 
 #define STREAM Log()
 #include "speed_test.h"

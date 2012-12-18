@@ -22,14 +22,11 @@ public:
     ClientList(Connection& connection, SocketType type);
     ~ClientList();
 
-    /* FIXME: Move this methods to private as possible */
     Client* GetClient(std::string key);
 
     void AddKey(std::string key, int port);
     void CreateClient(std::string key, int port);
-    void AddClient(int port, Client* client);
 
-    bool IsPortExist(int port);
     bool IsKeyExist(std::string key);
 
     void SetQueueSize(int size);
@@ -40,6 +37,8 @@ private:
     int queue_size_;
     KeyPort ports_;
     PortClient clients_;
+
+    bool IsPortExist(int port);
 };
 
 }
