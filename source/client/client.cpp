@@ -26,7 +26,7 @@ Client::~Client()
     zframe_destroy(&command_frame_);
 }
 
-void Client::WriteData(string key, void* data, size_t size)
+void Client::WriteData(string& key, void* data, size_t size)
 {
     Log() << "Client::WriteData() - key = " << key << " data_size = " << size << endl;
 
@@ -41,7 +41,7 @@ void Client::WriteData(string key, void* data, size_t size)
     socket_.SendFrame(data_frame_, ZFRAME_REUSE);
 }
 
-void* Client::ReadData(string key)
+void* Client::ReadData(string& key)
 {
     Log() << "Client::ReadData() - key = " << key << endl;
 
@@ -57,7 +57,7 @@ void* Client::ReadData(string key)
     return result;
 }
 
-void Client::SendReadRequest(string key)
+void Client::SendReadRequest(string& key)
 {
     Command command = kRead;
 

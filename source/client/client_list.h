@@ -22,12 +22,12 @@ public:
     ClientList(Connection& connection, SocketType type);
     ~ClientList();
 
-    Client* GetClient(std::string key);
+    Client* GetClient(std::string& key);
 
-    void AddKey(std::string key, int port);
-    void CreateClient(std::string key, int port);
+    void AddKey(std::string& key, int port);
+    void CreateClient(int port);
 
-    bool IsKeyExist(std::string key);
+    bool IsKeyExist(std::string& key);
 
     void SetQueueSize(int size);
 

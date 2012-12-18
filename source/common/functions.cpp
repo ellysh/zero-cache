@@ -26,7 +26,7 @@ std::string zero_cache::FrameToString(zframe_t* frame)
     return result;
 }
 
-int zero_cache::StringToInt(string value)
+int zero_cache::StringToInt(string& value)
 {
     char* endptr;
     int result = strtol(value.c_str(), &endptr, 10);

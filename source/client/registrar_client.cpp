@@ -44,14 +44,14 @@ void* RegistrarClient::ReadData(string key)
     return result;
 }
 
-Client* RegistrarClient::GetClient(string key)
+Client* RegistrarClient::GetClient(string& key)
 {
     AddKey(key);
 
     return clients_.GetClient(key);
 }
 
-void RegistrarClient::AddKey(string key)
+void RegistrarClient::AddKey(string& key)
 {
     if ( clients_.IsKeyExist(key) )
         return;
@@ -62,10 +62,10 @@ void RegistrarClient::AddKey(string key)
 
     clients_.AddKey(key, port);
 
-    clients_.CreateClient(key, port);
+    clients_.CreateClient(port);
 }
 
-int RegistrarClient::ReceivePort(string key)
+int RegistrarClient::ReceivePort(string& key)
 {
     int port = kErrorPort;
     zframe_t* key_frame = zframe_new(key.c_str(), key.size());

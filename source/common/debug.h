@@ -12,7 +12,7 @@ namespace zero_cache
 class Debug
 {
 public:
-    Debug(std::string log_file);
+    Debug(std::string& log_file);
     virtual ~Debug();
 
     std::ostream& Log();

@@ -29,9 +29,9 @@ private:
     Socket socket_;
     ClientList clients_;
 
-    void AddKey(std::string key);
-    Client* GetClient(std::string key);
-    int ReceivePort(std::string key);
+    void AddKey(std::string& key);
+    Client* GetClient(std::string& key);
+    int ReceivePort(std::string& key);
     int ReceiveAnswer(zframe_t* key);
 };
 

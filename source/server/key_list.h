@@ -21,8 +21,8 @@ public:
     explicit KeyList(Connection& connection) : connection_(connection), current_counter_(NULL) {};
     ~KeyList();
 
-    void AddKey(std::string key);
-    int GetPort(std::string key);
+    void AddKey(std::string& key);
+    int GetPort(std::string& key);
 
     void SetKeyLimit(int key_limit);
 

@@ -10,7 +10,7 @@ using namespace zero_cache;
 
 static const std::string kDefaultLogfile="/dev/null";
 
-Debug::Debug(string log_file) : log_file_(log_file)
+Debug::Debug(string& log_file) : log_file_(log_file)
 {
     if ( log_file_.empty() )
         log_file_ = kDefaultLogfile;
