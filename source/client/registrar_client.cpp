@@ -74,21 +74,16 @@ Client* RegistrarClient::GetClient(string key)
 
 void RegistrarClient::AddKey(string key)
 {
-    /* FIXME: Split this method to sub-methods */
-
     if ( connections_.count(key) != 0 )
         return;
 
-    int port = kErrorPort;
-    zframe_t* key_frame = zframe_new(key.c_str(), key.size());
-    while ( port == kErrorPort )
-    {
-        socket_.SendFrame(key_frame, ZFRAME_REUSE);
-        port = ReceiveAnswer(key_frame);
+    int port = ReceivePort(key);
 
-        usleep((rand() % 1000) * 1000);
-    }
+    CreateClient(key, port);
+}
 
+void RegistrarClient::CreateClient(string key, int port)
+{
     Connection connection(connection_);
     connection.SetPort(port);
     Log() << "RegistrarClient::AddKey() - add key = " << key << " connection = " << connection.GetString() << endl;
@@ -104,8 +99,24 @@ void RegistrarClient::AddKey(string key)
         Log() << "RegistrarClient::AddKey() - add client = " << client << " connection = " << connection.GetString() << endl;
         usleep(kInitServerDelay);
     }
+}
+
+int RegistrarClient::ReceivePort(string key)
+{
+    int port = kErrorPort;
+    zframe_t* key_frame = zframe_new(key.c_str(), key.size());
+
+    while ( port == kErrorPort )
+    {
+        socket_.SendFrame(key_frame, ZFRAME_REUSE);
+        port = ReceiveAnswer(key_frame);
+
+        usleep((rand() % 1000) * 1000);
+    }
 
     zframe_destroy(&key_frame);
+
+    return port;
 }
 
 int RegistrarClient::ReceiveAnswer(zframe_t* key)

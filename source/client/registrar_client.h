@@ -38,7 +38,10 @@ private:
 
     void AddKey(std::string key);
     Client* GetClient(std::string key);
+    int ReceivePort(std::string key);
     int ReceiveAnswer(zframe_t* key);
+    /* FIXME: Don't pass key parameter to CreateClient method */
+    void CreateClient(std::string key, int port);
 };
 
 }
