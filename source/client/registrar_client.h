@@ -7,7 +7,6 @@
 #include "debug.h"
 #include "types_zcache.h"
 #include "socket.h"
-#include "connection.h"
 #include "client_list.h"
 
 namespace zero_cache
@@ -28,16 +27,12 @@ public:
 
 private:
     Socket socket_;
-    int queue_size_;
-    Connection connection_;
     ClientList clients_;
 
     void AddKey(std::string key);
     Client* GetClient(std::string key);
     int ReceivePort(std::string key);
     int ReceiveAnswer(zframe_t* key);
-    /* FIXME: Don't pass key parameter to CreateClient method */
-    void CreateClient(std::string key, int port);
 };
 
 }

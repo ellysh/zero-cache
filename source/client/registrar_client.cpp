@@ -11,19 +11,14 @@ using namespace std;
 using namespace zero_cache;
 
 static const long kReadAnswerTimeout = 10;
-static const long kInitServerDelay = 1000;
-
-static SocketType gSocketType;
 
 RegistrarClient::RegistrarClient(string log_file, Connection connection, SocketType type) :
-    Debug(log_file), socket_(type), queue_size_(10), connection_(connection)
+    Debug(log_file), socket_(type), clients_(connection, type)
 {
     srand(time(NULL));
 
     socket_.Connect(connection);
     socket_.SetQueueSize(1);
-
-    gSocketType = type;
 }
 
 void RegistrarClient::WriteData(string key, void* data, size_t size)
@@ -64,26 +59,11 @@ void RegistrarClient::AddKey(string key)
 
     int port = ReceivePort(key);
 
-    CreateClient(key, port);
-}
-
-void RegistrarClient::CreateClient(string key, int port)
-{
-    Connection connection(connection_);
-    connection.SetPort(port);
-    Log() << "RegistrarClient::AddKey() - add key = " << key << " connection = " << connection.GetString() << endl;
+    Log() << "RegistrarClient::AddKey() - add key = " << key << " port = " << port << endl;
 
     clients_.AddKey(key, port);
 
-    if ( ! clients_.IsPortExist(port) )
-    {
-        Client* client = new Client("", connection, gSocketType);
-        client->SetQueueSize(queue_size_);
-        clients_.AddClient(port, client);
-
-        Log() << "RegistrarClient::AddKey() - add client = " << client << " connection = " << connection.GetString() << endl;
-        usleep(kInitServerDelay);
-    }
+    clients_.CreateClient(key, port);
 }
 
 int RegistrarClient::ReceivePort(string key)
@@ -128,5 +108,5 @@ int RegistrarClient::ReceiveAnswer(zframe_t* key)
 
 void RegistrarClient::SetQueueSize(int size)
 {
-    queue_size_ = size;
+    clients_.SetQueueSize(size);
 }

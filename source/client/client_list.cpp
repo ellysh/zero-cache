@@ -7,7 +7,9 @@
 using namespace std;
 using namespace zero_cache;
 
-ClientList::ClientList()
+static const long kInitServerDelay = 1000;
+
+ClientList::ClientList(Connection& connection, SocketType type) : connection_(connection), type_(type), queue_size_(10)
 {
 }
 
@@ -42,6 +44,21 @@ void ClientList::AddKey(string key, int port)
     ports_.insert(KeyPort::value_type(key, port));
 }
 
+void ClientList::CreateClient(string key, int port)
+{
+    Connection connection(connection_);
+    connection.SetPort(port);
+
+    if ( ! IsPortExist(port) )
+    {
+        Client* client = new Client("", connection, type_);
+        client->SetQueueSize(queue_size_);
+        AddClient(port, client);
+
+        usleep(kInitServerDelay);
+    }
+}
+
 void ClientList::AddClient(int port, Client* client)
 {
     clients_.insert(PortClient::value_type(port, client));
@@ -61,4 +78,9 @@ bool ClientList::IsKeyExist(string key)
         return true;
     else
         return false;
+}
+
+void ClientList::SetQueueSize(int size)
+{
+    queue_size_ = size;
 }
