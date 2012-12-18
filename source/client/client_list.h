@@ -2,6 +2,7 @@
 #define CLIENT_LIST_H
 
 #include <string>
+#include <map>
 
 namespace zero_cache
 {
@@ -11,9 +12,12 @@ class Client;
 class ClientList
 {
 public:
-    ClientList();
+    typedef std::map<std::string, int> KeyPort;
+    typedef std::map<int, Client*> PortClient;
 
-    /* FIXME: Add constructo to remove Client objects pointers */
+public:
+    ClientList();
+    ~ClientList();
 
     Client* GetClient(std::string key);
 
@@ -22,6 +26,10 @@ public:
 
     bool IsPortExist(int port);
     bool IsKeyExist(std::string key);
+
+private:
+    KeyPort ports_;
+    PortClient clients_;
 };
 
 }

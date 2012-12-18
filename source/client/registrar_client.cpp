@@ -1,7 +1,5 @@
 #include "registrar_client.h"
 
-#include <algorithm>
-
 #include "client.h"
 #include "functions.h"
 #include "types_zcache.h"
@@ -26,23 +24,6 @@ RegistrarClient::RegistrarClient(string log_file, Connection connection, SocketT
     socket_.SetQueueSize(1);
 
     gSocketType = type;
-}
-
-#if 0
-static void RemoveClient(RegistrarClient::ConnectionClient::value_type client_pair)
-{
-    delete client_pair.second;
-}
-#endif
-
-RegistrarClient::~RegistrarClient()
-{
-#if 0
-    for_each(clients_.begin(), clients_.end(),
-             RemoveClient);
-
-    clients_.clear();
-#endif
 }
 
 void RegistrarClient::WriteData(string key, void* data, size_t size)
@@ -74,13 +55,11 @@ Client* RegistrarClient::GetClient(string key)
     AddKey(key);
 
     return clients_.GetClient(key);
-    //return clients_[connections_[key]];
 }
 
 void RegistrarClient::AddKey(string key)
 {
-    //if ( connections_.count(key) != 0 )
-    if ( clients_.IsKeyExist(key) != 0 )
+    if ( clients_.IsKeyExist(key) )
         return;
 
     int port = ReceivePort(key);
@@ -94,15 +73,12 @@ void RegistrarClient::CreateClient(string key, int port)
     connection.SetPort(port);
     Log() << "RegistrarClient::AddKey() - add key = " << key << " connection = " << connection.GetString() << endl;
 
-    //connections_.insert(KeyConnection::value_type(key, connection.GetString()));
     clients_.AddKey(key, port);
 
-    //if ( clients_.count(connection.GetString()) == 0 )
-    if ( clients_.IsPortExist(port) == 0 )
+    if ( ! clients_.IsPortExist(port) )
     {
         Client* client = new Client("", connection, gSocketType);
         client->SetQueueSize(queue_size_);
-        //clients_.insert(ConnectionClient::value_type(connection.GetString(), client));
         clients_.AddClient(port, client);
 
         Log() << "RegistrarClient::AddKey() - add client = " << client << " connection = " << connection.GetString() << endl;

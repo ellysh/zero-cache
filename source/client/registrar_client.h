@@ -18,12 +18,8 @@ class Client;
 class RegistrarClient : protected Debug
 {
 public:
-    typedef std::map<std::string, std::string> KeyConnection;
-    typedef std::map<std::string, Client*> ConnectionClient;
-
-public:
     RegistrarClient(std::string log_file, Connection connection, SocketType type);
-    virtual ~RegistrarClient();
+    virtual ~RegistrarClient() {};
 
     void WriteData(std::string key, void* data, size_t size);
     void* ReadData(std::string key);
@@ -34,8 +30,6 @@ private:
     Socket socket_;
     int queue_size_;
     Connection connection_;
-    //KeyConnection connections_;
-    //ConnectionClient clients_;
     ClientList clients_;
 
     void AddKey(std::string key);
