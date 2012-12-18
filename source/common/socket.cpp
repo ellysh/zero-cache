@@ -44,7 +44,7 @@ static Connection IncrementPort(Connection& connection)
     return result;
 }
 
-void Socket::Connect(Connection connection)
+void Socket::Connect(Connection& connection)
 {
     zsocket_connect(out_socket_, connection.GetString().c_str());
 
@@ -53,7 +53,7 @@ void Socket::Connect(Connection connection)
     zsocket_connect(in_socket_, in_connection.GetString().c_str());
 }
 
-void Socket::Bind(Connection connection)
+void Socket::Bind(Connection& connection)
 {
     zsocket_bind(in_socket_, connection.GetString().c_str());
     SetPermission(connection.GetString());
