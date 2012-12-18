@@ -8,6 +8,7 @@
 #include "types_zcache.h"
 #include "socket.h"
 #include "connection.h"
+#include "client_list.h"
 
 namespace zero_cache
 {
@@ -33,8 +34,9 @@ private:
     Socket socket_;
     int queue_size_;
     Connection connection_;
-    KeyConnection connections_;
-    ConnectionClient clients_;
+    //KeyConnection connections_;
+    //ConnectionClient clients_;
+    ClientList clients_;
 
     void AddKey(std::string key);
     Client* GetClient(std::string key);
