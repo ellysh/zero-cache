@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "functions.h"
+
 using namespace std;
 using namespace zero_cache;
 
@@ -28,8 +30,8 @@ void Connection::Constructor(string connection)
 
     string port = connection.substr(pos, connection.size());
 
-    /* FIXME: Add checking to success conversion to int type */
-    port_ = atoi(port.c_str());
+    port_ = StringToInt(port);
+    assert( port_ >= 0 );
 
     host_ = connection.substr(0, pos);
 }

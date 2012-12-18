@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <sys/stat.h>
 
+#include "types_zcache.h"
+
 using namespace std;
 using namespace zero_cache;
 
@@ -24,10 +26,19 @@ std::string zero_cache::FrameToString(zframe_t* frame)
     return result;
 }
 
+int zero_cache::StringToInt(string value)
+{
+    char* endptr;
+    int result = strtol(value.c_str(), &endptr, 10);
+
+    if ( endptr != value.c_str() )
+        return result;
+    else
+        return kErrorConv;
+}
+
 void zero_cache::SetPermission(string connection)
 {
-    /* FIXME: Return from function if connection have TCP type */
-
     string file = connection.substr(6, connection.size());
     chmod(file.c_str(), S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
 }

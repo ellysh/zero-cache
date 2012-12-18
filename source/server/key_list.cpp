@@ -45,7 +45,7 @@ int KeyList::GetPort(string key)
     if ( ports_.count(key) != 0 )
         return ports_[key]->GetPort();
     else
-        return kEmptyPort;
+        return kErrorPort;
 }
 
 void KeyList::SetKeyLimit(int key_limit)

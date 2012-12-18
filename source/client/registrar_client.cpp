@@ -79,9 +79,9 @@ void RegistrarClient::AddKey(string key)
     if ( connections_.count(key) != 0 )
         return;
 
-    int port = kEmptyPort;
+    int port = kErrorPort;
     zframe_t* key_frame = zframe_new(key.c_str(), key.size());
-    while ( port == kEmptyPort )
+    while ( port == kErrorPort )
     {
         socket_.SendFrame(key_frame, ZFRAME_REUSE);
         port = ReceiveAnswer(key_frame);
@@ -111,14 +111,14 @@ void RegistrarClient::AddKey(string key)
 int RegistrarClient::ReceiveAnswer(zframe_t* key)
 {
     if ( ! socket_.ReceiveMsg(kReadAnswerTimeout) )
-        return kEmptyPort;
+        return kErrorPort;
 
     zframe_t* key_frame = socket_.PopFrame();
 
     if ( ! zframe_eq(key_frame, key) )
     {
         zframe_destroy(&key_frame);
-        return kEmptyPort;
+        return kErrorPort;
     }
 
     zframe_t* connection_frame = socket_.PopFrame();

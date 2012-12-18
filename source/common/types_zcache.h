@@ -11,7 +11,8 @@ private: \
     TypeName(const TypeName&);               \
     TypeName& operator=(const TypeName&);
 
-static const int kEmptyPort = -1;
+static const int kErrorPort = -1;
+static const int kErrorConv = -1;
 
 enum Command
 {
