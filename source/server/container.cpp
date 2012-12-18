@@ -16,7 +16,7 @@ Container::~Container()
              RemoveFrame);
 }
 
-void Container::WriteData(string key, zframe_t* data)
+void Container::WriteData(string& key, zframe_t* data)
 {
     if ( map_.count(key) != 0 )
         zframe_reset(map_[key], zframe_data(data), zframe_size(data));
@@ -27,7 +27,7 @@ void Container::WriteData(string key, zframe_t* data)
     }
 }
 
-zframe_t* Container::ReadData(string key)
+zframe_t* Container::ReadData(string& key)
 {
     if ( map_.count(key) != 0 )
         return map_[key];

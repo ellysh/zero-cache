@@ -19,8 +19,8 @@ public:
     Container() {};
     ~Container();
 
-    void WriteData(std::string key, zframe_t* data);
-    zframe_t* ReadData(std::string key);
+    void WriteData(std::string& key, zframe_t* data);
+    zframe_t* ReadData(std::string& key);
 
 private:
     DataMap map_;
