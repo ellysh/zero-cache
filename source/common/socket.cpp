@@ -35,13 +35,20 @@ Socket::~Socket()
     zctx_destroy(&context_);
 }
 
+static Connection IncrementPort(Connection& connection)
+{
+    Connection result(connection);
+    int port = connection.GetPort() + 1;
+    result.SetPort(port);
+
+    return result;
+}
+
 void Socket::Connect(Connection connection)
 {
     zsocket_connect(out_socket_, connection.GetString().c_str());
 
-    Connection in_connection(connection);
-    int port = connection.GetPort() + 1;
-    in_connection.SetPort(port);
+    Connection in_connection = IncrementPort(connection);
 
     zsocket_connect(in_socket_, in_connection.GetString().c_str());
 }
@@ -51,9 +58,7 @@ void Socket::Bind(Connection connection)
     zsocket_bind(in_socket_, connection.GetString().c_str());
     SetPermission(connection.GetString());
 
-    Connection out_connection(connection);
-    int port = connection.GetPort() + 1;
-    out_connection.SetPort(port);
+    Connection out_connection = IncrementPort(connection);
 
     zsocket_bind(out_socket_, out_connection.GetString().c_str());
     SetPermission(out_connection.GetString());
