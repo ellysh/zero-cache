@@ -5,7 +5,8 @@ set(common_LIB_SRCS
     connection.cpp
     debug.cpp
     functions.cpp
-    socket.cpp)
+    socket.cpp
+    speaker.cpp)
 
 add_library(common SHARED ${common_LIB_SRCS})
 
