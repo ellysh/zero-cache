@@ -1,5 +1,10 @@
 #!/bin/bash
 
+RUN_DIR="/var/run/zero-cache"
+
+sudo mkdir -p "$RUN_DIR"
+sudo chmod 777 "$RUN_DIR"
+
 ./clean.sh
 
 ./zero-cache -l zero-cache.log -c "ipc:///var/run/zero-cache/0" -s 1000 -k 10
