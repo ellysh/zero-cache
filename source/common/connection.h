@@ -12,7 +12,7 @@ public:
     Connection(std::string& connection);
     Connection(const char* connection);
 
-    std::string GetString();
+    const char* GetString();
     int GetPort();
     void SetPort(int port);
 

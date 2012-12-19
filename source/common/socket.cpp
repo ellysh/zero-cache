@@ -46,21 +46,21 @@ static Connection IncrementPort(Connection& connection)
 
 void Socket::Connect(Connection& connection)
 {
-    zsocket_connect(out_socket_, connection.GetString().c_str());
+    zsocket_connect(out_socket_, connection.GetString());
 
     Connection in_connection = IncrementPort(connection);
 
-    zsocket_connect(in_socket_, in_connection.GetString().c_str());
+    zsocket_connect(in_socket_, in_connection.GetString());
 }
 
 void Socket::Bind(Connection& connection)
 {
-    zsocket_bind(in_socket_, connection.GetString().c_str());
+    zsocket_bind(in_socket_, connection.GetString());
     SetPermission(connection.GetString());
 
     Connection out_connection = IncrementPort(connection);
 
-    zsocket_bind(out_socket_, out_connection.GetString().c_str());
+    zsocket_bind(out_socket_, out_connection.GetString());
     SetPermission(out_connection.GetString());
 }
 

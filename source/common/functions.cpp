@@ -38,11 +38,11 @@ int zero_cache::StringToInt(string& value)
         return kErrorConv;
 }
 
-void zero_cache::SetPermission(string connection)
+void zero_cache::SetPermission(const char* connection)
 {
-    if ( connection.size() <= kFileNamePos )
+    if ( strlen(connection) <= kFileNamePos )
         return;
 
-    string file = connection.substr(kFileNamePos, connection.size());
-    chmod(file.c_str(), S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
+    const char* file = connection + kFileNamePos;
+    chmod(file, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
 }

@@ -66,7 +66,7 @@ void Registrar::ProcessMessage()
 
         Log() << "zthread_new() - connection = " << connection.GetString() << endl;
         gQueueSize = queue_size_;
-        zthread_new(ReactorStart, const_cast<char*>(connection.GetString().c_str()));
+        zthread_new(ReactorStart, const_cast<char*>(connection.GetString()));
         ports_.insert(port);
     }
 

@@ -2,8 +2,11 @@
 
 RUN_DIR="/var/run/zero-cache"
 
-sudo mkdir -p "$RUN_DIR"
-sudo chmod 777 "$RUN_DIR"
+if [ ! -d "$RUN_DIR" ]
+then
+    sudo mkdir -p "$RUN_DIR"
+    sudo chmod 777 "$RUN_DIR"
+fi
 
 ./clean.sh
 
