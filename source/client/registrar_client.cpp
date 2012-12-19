@@ -11,7 +11,7 @@ using namespace zero_cache;
 
 static const long kReadAnswerTimeout = 10;
 
-RegistrarClient::RegistrarClient(string log_file, Connection connection, SocketType type) :
+RegistrarClient::RegistrarClient(const char* log_file, Connection connection, SocketType type) :
     Debug(log_file), socket_(type), clients_(connection, type)
 {
     srand(time(NULL));

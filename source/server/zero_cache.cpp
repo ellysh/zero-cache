@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     if ( options.IsOptionExist("-f") )
         type = kPubSub;
 
-    Registrar registrar(log_file, connection, type);
+    Registrar registrar(log_file.c_str(), connection, type);
 
     if ( options.IsOptionExist("-s") )
         registrar.SetQueueSize(options.GetInt("-s"));

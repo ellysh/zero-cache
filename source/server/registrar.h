@@ -19,7 +19,7 @@ private:
     typedef std::set<int> PortSet;
 
 public:
-    Registrar(std::string& log_file, Connection connection, SocketType type = kDealer);
+    Registrar(const char* log_file, Connection connection, SocketType type = kDealer);
     virtual ~Registrar();
 
     void Start();

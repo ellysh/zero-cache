@@ -8,15 +8,15 @@
 using namespace std;
 using namespace zero_cache;
 
-static const std::string kDefaultLogfile="/dev/null";
+static const char* kDefaultLogfile = "/dev/null";
 
-Debug::Debug(string& log_file) : log_file_(log_file)
+Debug::Debug(const char* log_file)
 {
-    if ( log_file_.empty() )
-        log_file_ = kDefaultLogfile;
-
 #ifdef __DEBUG__
-    file_.open(log_file_.c_str(), ios::out | ios::app);
+    if ( strlen(log_file) != 0 )
+        file_.open(log_file, ios::out | ios::app);
+    else
+        file_.open(kDefaultLogfile, ios::out | ios::app);
 #endif
 }
 

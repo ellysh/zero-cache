@@ -16,7 +16,7 @@ class Connection;
 class Reactor : protected Debug
 {
 public:
-    Reactor(std::string log_file, Connection connection, SocketType type = kDealer);
+    Reactor(const char* log_file, Connection connection, SocketType type = kDealer);
     virtual ~Reactor() {};
 
     void Start();

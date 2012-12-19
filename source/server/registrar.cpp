@@ -12,7 +12,7 @@ using namespace zero_cache;
 static int gQueueSize;
 static SocketType gSocketType;
 
-Registrar::Registrar(string& log_file, Connection connection, SocketType type) :
+Registrar::Registrar(const char* log_file, Connection connection, SocketType type) :
     Debug(log_file), socket_(type), queue_size_(1000), connection_(connection)
 {
     socket_.Bind(connection);

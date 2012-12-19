@@ -12,7 +12,7 @@ namespace zero_cache
 class Debug
 {
 public:
-    Debug(std::string& log_file);
+    Debug(const char* log_file);
     virtual ~Debug();
 
     std::ostream& Log();
@@ -20,7 +20,6 @@ public:
     void PrintFrame(zframe_t* frame);
 
 private:
-    std::string log_file_;
     std::ofstream file_;
 
     DISALLOW_COPY_AND_ASSIGN(Debug);

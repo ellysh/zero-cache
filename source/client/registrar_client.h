@@ -17,7 +17,7 @@ class Client;
 class RegistrarClient : protected Debug
 {
 public:
-    RegistrarClient(std::string log_file, Connection connection, SocketType type);
+    RegistrarClient(const char* log_file, Connection connection, SocketType type);
     virtual ~RegistrarClient() {};
 
     void WriteData(std::string key, void* data, size_t size);
