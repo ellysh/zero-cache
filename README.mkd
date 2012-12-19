@@ -1,4 +1,4 @@
-0Cache 0.7 version
+zero-cache 0.8 version
 ==================
 
 INTRODUCTION
@@ -50,9 +50,16 @@ Another way is installing with Makefile default mechanism:
 USAGE
 -----
 
-First of all you must launch zero-cache service. For example:
+First of all you must launch zero-cache service. This is example for Unix socket based
+connection:
 
     $ zero-cache -l /var/log/zero-cache.log -c "ipc:///tmp/0" -s 1000 -k 10
+
+**Please note that Unix socket file name must have number format.**
+
+This is example for TCP socket based connection:
+
+    $ zero-cache -l /var/log/zero-cache.log -c "tcp://*:5570" -s 1000 -k 10
 
 The command line arguments information is available by command:
 
@@ -88,7 +95,7 @@ This is example of typical client application:
 
 More usage examples you can find in files of 'test' directory.
 
-Copying
+COPYING
 -------
 
 Free use of this software is granted under the terms of the GNU Lesser General

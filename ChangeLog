@@ -1,3 +1,8 @@
+* zero-cache 0.8
+	- Support TCP sockets
+	- Fix memory leak bugs
+	- Add critical errors printing to stdout mechanism
+
 * zero-cache 0.7
 	- Support both dealer and publisher-subscriber types of sockets
 	- Fix bugs with read from cache operation
