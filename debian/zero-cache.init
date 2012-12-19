@@ -16,20 +16,23 @@
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
-NAME=zero-cache
-LOG_FILE="/var/log/zero-cache/$NAME.log"
-SOCKET_FILE="ipc:///var/run/$NAME/0"
+NAME="zero-cache"
+RUN_DIR="/var/run/$NAME"
+LOG_DIR="/var/log/$NAME"
+LOG_FILE="$LOG_DIR/$NAME.log"
+SOCKET_FILE="ipc://$RUN_DIR/0"
 DAEMON_OPTS="-c $SOCKET_FILE -l $LOG_FILE -s 1000 -k 10"
-DAEMON=/usr/bin/$NAME
+DAEMON="/usr/bin/$NAME"
 DESC="zero-cache server"
-LOGDIR=/var/log/$NAME
-PIDFILE=/var/run/$NAME/$NAME.pid
+PIDFILE="$RUN_DIR/$NAME.pid"
 
 set -e
 
 case "$1" in
     start)
         echo -n "Starting $DESC: "
+        mkdir -p "$RUN_DIR"
+        chmod 777 "$RUN_DIR"
         start-stop-daemon --start --pidfile $PIDFILE --make-pidfile --background --startas $DAEMON -- $DAEMON_OPTS
         echo "$NAME."
         ;;
