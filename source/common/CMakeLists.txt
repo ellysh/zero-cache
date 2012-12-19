@@ -17,6 +17,7 @@ endif(UNIX)
 install(TARGETS common DESTINATION lib/${PROJECT_NAME})
 
 install(FILES
+            connection.h
             debug.h
             types_zcache.h
             socket.h
