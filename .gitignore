@@ -12,6 +12,7 @@ Makefile
 
 # Binaries
 *.so
+*.a
 zero-cache
 read_test
 speed_test
