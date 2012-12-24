@@ -11,6 +11,7 @@ int FrameToInt(zframe_t* frame);
 std::string FrameToString(zframe_t* frame);
 int StringToInt(std::string& value);
 void SetPermission(const char* connection);
+std::string GenerateId(void* pointer);
 
 }
 

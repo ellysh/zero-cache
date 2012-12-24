@@ -18,6 +18,8 @@ RegistrarClient::RegistrarClient(const char* log_file, Connection connection, So
 
     socket_.Connect(connection);
     socket_.SetQueueSize(1);
+
+    id_ = GenerateId(this);
 }
 
 void RegistrarClient::WriteData(string key, void* data, size_t size)

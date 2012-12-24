@@ -28,6 +28,7 @@ public:
 private:
     Socket socket_;
     ClientList clients_;
+    std::string id_;
 
     void AddKey(std::string& key);
     Client* GetClient(std::string& key);

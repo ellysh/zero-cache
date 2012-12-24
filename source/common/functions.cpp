@@ -46,3 +46,16 @@ void zero_cache::SetPermission(const char* connection)
     const char* file = connection + kFileNamePos;
     chmod(file, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
 }
+
+string zero_cache::GenerateId(void* pointer)
+{
+    char address[16];
+    sprintf(address, "%p", pointer);
+
+    char number[5];
+    sprintf(number, "%04x", randof(0x10000));
+
+    string result(address, 2, 12);
+    result += number;
+    return result;
+}
