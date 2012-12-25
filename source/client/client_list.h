@@ -15,8 +15,8 @@ class Client;
 class ClientList
 {
 public:
-    typedef std::map<std::string, int> KeyPort;
-    typedef std::map<int, Client*> PortClient;
+    typedef std::map<std::string, port_t> KeyPort;
+    typedef std::map<port_t, Client*> PortClient;
 
 public:
     ClientList(Connection& connection, SocketType type);
@@ -24,8 +24,8 @@ public:
 
     Client* GetClient(std::string& key);
 
-    void AddKey(std::string& key, int port);
-    void CreateClient(int port);
+    void AddKey(std::string& key, port_t port);
+    void CreateClient(port_t port);
 
     bool IsKeyExist(std::string& key);
 
@@ -38,7 +38,7 @@ private:
     KeyPort ports_;
     PortClient clients_;
 
-    bool IsPortExist(int port);
+    bool IsPortExist(port_t port);
 };
 
 }

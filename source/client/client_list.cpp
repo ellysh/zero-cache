@@ -39,12 +39,12 @@ Client* ClientList::GetClient(string& key)
     return clients_[port];
 }
 
-void ClientList::AddKey(string& key, int port)
+void ClientList::AddKey(string& key, port_t port)
 {
     ports_.insert(KeyPort::value_type(key, port));
 }
 
-void ClientList::CreateClient(int port)
+void ClientList::CreateClient(port_t port)
 {
     Connection connection(connection_);
     connection.SetPort(port);
@@ -59,7 +59,7 @@ void ClientList::CreateClient(int port)
     }
 }
 
-bool ClientList::IsPortExist(int port)
+bool ClientList::IsPortExist(port_t port)
 {
     if ( clients_.count(port) != 0 )
         return true;
