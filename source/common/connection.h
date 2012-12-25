@@ -14,7 +14,7 @@ public:
     Connection(std::string& connection);
     Connection(const char* connection);
 
-    const char* GetString();
+    std::string GetString();
     port_t GetPort();
     void SetPort(port_t port);
 

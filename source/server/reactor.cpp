@@ -9,7 +9,8 @@
 using namespace std;
 using namespace zero_cache;
 
-Reactor::Reactor(const char* log_file, Connection connection, SocketType type) : Debug(log_file), socket_(type)
+Reactor::Reactor(const char* log_file, Connection connection, SocketType type) :
+    Debug(log_file), socket_(type), connection_(connection)
 {
     socket_.BindIn(connection);
     socket_.SetQueueSize(1000);
@@ -49,6 +50,13 @@ void Reactor::ProcessMessage()
 
     if ( DecodeCommand(command) == kRead )
         ReadData(key_str);
+
+    zframe_t* id_frame =  socket_.PopFrame();
+    port_t id = FrameToPort(id_frame);
+
+    Connection connection(connection_);
+    connection.SetPort(id);
+    socket_.ConnectOut(connection);
 
     zframe_destroy(&key);
     zframe_destroy(&command);

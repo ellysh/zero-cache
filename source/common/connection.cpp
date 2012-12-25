@@ -37,12 +37,12 @@ void Connection::Constructor(string& connection)
     host_ = connection.substr(0, pos);
 }
 
-const char* Connection::GetString()
+string Connection::GetString()
 {
     char port[100];
     sprintf(port, "%lu", port_);
     string result = host_ + port;
-    return result.c_str();
+    return result;
 }
 
 port_t Connection::GetPort()

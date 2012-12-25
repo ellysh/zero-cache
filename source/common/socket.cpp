@@ -46,13 +46,13 @@ static Connection IncrementPort(Connection& connection)
 
 void Socket::ConnectOut(Connection& connection)
 {
-    zsocket_connect(out_socket_, connection.GetString());
+    zsocket_connect(out_socket_, connection.GetString().c_str());
 }
 
 void Socket::BindIn(Connection& connection)
 {
-    zsocket_bind(in_socket_, connection.GetString());
-    SetPermission(connection.GetString());
+    zsocket_bind(in_socket_, connection.GetString().c_str());
+    SetPermission(connection.GetString().c_str());
 }
 
 bool Socket::ReceiveMsg(long timeout)

@@ -7,6 +7,7 @@
 #include "container.h"
 #include "socket.h"
 #include "types_zcache.h"
+#include "connection.h"
 
 namespace zero_cache
 {
@@ -25,6 +26,7 @@ public:
 
 private:
     Socket socket_;
+    Connection connection_;
     Container container_;
 
     void ProcessMessage();
