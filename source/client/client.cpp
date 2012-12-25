@@ -45,7 +45,8 @@ void Client::WriteData(string& key, void* data, size_t size)
 
     socket_.SendFrame(command_frame_, ZFRAME_MORE + ZFRAME_REUSE);
     socket_.SendFrame(key_frame_, ZFRAME_MORE + ZFRAME_REUSE);
-    socket_.SendFrame(data_frame_, ZFRAME_REUSE);
+    socket_.SendFrame(data_frame_, ZFRAME_MORE + ZFRAME_REUSE);
+    socket_.SendFrame(id_frame_, ZFRAME_REUSE);
 }
 
 void* Client::ReadData(string& key)
