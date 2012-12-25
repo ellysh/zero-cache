@@ -11,7 +11,7 @@ static const size_t kFileNamePos = 6;
 
 port_t zero_cache::FrameToPort(zframe_t* frame)
 {
-    int* result = (int*)zframe_data(frame);
+    port_t* result = (port_t*)zframe_data(frame);
 
     return *result;
 }

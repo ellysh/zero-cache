@@ -81,7 +81,7 @@ void Registrar::ProcessMessage()
     socket_.SendFrame(key, ZFRAME_MORE);
     socket_.SendFrame(port_frame, 0);
 
-    Log() << "Registrar::ProcessMessage() - send answer = " << port << endl;
+    Log() << "Registrar::ProcessMessage() - send answer = " << port << " to " << connection.GetString() << endl;
 }
 
 void Registrar::SetKeyLimit(int limit)
