@@ -51,6 +51,8 @@ void Reactor::ProcessMessage()
     string key_str = FrameToString(key);
 
     zframe_t* id_frame =  socket_.PopFrame();
+    if ( id_frame == NULL )
+        return;
     port_t id = FrameToPort(id_frame);
 
     AddOutSocket(id);
