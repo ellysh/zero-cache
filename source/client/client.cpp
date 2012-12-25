@@ -1,6 +1,7 @@
 #include "client.h"
 
 #include "connection.h"
+#include "functions.h"
 
 using namespace std;
 using namespace zero_cache;
@@ -11,9 +12,14 @@ Client::Client(const char* log_file, Connection connection, SocketType type) : D
 {
     srand(time(NULL));
     socket_.ConnectOut(connection);
+
+    port_t id = GenerateId(this);
+    connection.SetPort(id);
+    socket_.BindIn(connection);
     socket_.SetQueueSize(10);
 
     char empty;
+    id_frame_ = zframe_new(&id, sizeof(id));
     command_frame_ = zframe_new(&empty, sizeof(empty));
     key_frame_ = zframe_new(&empty, sizeof(empty));
     data_frame_ = zframe_new(&empty, sizeof(empty));
@@ -24,6 +30,7 @@ Client::~Client()
     zframe_destroy(&data_frame_);
     zframe_destroy(&key_frame_);
     zframe_destroy(&command_frame_);
+    zframe_destroy(&id_frame_);
 }
 
 void Client::WriteData(string& key, void* data, size_t size)
@@ -65,7 +72,8 @@ void Client::SendReadRequest(string& key)
     zframe_reset(key_frame_, key.c_str(), key.size());
 
     socket_.SendFrame(command_frame_, ZFRAME_MORE + ZFRAME_REUSE);
-    socket_.SendFrame(key_frame_, ZFRAME_REUSE);
+    socket_.SendFrame(key_frame_, ZFRAME_MORE + ZFRAME_REUSE);
+    socket_.SendFrame(id_frame_, ZFRAME_REUSE);
 }
 
 void* Client::ReceiveReadAnswer()

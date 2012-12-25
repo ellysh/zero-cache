@@ -26,6 +26,7 @@ public:
 
 private:
     Socket socket_;
+    zframe_t* id_frame_;
     zframe_t* command_frame_;
     zframe_t* key_frame_;
     zframe_t* data_frame_;
