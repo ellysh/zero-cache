@@ -38,9 +38,11 @@ void Registrar::Start()
 
 static void* ReactorStart(void* args)
 {
-    char* connection = static_cast<char*>(args);
+    string* connection = static_cast<string*>(args);
 
-    Reactor reactor("", connection, gSocketType);
+    Reactor reactor("", *connection, gSocketType);
+
+    delete connection;
 
     reactor.SetQueueSize(gQueueSize);
 
@@ -64,9 +66,11 @@ void Registrar::ProcessMessage()
         Connection connection(connection_);
         connection.SetPort(port);
 
+        string* connection_str = new string(connection.GetString());
+
         Log() << "zthread_new() - connection = " << connection.GetString() << endl;
         gQueueSize = queue_size_;
-        zthread_new(ReactorStart, const_cast<char*>(connection.GetString().c_str()));
+        zthread_new(ReactorStart, (void*)connection_str);
         ports_.insert(port);
     }
 
