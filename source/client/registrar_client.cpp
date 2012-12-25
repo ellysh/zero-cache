@@ -16,10 +16,13 @@ RegistrarClient::RegistrarClient(const char* log_file, Connection connection, So
 {
     srand(time(NULL));
 
-    socket_.Connect(connection);
-    socket_.SetQueueSize(1);
+    socket_.ConnectOut(connection);
 
     id_ = GenerateId(this);
+    connection.SetPort(id_);
+    socket_.BindIn(connection);
+
+    socket_.SetQueueSize(1);
 }
 
 void RegistrarClient::WriteData(string key, void* data, size_t size)
@@ -71,15 +74,18 @@ int RegistrarClient::ReceivePort(string& key)
 {
     int port = kErrorPort;
     zframe_t* key_frame = zframe_new(key.c_str(), key.size());
+    zframe_t* id_frame = zframe_new(&id_, sizeof(id_));
 
     while ( port == kErrorPort )
     {
-        socket_.SendFrame(key_frame, ZFRAME_REUSE);
+        socket_.SendFrame(key_frame, ZFRAME_REUSE + ZFRAME_MORE);
+        socket_.SendFrame(id_frame, ZFRAME_REUSE);
         port = ReceiveAnswer(key_frame);
 
         usleep((rand() % 1000) * 1000);
     }
 
+    zframe_destroy(&id_frame);
     zframe_destroy(&key_frame);
 
     return port;

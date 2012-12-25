@@ -40,18 +40,17 @@ void Connection::Constructor(string& connection)
 const char* Connection::GetString()
 {
     char port[100];
-    sprintf(port, "%d", port_);
-
+    sprintf(port, "%lu", port_);
     string result = host_ + port;
     return result.c_str();
 }
 
-int Connection::GetPort()
+port_t Connection::GetPort()
 {
     return port_;
 }
 
-void Connection::SetPort(int port)
+void Connection::SetPort(port_t port)
 {
     port_ = port;
 }

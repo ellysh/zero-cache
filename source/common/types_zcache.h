@@ -11,6 +11,8 @@ private: \
     TypeName(const TypeName&);               \
     TypeName& operator=(const TypeName&);
 
+typedef unsigned long port_t;
+
 static const int kErrorPort = -1;
 static const int kErrorConv = -1;
 

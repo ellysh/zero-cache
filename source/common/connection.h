@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include "types_zcache.h"
+
 namespace zero_cache
 {
 
@@ -13,12 +15,12 @@ public:
     Connection(const char* connection);
 
     const char* GetString();
-    int GetPort();
-    void SetPort(int port);
+    port_t GetPort();
+    void SetPort(port_t port);
 
 private:
     std::string host_;
-    int port_;
+    port_t port_;
 
     void Constructor(std::string& connection);
 };

@@ -4,8 +4,6 @@
 #include <stdio.h>
 #include <sys/stat.h>
 
-#include "types_zcache.h"
-
 using namespace std;
 using namespace zero_cache;
 
@@ -47,15 +45,8 @@ void zero_cache::SetPermission(const char* connection)
     chmod(file, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
 }
 
-string zero_cache::GenerateId(void* pointer)
+port_t zero_cache::GenerateId(void* pointer)
 {
-    char address[16];
-    sprintf(address, "%p", pointer);
-
-    char number[5];
-    sprintf(number, "%04x", randof(0x10000));
-
-    string result(address, 2, 12);
-    result += number;
+    port_t result = (port_t)pointer;
     return result;
 }

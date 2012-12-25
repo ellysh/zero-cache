@@ -15,7 +15,7 @@ static SocketType gSocketType;
 Registrar::Registrar(const char* log_file, Connection connection, SocketType type) :
     Debug(log_file), socket_(type), queue_size_(1000), connection_(connection)
 {
-    socket_.Bind(connection);
+    socket_.BindIn(connection);
     socket_.SetQueueSize(1);
 
     key_list_ = new KeyList(connection);
@@ -69,6 +69,13 @@ void Registrar::ProcessMessage()
         zthread_new(ReactorStart, const_cast<char*>(connection.GetString()));
         ports_.insert(port);
     }
+
+    zframe_t* id_frame = socket_.PopFrame();
+    port_t* id = (port_t*)zframe_data(id_frame);
+
+    Connection connection(connection_);
+    connection.SetPort(*id);
+    socket_.ConnectOut(connection);
 
     zframe_t* port_frame = zframe_new(&port, sizeof(port));
     socket_.SendFrame(key, ZFRAME_MORE);

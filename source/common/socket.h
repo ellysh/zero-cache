@@ -17,8 +17,8 @@ public:
     explicit Socket(SocketType type = kDealer);
     virtual ~Socket();
 
-    void Connect(Connection& connection);
-    void Bind(Connection& connection);
+    void ConnectOut(Connection& connection);
+    void BindIn(Connection& connection);
 
     void SendFrame(zframe_t* frame, int flags);
 
