@@ -16,6 +16,11 @@ Reactor::Reactor(const char* log_file, Connection connection, SocketType type) :
     socket_.SetQueueSize(1000);
 }
 
+Reactor::~Reactor()
+{
+    /* FIXME: Clean up the out_sockets_ map here */
+}
+
 void Reactor::Start()
 {
     while (true)
@@ -45,18 +50,16 @@ void Reactor::ProcessMessage()
     zframe_t* key =  socket_.PopFrame();
     string key_str = FrameToString(key);
 
+    zframe_t* id_frame =  socket_.PopFrame();
+    port_t id = FrameToPort(id_frame);
+
+    AddOutSocket(id);
+
     if ( DecodeCommand(command) == kWrite )
         WriteData(key_str);
 
     if ( DecodeCommand(command) == kRead )
-        ReadData(key_str);
-
-    zframe_t* id_frame =  socket_.PopFrame();
-    port_t id = FrameToPort(id_frame);
-
-    Connection connection(connection_);
-    connection.SetPort(id);
-    socket_.ConnectOut(connection);
+        ReadData(key_str, id);
 
     zframe_destroy(&key);
     zframe_destroy(&command);
@@ -73,7 +76,7 @@ void Reactor::WriteData(string& key)
     zframe_destroy(&data);
 }
 
-void Reactor::ReadData(string& key)
+void Reactor::ReadData(string& key, port_t id)
 {
     Log() << "read: key = " << key;
 
@@ -89,11 +92,25 @@ void Reactor::ReadData(string& key)
     PrintFrame(data);
 
     zframe_t* key_frame = zframe_new(key.c_str(), key.size());
-    socket_.SendFrame(key_frame, ZFRAME_MORE);
-    socket_.SendFrame(data, ZFRAME_REUSE);
+    out_sockets_[id]->SendFrame(key_frame, ZFRAME_MORE);
+    out_sockets_[id]->SendFrame(data, ZFRAME_REUSE);
 
     if ( is_data_empty )
         zframe_destroy(&data);
+}
+
+void Reactor::AddOutSocket(port_t id)
+{
+    if ( out_sockets_.count(id) != 0 )
+        return;
+
+    Connection connection(connection_);
+    connection.SetPort(id);
+
+    /* FIXME: Specify the correct type for this socket */
+    Socket* socket = new Socket();
+    socket->ConnectOut(connection);
+    out_sockets_.insert(PortSocket::value_type(id, socket));
 }
 
 void Reactor::SetQueueSize(int size)
