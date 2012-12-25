@@ -9,9 +9,9 @@
 namespace zero_cache
 {
 
-int FrameToInt(zframe_t* frame);
+port_t FrameToPort(zframe_t* frame);
 std::string FrameToString(zframe_t* frame);
-int StringToInt(std::string& value);
+port_t StringToPort(std::string& value);
 void SetPermission(const char* connection);
 port_t GenerateId(void* pointer);
 

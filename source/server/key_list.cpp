@@ -40,7 +40,7 @@ void KeyList::AddKey(string& key)
     ports_.insert(KeyPort::value_type(key, current_counter_));
 }
 
-int KeyList::GetPort(string& key)
+port_t KeyList::GetPort(string& key)
 {
     if ( ports_.count(key) != 0 )
         return ports_[key]->GetPort();

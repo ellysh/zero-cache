@@ -9,7 +9,7 @@ using namespace zero_cache;
 
 static const size_t kFileNamePos = 6;
 
-int zero_cache::FrameToInt(zframe_t* frame)
+port_t zero_cache::FrameToPort(zframe_t* frame)
 {
     int* result = (int*)zframe_data(frame);
 
@@ -25,15 +25,15 @@ std::string zero_cache::FrameToString(zframe_t* frame)
     return result;
 }
 
-int zero_cache::StringToInt(string& value)
+port_t zero_cache::StringToPort(string& value)
 {
     char* endptr;
-    int result = strtol(value.c_str(), &endptr, 10);
+    port_t result = strtoul(value.c_str(), &endptr, 10);
 
     if ( endptr != value.c_str() )
         return result;
     else
-        return kErrorConv;
+        return kErrorPort;
 }
 
 void zero_cache::SetPermission(const char* connection)

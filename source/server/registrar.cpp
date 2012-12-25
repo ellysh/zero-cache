@@ -57,7 +57,7 @@ void Registrar::ProcessMessage()
     Log() << "Registrar::ProcessMessage() - key = " << key_str << endl;
     key_list_->AddKey(key_str);
 
-    int port = key_list_->GetPort(key_str);
+    port_t port = key_list_->GetPort(key_str);
 
     if ( ports_.count(port) == 0 )
     {
@@ -71,10 +71,10 @@ void Registrar::ProcessMessage()
     }
 
     zframe_t* id_frame = socket_.PopFrame();
-    port_t* id = (port_t*)zframe_data(id_frame);
+    port_t id = FrameToPort(id_frame);
 
     Connection connection(connection_);
-    connection.SetPort(*id);
+    connection.SetPort(id);
     socket_.ConnectOut(connection);
 
     zframe_t* port_frame = zframe_new(&port, sizeof(port));

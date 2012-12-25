@@ -70,9 +70,9 @@ void RegistrarClient::AddKey(string& key)
     clients_.CreateClient(port);
 }
 
-int RegistrarClient::ReceivePort(string& key)
+port_t RegistrarClient::ReceivePort(string& key)
 {
-    int port = kErrorPort;
+    port_t port = kErrorPort;
     zframe_t* key_frame = zframe_new(key.c_str(), key.size());
     zframe_t* id_frame = zframe_new(&id_, sizeof(id_));
 
@@ -91,7 +91,7 @@ int RegistrarClient::ReceivePort(string& key)
     return port;
 }
 
-int RegistrarClient::ReceiveAnswer(zframe_t* key)
+port_t RegistrarClient::ReceiveAnswer(zframe_t* key)
 {
     if ( ! socket_.ReceiveMsg(kReadAnswerTimeout) )
         return kErrorPort;
@@ -105,7 +105,7 @@ int RegistrarClient::ReceiveAnswer(zframe_t* key)
     }
 
     zframe_t* connection_frame = socket_.PopFrame();
-    int port = FrameToInt(connection_frame);
+    port_t port = FrameToPort(connection_frame);
 
     zframe_destroy(&key_frame);
     zframe_destroy(&connection_frame);

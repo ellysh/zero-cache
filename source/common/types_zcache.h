@@ -13,8 +13,7 @@ private: \
 
 typedef unsigned long port_t;
 
-static const int kErrorPort = -1;
-static const int kErrorConv = -1;
+static const port_t kErrorPort = -1;
 
 enum Command
 {

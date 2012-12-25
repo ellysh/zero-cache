@@ -3,22 +3,24 @@
 
 #include <string>
 
+#include "types_zcache.h"
+
 namespace zero_cache
 {
 
 class PortCounter
 {
 public:
-    PortCounter(int port, int limit);
+    PortCounter(port_t port, int limit);
 
     void Increment();
-    int GetPort();
+    port_t GetPort();
     bool IsLimit();
 
 private:
     int limit_;
     int counter_;
-    int port_;
+    port_t port_;
 };
 
 }

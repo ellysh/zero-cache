@@ -30,7 +30,7 @@ void Connection::Constructor(string& connection)
 
     string port = connection.substr(pos, connection.size());
 
-    port_ = StringToInt(port);
+    port_ = StringToPort(port);
     if ( port_ < 0 )
         Speaker::Instance()->PrintError(kSocketNameError);
 

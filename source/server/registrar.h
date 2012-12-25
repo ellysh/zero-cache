@@ -16,7 +16,7 @@ class KeyList;
 class Registrar : protected Debug
 {
 private:
-    typedef std::set<int> PortSet;
+    typedef std::set<port_t> PortSet;
 
 public:
     Registrar(const char* log_file, Connection connection, SocketType type = kDealer);

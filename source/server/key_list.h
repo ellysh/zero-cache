@@ -22,7 +22,7 @@ public:
     ~KeyList();
 
     void AddKey(std::string& key);
-    int GetPort(std::string& key);
+    port_t GetPort(std::string& key);
 
     void SetKeyLimit(int key_limit);
 
