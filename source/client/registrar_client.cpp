@@ -84,7 +84,8 @@ port_t RegistrarClient::ReceivePort(string& key)
         socket_.SendFrame(id_frame, ZFRAME_REUSE);
         port = ReceiveAnswer(key_frame);
 
-        usleep((rand() % 1000) * 1000);
+        if ( port == kErrorPort )
+            usleep((rand() % 1000) * 100);
     }
 
     zframe_destroy(&id_frame);

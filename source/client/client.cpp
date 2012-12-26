@@ -59,7 +59,9 @@ void* Client::ReadData(string& key)
     {
         SendReadRequest(key);
         result = ReceiveReadAnswer();
-        usleep(rand() % 1000);
+
+        if (result == NULL )
+            usleep(rand() % 1000);
     }
 
     return result;
