@@ -35,7 +35,8 @@ private:
     PortSet ports_;
 
     void ProcessMessage();
-    void SendAnswer(zframe_t* key_frame, port_t port);
+    void StartReactor(std::string& key);
+    void SendAnswer(std::string& key);
 
     DISALLOW_COPY_AND_ASSIGN(Registrar)
 };

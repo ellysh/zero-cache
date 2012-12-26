@@ -51,34 +51,38 @@ static void* ReactorStart(void* args)
 
 void Registrar::ProcessMessage()
 {
-    /* FIXME: Split this method */
     socket_.ReceiveMsg();
 
-    zframe_t* key = socket_.PopFrame();
-    string key_str = FrameToString(key);
+    zframe_t* key_frame = socket_.PopFrame();
+    string key = FrameToString(key_frame);
 
-    Log() << "Registrar::ProcessMessage() - key = " << key_str << endl;
-    key_list_->AddKey(key_str);
+    StartReactor(key);
 
-    port_t port = key_list_->GetPort(key_str);
-
-    if ( ports_.count(port) == 0 )
-    {
-        Connection connection(connection_);
-        connection.SetPort(port);
-
-        string* connection_str = new string(connection.GetString());
-
-        Log() << "zthread_new() - connection = " << connection.GetString() << endl;
-        gQueueSize = queue_size_;
-        zthread_new(ReactorStart, (void*)connection_str);
-        ports_.insert(port);
-    }
-
-    SendAnswer(key, port);
+    SendAnswer(key);
 }
 
-void Registrar::SendAnswer(zframe_t* key_frame, port_t port)
+void Registrar::StartReactor(string& key)
+{
+    Log() << "Registrar::StartReactor() - key = " << key << endl;
+    key_list_->AddKey(key);
+
+    port_t port = key_list_->GetPort(key);
+
+    if ( ports_.count(port) != 0 )
+        return;
+
+    Connection connection(connection_);
+    connection.SetPort(port);
+
+    string* connection_str = new string(connection.GetString());
+    Log() << "zthread_new() - connection = " << connection.GetString() << endl;
+
+    gQueueSize = queue_size_;
+    zthread_new(ReactorStart, (void*)connection_str);
+    ports_.insert(port);
+}
+
+void Registrar::SendAnswer(string& key)
 {
     zframe_t* id_frame = socket_.PopFrame();
     port_t id = FrameToPort(id_frame);
@@ -87,6 +91,9 @@ void Registrar::SendAnswer(zframe_t* key_frame, port_t port)
     connection.SetPort(id);
     socket_.ConnectOut(connection);
 
+    port_t port = key_list_->GetPort(key);
+
+    zframe_t* key_frame = zframe_new(key.c_str(), key.size());
     zframe_t* port_frame = zframe_new(&port, sizeof(port));
     socket_.SendFrame(key_frame, ZFRAME_MORE);
     socket_.SendFrame(port_frame, 0);
