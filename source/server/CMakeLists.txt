@@ -8,6 +8,7 @@ set(zero_cached_SRCS
     program_options.cpp
     reactor.cpp
     registrar.cpp
+    socket_list.cpp
     zero_cache.cpp)
 
 add_executable(zero-cache ${zero_cached_SRCS})
