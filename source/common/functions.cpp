@@ -47,6 +47,8 @@ void zero_cache::SetPermission(const char* connection)
 
 port_t zero_cache::GenerateId(void* pointer)
 {
-    port_t result = (port_t)pointer;
+    srand((unsigned long)pointer);
+    port_t result = rand() % 0x1000000000;
+
     return result;
 }
