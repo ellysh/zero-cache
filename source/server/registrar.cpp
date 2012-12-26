@@ -75,6 +75,11 @@ void Registrar::ProcessMessage()
         ports_.insert(port);
     }
 
+    SendAnswer(key, port);
+}
+
+void Registrar::SendAnswer(zframe_t* key_frame, port_t port)
+{
     zframe_t* id_frame = socket_.PopFrame();
     port_t id = FrameToPort(id_frame);
 
@@ -83,7 +88,7 @@ void Registrar::ProcessMessage()
     socket_.ConnectOut(connection);
 
     zframe_t* port_frame = zframe_new(&port, sizeof(port));
-    socket_.SendFrame(key, ZFRAME_MORE);
+    socket_.SendFrame(key_frame, ZFRAME_MORE);
     socket_.SendFrame(port_frame, 0);
 
     Log() << "Registrar::ProcessMessage() - send answer = " << port << " to " << connection.GetString() << endl;

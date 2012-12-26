@@ -35,6 +35,7 @@ private:
     PortSet ports_;
 
     void ProcessMessage();
+    void SendAnswer(zframe_t* key_frame, port_t port);
 
     DISALLOW_COPY_AND_ASSIGN(Registrar)
 };

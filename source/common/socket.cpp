@@ -19,7 +19,6 @@ Socket::Socket(SocketType type) : msg_(NULL)
     else if (type == kPubSub)
     {
         in_socket_ = zsocket_new(context_, ZMQ_SUB);
-        /* FIXME: Is this subscription to all incoming messagees correct? */
         zmq_setsockopt(in_socket_, ZMQ_SUBSCRIBE, "", 0);
         out_socket_ = zsocket_new(context_, ZMQ_PUB);
     }
