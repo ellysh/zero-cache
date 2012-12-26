@@ -10,7 +10,7 @@ using namespace std;
 using namespace zero_cache;
 
 Reactor::Reactor(const char* log_file, Connection connection, SocketType type) :
-    Debug(log_file), socket_(type), connection_(connection)
+    Debug(log_file), socket_(type), connection_(connection), out_sockets_(type)
 {
     socket_.BindIn(connection);
     socket_.SetQueueSize(1000);

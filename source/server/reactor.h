@@ -28,8 +28,8 @@ public:
 private:
     Socket socket_;
     Connection connection_;
-    Container container_;
     SocketList out_sockets_;
+    Container container_;
 
     void ProcessMessage();
     void WriteData(std::string& key);

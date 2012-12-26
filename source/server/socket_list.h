@@ -17,14 +17,14 @@ public:
     typedef std::map<port_t, Socket*> PortSocket;
 
 public:
-    /* FIXME: Pass socket type to the constructor */
-    SocketList() {};
+    SocketList(SocketType type = kDealer) : type_(type) {};
     ~SocketList();
 
     void CreateSocket(Connection& connection, port_t port);
     Socket& GetSocket(port_t port);
 
 private:
+    SocketType type_;
     PortSocket sockets_;
 };
 

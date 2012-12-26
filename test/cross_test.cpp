@@ -17,7 +17,6 @@ void* WriteOperation(void* args)
 
 void* ReadOperation(void* args)
 {
-    usleep(3 * 1000 * 1000);
     const char* key = static_cast<char*>(args);
     RegistrarClient client("read.log", "ipc:///var/run/zero-cache/0", kDealer);
 
@@ -48,6 +47,8 @@ int main()
     StartWriteThread("2");
     StartWriteThread("3");
     StartWriteThread("4");
+
+    usleep(3 * 1000 * 1000);
 
     StartReadThread("1");
     StartReadThread("2");

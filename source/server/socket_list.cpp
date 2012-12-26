@@ -34,8 +34,7 @@ void SocketList::CreateSocket(Connection& connection, port_t port)
     Connection new_connection(connection);
     new_connection.SetPort(port);
 
-    /* FIXME: Specify the correct type for this socket */
-    Socket* socket = new Socket();
+    Socket* socket = new Socket(type_);
     socket->ConnectOut(new_connection);
     sockets_.insert(PortSocket::value_type(port, socket));
 }
