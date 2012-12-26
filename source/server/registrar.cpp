@@ -51,6 +51,7 @@ static void* ReactorStart(void* args)
 
 void Registrar::ProcessMessage()
 {
+    /* FIXME: Split this method */
     socket_.ReceiveMsg();
 
     zframe_t* key = socket_.PopFrame();

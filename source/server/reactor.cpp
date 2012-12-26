@@ -16,11 +16,6 @@ Reactor::Reactor(const char* log_file, Connection connection, SocketType type) :
     socket_.SetQueueSize(1000);
 }
 
-Reactor::~Reactor()
-{
-    /* FIXME: Clean up the out_sockets_ map here */
-}
-
 void Reactor::Start()
 {
     while (true)
@@ -55,7 +50,7 @@ void Reactor::ProcessMessage()
         return;
     port_t id = FrameToPort(id_frame);
 
-    AddOutSocket(id);
+    out_sockets_.CreateSocket(connection_, id);
 
     if ( DecodeCommand(command) == kWrite )
         WriteData(key_str);
@@ -94,25 +89,11 @@ void Reactor::ReadData(string& key, port_t id)
     PrintFrame(data);
 
     zframe_t* key_frame = zframe_new(key.c_str(), key.size());
-    out_sockets_[id]->SendFrame(key_frame, ZFRAME_MORE);
-    out_sockets_[id]->SendFrame(data, ZFRAME_REUSE);
+    out_sockets_.GetSocket(id).SendFrame(key_frame, ZFRAME_MORE);
+    out_sockets_.GetSocket(id).SendFrame(data, ZFRAME_REUSE);
 
     if ( is_data_empty )
         zframe_destroy(&data);
-}
-
-void Reactor::AddOutSocket(port_t id)
-{
-    if ( out_sockets_.count(id) != 0 )
-        return;
-
-    Connection connection(connection_);
-    connection.SetPort(id);
-
-    /* FIXME: Specify the correct type for this socket */
-    Socket* socket = new Socket();
-    socket->ConnectOut(connection);
-    out_sockets_.insert(PortSocket::value_type(id, socket));
 }
 
 void Reactor::SetQueueSize(int size)

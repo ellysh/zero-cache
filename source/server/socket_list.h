@@ -9,6 +9,7 @@ namespace zero_cache
 {
 
 class Socket;
+class Connection;
 
 class SocketList
 {
@@ -16,8 +17,12 @@ public:
     typedef std::map<port_t, Socket*> PortSocket;
 
 public:
-    SocketList();
+    /* FIXME: Pass socket type to the constructor */
+    SocketList() {};
     ~SocketList();
+
+    void CreateSocket(Connection& connection, port_t port);
+    Socket& GetSocket(port_t port);
 
 private:
     PortSocket sockets_;

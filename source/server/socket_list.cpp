@@ -3,6 +3,7 @@
 #include <algorithm>
 
 #include "socket.h"
+#include "connection.h"
 
 using namespace std;
 using namespace zero_cache;
@@ -18,4 +19,23 @@ SocketList::~SocketList()
              RemoveSocket);
 
     sockets_.clear();
+}
+
+Socket& SocketList::GetSocket(port_t port)
+{
+    return *sockets_[port];
+}
+
+void SocketList::CreateSocket(Connection& connection, port_t port)
+{
+    if ( sockets_.count(port) != 0 )
+        return;
+
+    Connection new_connection(connection);
+    new_connection.SetPort(port);
+
+    /* FIXME: Specify the correct type for this socket */
+    Socket* socket = new Socket();
+    socket->ConnectOut(new_connection);
+    sockets_.insert(PortSocket::value_type(port, socket));
 }
