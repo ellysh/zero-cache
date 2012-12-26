@@ -12,7 +12,7 @@ class Socket;
 
 class SocketList
 {
-private:
+public:
     typedef std::map<port_t, Socket*> PortSocket;
 
 public:
