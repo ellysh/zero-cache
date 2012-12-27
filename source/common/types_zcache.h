@@ -1,6 +1,8 @@
 #ifndef TYPES_ZCACHE_H
 #define TYPES_ZCACHE_H
 
+#include <string>
+
 namespace zero_cache
 {
 
@@ -13,8 +15,6 @@ private: \
 
 typedef unsigned long port_t;
 
-static const port_t kErrorPort = -1;
-
 enum Command
 {
     kWrite = 0,
@@ -26,6 +26,10 @@ enum SocketType
     kDealer = 0,
     kPubSub
 };
+
+static const port_t kErrorPort = -1;
+static std::string kTcpProtocol = "tcp://";
+static std::string kIpcProtocol = "ipc://";
 
 }
 

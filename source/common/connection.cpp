@@ -21,9 +21,9 @@ Connection::Connection(const char* connection)
 void Connection::Constructor(string& connection)
 {
     size_t pos;
-    if ( connection.find("tcp") != string::npos )
+    if ( connection.find(kTcpProtocol) != string::npos )
         pos = connection.find_last_of(':') + 1;
-    else if ( connection.find("ipc") != string::npos )
+    else if ( connection.find(kIpcProtocol) != string::npos )
         pos = connection.find_last_of('/') + 1;
     else
         Speaker::Instance()->PrintError(kSocketTypeError);
