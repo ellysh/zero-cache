@@ -11,10 +11,13 @@ static const long kReadAnswerTimeout = 1000;
 Client::Client(const char* log_file, Connection connection, SocketType type) : Debug(log_file), socket_(type)
 {
     srand(time(NULL));
+
+    Log() << "Client::Client() - connect " << connection.GetString() << endl;
     socket_.ConnectOut(connection);
 
     port_t id = GenerateId(this);
     connection.SetPort(id);
+    Log() << "Client::Client() - bind " << connection.GetString() << endl;
     socket_.BindIn(connection);
     socket_.SetQueueSize(10);
 

@@ -51,7 +51,7 @@ void ClientList::CreateClient(port_t port)
 
     if ( ! IsPortExist(port) )
     {
-        Client* client = new Client("", connection, type_);
+        Client* client = new Client("client.log", connection, type_);
         client->SetQueueSize(queue_size_);
         clients_.insert(PortClient::value_type(port, client));
 

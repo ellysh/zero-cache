@@ -17,11 +17,12 @@ RegistrarClient::RegistrarClient(const char* log_file, Connection connection, So
     srand(time(NULL));
 
     socket_.ConnectOut(connection);
+    Log() << "RegistrarClient::RegistrarClient() - connect to " << connection.GetString() << endl;
 
     id_ = GenerateId(this);
     connection.SetPort(id_);
 
-    Log() << "RegistrarClient::RegistrarClient() - connection = " << connection.GetString() << endl;
+    Log() << "RegistrarClient::RegistrarClient() - bind to " << connection.GetString() << endl;
     socket_.BindIn(connection);
     socket_.SetQueueSize(1);
 }
