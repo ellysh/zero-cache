@@ -22,6 +22,8 @@ RegistrarClient::RegistrarClient(const char* log_file, Connection connection, So
     id_ = GenerateId(this);
     connection.SetPort(id_);
 
+    host_ = connection.GetHost();
+
     if ( connection.GetProtocol() == kTcpProtocol )
         connection.SetHost("*:");
 
@@ -117,6 +119,11 @@ port_t RegistrarClient::ReceiveAnswer(zframe_t* key)
     zframe_destroy(&connection_frame);
 
     return port;
+}
+
+void RegistrarClient::SetHost(std::string host)
+{
+    host_ = host;
 }
 
 void RegistrarClient::SetQueueSize(int size)

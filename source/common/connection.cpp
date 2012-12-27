@@ -43,6 +43,11 @@ void Connection::SetHost(string host)
     host_ = host;
 }
 
+string& Connection::GetHost()
+{
+    return host_;
+}
+
 void Connection::SetPort(port_t port)
 {
     port_ = port;

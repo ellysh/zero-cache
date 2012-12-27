@@ -23,12 +23,14 @@ public:
     void WriteData(std::string key, void* data, size_t size);
     void* ReadData(std::string key);
 
+    void SetHost(std::string host);
     void SetQueueSize(int size);
 
 private:
     Socket socket_;
     ClientList clients_;
     port_t id_;
+    std::string host_;
 
     void AddKey(std::string& key);
     Client* GetClient(std::string& key);
