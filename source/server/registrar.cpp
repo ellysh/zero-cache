@@ -86,8 +86,12 @@ void Registrar::SendAnswer(string& key)
     zframe_t* id_frame = socket_.PopFrame();
     port_t id = FrameToPort(id_frame);
 
+    zframe_t* host_frame = socket_.PopFrame();
+    string host = FrameToString(host_frame);
+
     Connection connection(connection_);
     connection.SetPort(id);
+    connection.SetHost(host);
     socket_.ConnectOut(connection);
 
     port_t port = key_list_->GetPort(key);
