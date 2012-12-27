@@ -82,17 +82,20 @@ port_t RegistrarClient::ReceivePort(string& key)
     port_t port = kErrorPort;
     zframe_t* key_frame = zframe_new(key.c_str(), key.size());
     zframe_t* id_frame = zframe_new(&id_, sizeof(id_));
+    zframe_t* host_frame = zframe_new(host_.c_str(), host_.size());
 
     while ( port == kErrorPort )
     {
         socket_.SendFrame(key_frame, ZFRAME_REUSE + ZFRAME_MORE);
-        socket_.SendFrame(id_frame, ZFRAME_REUSE);
+        socket_.SendFrame(id_frame, ZFRAME_REUSE + ZFRAME_MORE);
+        socket_.SendFrame(host_frame, ZFRAME_REUSE);
         port = ReceiveAnswer(key_frame);
 
         if ( port == kErrorPort )
             usleep((rand() % 1000) * 100);
     }
 
+    zframe_destroy(&host_frame);
     zframe_destroy(&id_frame);
     zframe_destroy(&key_frame);
 
