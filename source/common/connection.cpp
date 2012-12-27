@@ -34,14 +34,15 @@ void Connection::Constructor(string& connection)
     if ( port_ < 0 )
         Speaker::Instance()->PrintError(kSocketNameError);
 
-    host_ = connection.substr(0, pos);
+    protocol_ = connection.substr(0, 6);
+    host_ = connection.substr(6, (pos - 6));
 }
 
 string Connection::GetString()
 {
     char port[100];
     sprintf(port, "%lu", port_);
-    string result = host_ + port;
+    string result = protocol_ + host_ + port;
     return result;
 }
 

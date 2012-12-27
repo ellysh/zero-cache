@@ -19,6 +19,7 @@ public:
     void SetPort(port_t port);
 
 private:
+    std::string protocol_;
     std::string host_;
     port_t port_;
 
