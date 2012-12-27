@@ -14,9 +14,12 @@ public:
     Connection(std::string& connection);
     Connection(const char* connection);
 
-    std::string GetString();
-    port_t GetPort();
+    void SetHost(std::string host);
+
     void SetPort(port_t port);
+    port_t GetPort();
+
+    std::string GetString();
 
 private:
     std::string protocol_;

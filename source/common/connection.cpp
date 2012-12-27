@@ -38,12 +38,14 @@ void Connection::Constructor(string& connection)
     host_ = connection.substr(6, (pos - 6));
 }
 
-string Connection::GetString()
+void Connection::SetHost(string host)
 {
-    char port[100];
-    sprintf(port, "%lu", port_);
-    string result = protocol_ + host_ + port;
-    return result;
+    host_ = host;
+}
+
+void Connection::SetPort(port_t port)
+{
+    port_ = port;
 }
 
 port_t Connection::GetPort()
@@ -51,7 +53,10 @@ port_t Connection::GetPort()
     return port_;
 }
 
-void Connection::SetPort(port_t port)
+string Connection::GetString()
 {
-    port_ = port;
+    char port[100];
+    sprintf(port, "%lu", port_);
+    string result = protocol_ + host_ + port;
+    return result;
 }
