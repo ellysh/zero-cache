@@ -1,3 +1,10 @@
+* zero-cache 0.9
+	- Accelerate the key registration procedure
+	- Accelerate receiving data by clients
+	- Use client identifiers mechanism instead the server ports assignment
+	- Change the common library type to static
+	- Fix bug with debian packaging
+
 * zero-cache 0.8
 	- Support TCP sockets
 	- Fix memory leak bugs
