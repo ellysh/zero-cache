@@ -50,6 +50,12 @@ void Reactor::ProcessMessage()
         return;
     port_t id = FrameToPort(id_frame);
 
+    zframe_t* host_frame =  socket_.PopFrame();
+    if ( host_frame == NULL )
+        return;
+    string host = FrameToString(host_frame);
+
+    connection_.SetHost(host);
     out_sockets_.CreateSocket(connection_, id);
 
     if ( DecodeCommand(command) == kWrite )
