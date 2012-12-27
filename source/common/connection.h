@@ -15,10 +15,10 @@ public:
     Connection(const char* connection);
 
     void SetHost(std::string host);
-
     void SetPort(port_t port);
-    port_t GetPort();
 
+    port_t GetPort();
+    std::string& GetProtocol();
     std::string GetString();
 
 private:

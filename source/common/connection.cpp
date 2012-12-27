@@ -53,6 +53,11 @@ port_t Connection::GetPort()
     return port_;
 }
 
+string& Connection::GetProtocol()
+{
+    return protocol_;
+}
+
 string Connection::GetString()
 {
     char port[100];
