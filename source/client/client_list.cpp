@@ -52,6 +52,7 @@ void ClientList::CreateClient(port_t port)
     if ( ! IsPortExist(port) )
     {
         Client* client = new Client("client.log", connection, type_);
+        client->SetHost(host_);
         client->SetQueueSize(queue_size_);
         clients_.insert(PortClient::value_type(port, client));
 
@@ -73,6 +74,11 @@ bool ClientList::IsKeyExist(string& key)
         return true;
     else
         return false;
+}
+
+void ClientList::SetHost(string host)
+{
+    host_ = host;
 }
 
 void ClientList::SetQueueSize(int size)

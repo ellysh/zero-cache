@@ -22,10 +22,12 @@ public:
     void WriteData(std::string& key, void* data, size_t size);
     void* ReadData(std::string& key);
 
+    void SetHost(std::string host);
     void SetQueueSize(int size);
 
 private:
     Socket socket_;
+    zframe_t* host_frame_;
     zframe_t* id_frame_;
     zframe_t* command_frame_;
     zframe_t* key_frame_;

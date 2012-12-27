@@ -16,13 +16,13 @@ RegistrarClient::RegistrarClient(const char* log_file, Connection connection, So
 {
     srand(time(NULL));
 
-    socket_.ConnectOut(connection);
     Log() << "RegistrarClient::RegistrarClient() - connect to " << connection.GetString() << endl;
+    socket_.ConnectOut(connection);
 
     id_ = GenerateId(this);
     connection.SetPort(id_);
 
-    host_ = connection.GetHost();
+    SetHost(connection.GetHost());
 
     if ( connection.GetProtocol() == kTcpProtocol )
         connection.SetHost("*:");
@@ -124,9 +124,11 @@ port_t RegistrarClient::ReceiveAnswer(zframe_t* key)
     return port;
 }
 
-void RegistrarClient::SetHost(std::string host)
+void RegistrarClient::SetHost(string host)
 {
     host_ = host;
+
+    clients_.SetHost(host);
 }
 
 void RegistrarClient::SetQueueSize(int size)

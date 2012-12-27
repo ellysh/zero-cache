@@ -29,12 +29,14 @@ public:
 
     bool IsKeyExist(std::string& key);
 
+    void SetHost(std::string host);
     void SetQueueSize(int size);
 
 private:
     Connection connection_;
     SocketType type_;
     int queue_size_;
+    std::string host_;
     KeyPort ports_;
     PortClient clients_;
 
