@@ -23,7 +23,6 @@ RegistrarClient::RegistrarClient(const char* log_file, Connection connection, So
 
     Log() << "RegistrarClient::RegistrarClient() - connection = " << connection.GetString() << endl;
     socket_.BindIn(connection);
-
     socket_.SetQueueSize(1);
 }
 

@@ -29,7 +29,6 @@ public:
 
 private:
     Socket socket_;
-    int queue_size_;
     Connection connection_;
     KeyList* key_list_;
     PortSet ports_;

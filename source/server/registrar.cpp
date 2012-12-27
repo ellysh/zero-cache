@@ -9,11 +9,11 @@
 using namespace std;
 using namespace zero_cache;
 
-static int gQueueSize;
+static int gQueueSize = 1000;
 static SocketType gSocketType;
 
 Registrar::Registrar(const char* log_file, Connection connection, SocketType type) :
-    Debug(log_file), socket_(type), queue_size_(1000), connection_(connection)
+    Debug(log_file), socket_(type), connection_(connection)
 {
     socket_.BindIn(connection);
     socket_.SetQueueSize(1);
@@ -77,7 +77,6 @@ void Registrar::StartReactor(string& key)
     string* connection_str = new string(connection.GetString());
     Log() << "zthread_new() - connection = " << connection.GetString() << endl;
 
-    gQueueSize = queue_size_;
     zthread_new(ReactorStart, (void*)connection_str);
     ports_.insert(port);
 }
@@ -108,5 +107,5 @@ void Registrar::SetKeyLimit(int limit)
 
 void Registrar::SetQueueSize(int size)
 {
-    queue_size_ = size;
+    gQueueSize = size;
 }
