@@ -1,5 +1,5 @@
 zero-cache 0.9 version
-==================
+======================
 
 INTRODUCTION
 ------------
@@ -68,7 +68,7 @@ The command line arguments information is available by command:
 You client application must be linked with `libzero_cache.so` to access zero-cache
 client classes.
 
-This is example of typical client application:
+This is example of typical client application for Unix socket based connection:
 
     #include <string>
     #include <iostream>
@@ -83,6 +83,34 @@ This is example of typical client application:
         string data = "test data";
 
         RegistrarClient client("example.log", "ipc:///tmp/0", kDealer);
+
+        client.WriteData(key, const_cast<char*>(data.c_str()), data.size());
+
+        char* read_data;
+        read_data = static_cast<char*>(client.ReadData(key));
+
+        cout << "read_data = " << read_data << endl;
+        free(read_data);
+    }
+
+This is example of typical client application for TCP socket based connection:
+
+    #include <string>
+    #include <iostream>
+    #include <zero-cache/registrar_client.h>
+
+    using namespace std;
+    using namespace zero_cache;
+
+    int main()
+    {
+        string key = "key1";
+        string data = "test data";
+
+        /* 192.168.0.1 - server ip
+         * 192.168.0.15 - client ip */
+        RegistrarClient client("example.log", "tcp://192.168.0.1:5570", kDealer);
+        client.SetHost("192.168.0.15:");
 
         client.WriteData(key, const_cast<char*>(data.c_str()), data.size());
 
