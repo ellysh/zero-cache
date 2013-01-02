@@ -30,7 +30,7 @@ set(COMMON_LIBDIR
 
 # Build type by default is Debug
 if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Debug)
+  set(CMAKE_BUILD_TYPE Release)
 endif(NOT CMAKE_BUILD_TYPE)
 
 message(STATUS "Build type: " ${CMAKE_BUILD_TYPE})
