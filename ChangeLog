@@ -1,3 +1,7 @@
+* zero-cache 1.0
+	- Fix working with the TCP sockets
+	- Add CMake find modules
+
 * zero-cache 0.9
 	- Accelerate the key registration procedure
 	- Accelerate receiving data by clients

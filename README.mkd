@@ -1,14 +1,14 @@
-zero-cache 0.9 version
+Zero-cache 1.0 version
 ======================
 
 INTRODUCTION
 ------------
 
-This is memory caching system based on 0MQ messaging library.
+Zero-cache is a Open Source cross-platform distributed memory caching system based on ZMQ messaging library.
 
-Goal of this development is creation memory caching system for real-time
-applications. The maximum delay of cached data access must be less than
-several milliseconds for several parallel working client threads.
+Zero-cache is able to store data of any type that is addressed by key of string type.
+It provides the minimal response time thanks to multi-thread containers and absence of mutexes
+for requests synchronization. All synchronization is performed by messages processing mechanism.
 
 BUILDING
 --------
