@@ -11,6 +11,7 @@ namespace zero_cache
 class Connection
 {
 public:
+    Connection() {};
     Connection(std::string& connection);
     Connection(const char* connection);
 
