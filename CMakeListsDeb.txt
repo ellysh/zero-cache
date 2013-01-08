@@ -8,10 +8,11 @@ add_custom_target(deb-clean
     COMMAND find . -name "*.1" | xargs rm -f
 
     COMMAND -rm -rf ${DEBIAN_DIR}/buildroot
-    COMMAND -rm -rf ${DEBIAN_DIR}/libmysql-state
-    COMMAND -rm -rf ${DEBIAN_DIR}/libmysql-state-dev
+    COMMAND -rm -rf ${DEBIAN_DIR}/zero-cache
+    COMMAND -rm -rf ${DEBIAN_DIR}/zero-cache-dev
     COMMAND find ${DEBIAN_DIR} -name "*.log" | xargs rm -f
     COMMAND find ${DEBIAN_DIR} -name "*.substvars" | xargs rm -f
+    COMMAND find ${DEBIAN_DIR} -name "*.debhelper" | xargs rm -f
 
     COMMAND -rm -rf ${BIN_DEB_DIR}
     COMMAND find ${BIN_DIR} -name \"*.dsc\" | xargs rm -f
