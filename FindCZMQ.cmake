@@ -20,7 +20,7 @@ else (CZMQ_LIBRARIES AND CZMQ_INCLUDE_DIRS)
 
   find_path(CZMQ_INCLUDE_DIR
     NAMES
-      zmq.h
+      czmq.h
     PATHS
       /usr/include
       /usr/local/include
@@ -30,7 +30,7 @@ else (CZMQ_LIBRARIES AND CZMQ_INCLUDE_DIRS)
 
   find_library(CZMQ_LIBRARY
     NAMES
-      czmq
+     czmq
     PATHS
       /usr/lib
       /usr/local/lib
@@ -56,4 +56,3 @@ else (CZMQ_LIBRARIES AND CZMQ_INCLUDE_DIRS)
   mark_as_advanced(CZMQ_INCLUDE_DIRS CZMQ_LIBRARIES)
 
 endif (CZMQ_LIBRARIES AND CZMQ_INCLUDE_DIRS)
-
