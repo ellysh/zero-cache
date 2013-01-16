@@ -9,29 +9,11 @@ using namespace zero_cache;
 
 static const size_t kFileNamePos = 6;
 
-/* FIXME: Remove this function */
-port_t zero_cache::FrameToPort(zframe_t* frame)
-{
-    port_t* result = (port_t*)zframe_data(frame);
-
-    return *result;
-}
-
 port_t zero_cache::MsgToPort(zmq_msg_t& msg)
 {
     port_t* result = (port_t*)zmq_msg_data(&msg);
 
     return *result;
-}
-
-/* FIXME: Remove this function */
-string zero_cache::FrameToString(zframe_t* frame)
-{
-    char* buffer =  zframe_strdup(frame);
-    string result = buffer;
-    free(buffer);
-
-    return result;
 }
 
 string zero_cache::MsgToString(zmq_msg_t& msg)
