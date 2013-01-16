@@ -7,7 +7,7 @@
 using namespace std;
 using namespace zero_cache;
 
-Socket::Socket(SocketType type) : msg_(NULL)
+Socket::Socket(SocketType type)
 {
     context_ = zctx_new();
 
@@ -56,36 +56,49 @@ void Socket::BindIn(Connection& connection)
 
 bool Socket::ReceiveMsg(long timeout)
 {
-    if ( msg_ != NULL )
-        zmsg_destroy(&msg_);
+    messages_.clear();
 
-    int result = zmq_poll(items_, 1, timeout);
+    zmq_msg_t msg;
+    zmq_msg_init(&msg);
 
-    if ( result == 0 )
-        return false;
+    int result;
 
-    if (result == -1)
+    do
     {
-        if ( zmq_errno() == ERR_INTERRUPT )
-            exit(0);
+        result = zmq_poll(items_, 1, timeout);
+
+        if ( result == 0 )
+            return false;
+
+        if (result == -1)
+        {
+            if ( zmq_errno() == ERR_INTERRUPT )
+                exit(0);
+        }
+
+        if ( ! (items_[0].revents & ZMQ_POLLIN) )
+            return false;
+
+        zmq_msg_recv(&msg, in_socket_, 0);
+        messages_.push_back(msg);
     }
+    while ( ! zmq_msg_more(&msg) );
 
-    if ( ! (items_[0].revents & ZMQ_POLLIN) )
-        return false;
-
-    msg_ = zmsg_recv(in_socket_);
-    assert( msg_ != NULL );
     return true;
 }
 
-zframe_t* Socket::PopFrame()
+zmq_msg_t Socket::PopMsg()
 {
-    return zmsg_pop(msg_);
+    zmq_msg_t result(messages_.front());
+
+    messages_.pop_front();
+
+    return result;
 }
 
-void Socket::SendFrame(zframe_t* frame, int flags)
+void Socket::SendMsg(zmq_msg_t& msg, int flags)
 {
-    zframe_send(&frame, out_socket_, flags);
+    zmq_msg_send(&msg, out_socket_, flags);
 }
 
 void Socket::SetQueueSize(int size)

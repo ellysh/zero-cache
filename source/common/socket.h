@@ -2,6 +2,7 @@
 #define SOCKET_H
 
 #include <string>
+#include <list>
 #include <czmq.h>
 
 #include "types_zcache.h"
@@ -14,21 +15,24 @@ class Connection;
 class Socket
 {
 public:
+    typedef std::list<zmq_msg_t> MsgList;
+
+public:
     explicit Socket(SocketType type = kDealer);
     virtual ~Socket();
 
     void ConnectOut(Connection& connection);
     void BindIn(Connection& connection);
 
-    void SendFrame(zframe_t* frame, int flags);
+    void SendMsg(zmq_msg_t& msg, int flags);
 
     bool ReceiveMsg(long timeout = -1);
-    zframe_t* PopFrame();
+    zmq_msg_t PopMsg();
 
     void SetQueueSize(int size);
 
 private:
-    zmsg_t* msg_;
+    MsgList messages_;
     zctx_t* context_;
     void* in_socket_;
     void* out_socket_;
