@@ -96,15 +96,17 @@ void* Client::ReceiveReadAnswer()
     if ( ! socket_.ReceiveMsg(kReadAnswerTimeout) )
         return NULL;
 
-    zmq_msg_t key_frame = socket_.PopMsg();
+    zmq_msg_t key_msg;
+    socket_.PopMsg(key_msg);
 
-    if ( ! IsMsgEqual(key_frame, key_msg_) )
+    if ( ! IsMsgEqual(key_msg, key_msg_) )
     {
-        zmq_msg_close(&key_frame);
+        zmq_msg_close(&key_msg);
         return NULL;
     }
 
-    zmq_msg_t msg = socket_.PopMsg();
+    zmq_msg_t msg;
+    socket_.PopMsg(msg);
     void* data = malloc(zmq_msg_size(&msg));
     memcpy(data, zmq_msg_data(&msg), zmq_msg_size(&msg));
     zmq_msg_close(&msg);

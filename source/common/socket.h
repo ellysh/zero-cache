@@ -27,7 +27,7 @@ public:
     void SendMsg(zmq_msg_t& msg, int flags);
 
     bool ReceiveMsg(long timeout = -1);
-    zmq_msg_t PopMsg();
+    bool PopMsg(zmq_msg_t& msg);
 
     void SetQueueSize(int size);
 

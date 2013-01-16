@@ -87,13 +87,16 @@ bool Socket::ReceiveMsg(long timeout)
     return true;
 }
 
-zmq_msg_t Socket::PopMsg()
+bool Socket::PopMsg(zmq_msg_t& msg)
 {
-    zmq_msg_t result(messages_.front());
+    if ( messages_.empty() )
+        return false;
+
+    zmq_msg_copy(&msg, &messages_.front());
 
     messages_.pop_front();
 
-    return result;
+    return true;
 }
 
 void Socket::SendMsg(zmq_msg_t& msg, int flags)

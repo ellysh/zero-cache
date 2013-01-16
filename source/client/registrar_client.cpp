@@ -112,7 +112,8 @@ port_t RegistrarClient::ReceiveAnswer(zmq_msg_t& key)
     if ( ! socket_.ReceiveMsg(kReadAnswerTimeout) )
         return kErrorPort;
 
-    zmq_msg_t key_msg = socket_.PopMsg();
+    zmq_msg_t key_msg;
+    socket_.PopMsg(key_msg);
 
     if ( ! IsMsgEqual(key_msg, key) )
     {
@@ -120,7 +121,8 @@ port_t RegistrarClient::ReceiveAnswer(zmq_msg_t& key)
         return kErrorPort;
     }
 
-    zmq_msg_t connection_msg = socket_.PopMsg();
+    zmq_msg_t connection_msg;
+    socket_.PopMsg(connection_msg);
     port_t port = MsgToPort(connection_msg);
 
     zmq_msg_close(&key_msg);
