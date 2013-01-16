@@ -37,8 +37,8 @@ string zero_cache::FrameToString(zframe_t* frame)
 string zero_cache::MsgToString(zmq_msg_t& msg)
 {
     char* buffer =  (char*)zmq_msg_data(&msg);
+    assert( buffer != NULL );
     string result = buffer;
-    free(buffer);
 
     return result;
 }

@@ -29,6 +29,7 @@ Socket::Socket(SocketType type)
 
 Socket::~Socket()
 {
+    /* FIXME: Clear the messages_ list correctly */
     zsocket_destroy(context_, out_socket_);
     zsocket_destroy(context_, in_socket_);
     zctx_destroy(&context_);
@@ -82,7 +83,7 @@ bool Socket::ReceiveMsg(long timeout)
         zmq_msg_recv(&msg, in_socket_, 0);
         messages_.push_back(msg);
     }
-    while ( ! zmq_msg_more(&msg) );
+    while ( zmq_msg_more(&msg) );
 
     return true;
 }
@@ -91,6 +92,8 @@ bool Socket::PopMsg(zmq_msg_t& msg)
 {
     if ( messages_.empty() )
         return false;
+
+    zmq_msg_init(&msg);
 
     zmq_msg_copy(&msg, &messages_.front());
 
