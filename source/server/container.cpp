@@ -7,7 +7,7 @@ using namespace zero_cache;
 
 static void RemoveFrame(Container::DataMap::value_type frame_pair)
 {
-    zframe_destroy(&frame_pair.second);
+    zmq_msg_close(&frame_pair.second);
 }
 
 Container::~Container()
@@ -16,21 +16,22 @@ Container::~Container()
              RemoveFrame);
 }
 
-void Container::WriteData(string& key, zframe_t* data)
+void Container::WriteData(string& key, zmq_msg_t& data)
 {
     if ( map_.count(key) != 0 )
-        zframe_reset(map_[key], zframe_data(data), zframe_size(data));
+        zmq_msg_copy(&map_[key], &data);
     else
     {
-        zframe_t* frame = zframe_dup(data);
-        map_.insert(DataMap::value_type(key, frame));
+        zmq_msg_t msg;
+        zmq_msg_copy(&msg, &data);
+        map_.insert(DataMap::value_type(key, msg));
     }
 }
 
-zframe_t* Container::ReadData(string& key)
+zmq_msg_t* Container::ReadData(string& key)
 {
     if ( map_.count(key) != 0 )
-        return map_[key];
+        return &map_[key];
     else
         return NULL;
 }
