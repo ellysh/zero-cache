@@ -105,7 +105,7 @@ void Registrar::SendAnswer(string& key)
     zmq_msg_t port_msg;
     zmq_msg_init_data(&port_msg, &port, sizeof(port), NULL, NULL);
 
-    socket_.SendMsg(key_msg, ZFRAME_MORE);
+    socket_.SendMsg(key_msg, ZMQ_SNDMORE);
     socket_.SendMsg(port_msg, 0);
 
     Log() << "Registrar::ProcessMessage() - send answer = " << port << " to " << connection.GetString() << endl;

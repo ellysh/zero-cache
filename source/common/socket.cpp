@@ -57,6 +57,7 @@ void Socket::BindIn(Connection& connection)
 
 bool Socket::ReceiveMsg(long timeout)
 {
+    /* FIXME: Clear the messages correctly here */
     messages_.clear();
 
     zmq_msg_t msg;
@@ -104,7 +105,14 @@ bool Socket::PopMsg(zmq_msg_t& msg)
 
 void Socket::SendMsg(zmq_msg_t& msg, int flags)
 {
-    zmq_msg_send(&msg, out_socket_, flags);
+    size_t size = zmq_msg_size(&msg);
+
+    zmq_msg_t send;
+    zmq_msg_init_size(&send, size);
+
+    memcpy(zmq_msg_data(&send), zmq_msg_data(&msg), size);
+
+    zmq_msg_send(&send, out_socket_, flags);
 }
 
 void Socket::SetQueueSize(int size)
