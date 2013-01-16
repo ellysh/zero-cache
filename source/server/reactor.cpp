@@ -22,38 +22,35 @@ void Reactor::Start()
         ProcessMessage();
 }
 
-static Command DecodeCommand(zframe_t* frame)
+static Command DecodeCommand(zmq_msg_t& msg)
 {
-    Command command = kWrite;
-    zframe_t* set_frame = zframe_new(&command, sizeof(Command));
+    Command* command = (Command*)zmq_msg_data(&msg);
 
-    if ( zframe_eq(frame, set_frame) )
-        command = kWrite;
-    else
-        command = kRead;
+    assert( command != NULL );
 
-    zframe_destroy(&set_frame);
-
-    return command;
+    return *command;
 }
 
 void Reactor::ProcessMessage()
 {
     socket_.ReceiveMsg();
 
-    zframe_t* command = socket_.PopFrame();
-    zframe_t* key =  socket_.PopFrame();
-    string key_str = FrameToString(key);
+    zmq_msg_t command;
+    socket_.PopMsg(command);
+    zmq_msg_t key;
+    socket_.PopMsg(key);
 
-    zframe_t* id_frame =  socket_.PopFrame();
-    if ( id_frame == NULL )
-        return;
-    port_t id = FrameToPort(id_frame);
+    string key_str = MsgToString(key);
 
-    zframe_t* host_frame =  socket_.PopFrame();
-    if ( host_frame == NULL )
+    zmq_msg_t id_msg;
+    if ( ! socket_.PopMsg(id_msg) )
         return;
-    string host = FrameToString(host_frame);
+    port_t id = MsgToPort(id_msg);
+
+    zmq_msg_t host_msg;
+    if ( ! socket_.PopMsg(host_msg) )
+        return;
+    string host = MsgToString(host_msg);
 
     connection_.SetHost(host);
     out_sockets_.CreateSocket(connection_, id);
@@ -64,42 +61,44 @@ void Reactor::ProcessMessage()
     if ( DecodeCommand(command) == kRead )
         ReadData(key_str, id);
 
-    zframe_destroy(&key);
-    zframe_destroy(&command);
+    zmq_msg_close(&key);
+    zmq_msg_close(&command);
 }
 
 void Reactor::WriteData(string& key)
 {
-    zframe_t* data = socket_.PopFrame();
+    zmq_msg_t data;
+    socket_.PopMsg(data);
 
     Log() << "write: key = " << key;
-    PrintFrame(data);
+    PrintMsg(data);
 
     container_.WriteData(key, data);
-    zframe_destroy(&data);
+    zmq_msg_close(&data);
 }
 
 void Reactor::ReadData(string& key, port_t id)
 {
     Log() << "read: key = " << key;
 
-    zframe_t* data = container_.ReadData(key);
+    zmq_msg_t* data = container_.ReadData(key);
     bool is_data_empty = false;
 
     if ( data == NULL )
     {
         is_data_empty = true;
-        data = zframe_new(NULL, 0);
+        zmq_msg_init(data);
     }
 
-    PrintFrame(data);
+    PrintMsg(*data);
 
-    zframe_t* key_frame = zframe_new(key.c_str(), key.size());
-    out_sockets_.GetSocket(id).SendFrame(key_frame, ZFRAME_MORE);
-    out_sockets_.GetSocket(id).SendFrame(data, ZFRAME_REUSE);
+    zmq_msg_t key_msg;
+    zmq_msg_init_data(&key_msg, (void*)key.c_str(), key.size(), NULL, NULL);
+    out_sockets_.GetSocket(id).SendMsg(key_msg, ZMQ_SNDMORE);
+    out_sockets_.GetSocket(id).SendMsg(*data, 0);
 
     if ( is_data_empty )
-        zframe_destroy(&data);
+        zmq_msg_close(data);
 }
 
 void Reactor::SetQueueSize(int size)
