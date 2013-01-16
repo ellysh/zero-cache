@@ -48,6 +48,5 @@ void Debug::PrintMsg(zmq_msg_t& msg)
 #ifdef __DEBUG__
     char* data_hex = (char*)zmq_msg_data(&msg);
     file_ << " data = " << data_hex << endl;
-    free(data_hex);
 #endif
 }
