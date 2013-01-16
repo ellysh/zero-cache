@@ -20,7 +20,7 @@ string zero_cache::MsgToString(zmq_msg_t& msg)
 {
     char* buffer =  (char*)zmq_msg_data(&msg);
     assert( buffer != NULL );
-    string result = buffer;
+    string result(buffer, zmq_msg_size(&msg));
 
     return result;
 }
