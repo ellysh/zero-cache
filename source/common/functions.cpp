@@ -53,3 +53,20 @@ port_t zero_cache::GenerateId(void* pointer)
 
     return result;
 }
+
+bool IsMsgEqual(zmq_msg_t& left, zmq_msg_t& right)
+{
+    size_t left_size = zmq_msg_size(&left);
+
+    if ( left_size != zmq_msg_size(&right) )
+        return false;
+
+    void* left_data = zmq_msg_data(&left);
+    void* right_data = zmq_msg_data(&right);
+    int is_not_equal = memcmp(left_data, right_data, left_size);
+
+    if ( is_not_equal )
+        return false;
+    else
+        return true;
+}

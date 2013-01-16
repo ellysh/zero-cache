@@ -27,11 +27,11 @@ public:
 
 private:
     Socket socket_;
-    zframe_t* host_frame_;
-    zframe_t* id_frame_;
-    zframe_t* command_frame_;
-    zframe_t* key_frame_;
-    zframe_t* data_frame_;
+    zmq_msg_t host_msg_;
+    zmq_msg_t id_msg_;
+    zmq_msg_t command_msg_;
+    zmq_msg_t key_msg_;
+    zmq_msg_t data_msg_;
 
     void SendReadRequest(std::string& key);
     void* ReceiveReadAnswer();

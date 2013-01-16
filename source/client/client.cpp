@@ -27,20 +27,20 @@ Client::Client(const char* log_file, Connection connection, SocketType type) : D
     socket_.BindIn(connection);
     socket_.SetQueueSize(10);
 
-    char empty;
-    id_frame_ = zframe_new(&id, sizeof(id));
-    command_frame_ = zframe_new(&empty, sizeof(empty));
-    key_frame_ = zframe_new(&empty, sizeof(empty));
-    data_frame_ = zframe_new(&empty, sizeof(empty));
+     zmq_msg_init(&host_msg_);
+     zmq_msg_init(&id_msg_);
+     zmq_msg_init(&command_msg_);
+     zmq_msg_init(&key_msg_);
+     zmq_msg_init(&data_msg_);
 }
 
 Client::~Client()
 {
-    zframe_destroy(&data_frame_);
-    zframe_destroy(&key_frame_);
-    zframe_destroy(&command_frame_);
-    zframe_destroy(&id_frame_);
-    zframe_destroy(&host_frame_);
+    zmq_msg_close(&data_msg_);
+    zmq_msg_close(&key_msg_);
+    zmq_msg_close(&command_msg_);
+    zmq_msg_close(&id_msg_);
+    zmq_msg_close(&host_msg_);
 }
 
 void Client::WriteData(string& key, void* data, size_t size)
@@ -49,15 +49,15 @@ void Client::WriteData(string& key, void* data, size_t size)
 
     Command command = kWrite;
 
-    zframe_reset(command_frame_, &command, sizeof(Command));
-    zframe_reset(key_frame_, key.c_str(), key.size());
-    zframe_reset(data_frame_, data, size);
+    zmq_msg_init_data(&command_msg_, &command, sizeof(Command), NULL, NULL);
+    zmq_msg_init_data(&key_msg_, (void*)key.c_str(), key.size(), NULL, NULL);
+    zmq_msg_init_data(&data_msg_, data, size, NULL, NULL);
 
-    socket_.SendFrame(command_frame_, ZFRAME_REUSE + ZFRAME_MORE);
-    socket_.SendFrame(key_frame_, ZFRAME_REUSE + ZFRAME_MORE);
-    socket_.SendFrame(id_frame_, ZFRAME_REUSE + ZFRAME_MORE);
-    socket_.SendFrame(host_frame_, ZFRAME_REUSE + ZFRAME_MORE);
-    socket_.SendFrame(data_frame_, ZFRAME_REUSE);
+    socket_.SendMsg(command_msg_, ZMQ_SNDMORE);
+    socket_.SendMsg(key_msg_, ZMQ_SNDMORE);
+    socket_.SendMsg(id_msg_, ZMQ_SNDMORE);
+    socket_.SendMsg(host_msg_, ZMQ_SNDMORE);
+    socket_.SendMsg(data_msg_, 0);
 }
 
 void* Client::ReadData(string& key)
@@ -82,13 +82,13 @@ void Client::SendReadRequest(string& key)
 {
     Command command = kRead;
 
-    zframe_reset(command_frame_, &command, sizeof(Command));
-    zframe_reset(key_frame_, key.c_str(), key.size());
+    zmq_msg_init_data(&command_msg_, &command, sizeof(Command), NULL, NULL);
+    zmq_msg_init_data(&key_msg_, (void*)key.c_str(), key.size(), NULL, NULL);
 
-    socket_.SendFrame(command_frame_, ZFRAME_REUSE + ZFRAME_MORE);
-    socket_.SendFrame(key_frame_, ZFRAME_REUSE + ZFRAME_MORE);
-    socket_.SendFrame(id_frame_, ZFRAME_REUSE + ZFRAME_MORE);
-    socket_.SendFrame(host_frame_, ZFRAME_REUSE);
+    socket_.SendMsg(command_msg_, ZMQ_SNDMORE);
+    socket_.SendMsg(key_msg_, ZMQ_SNDMORE);
+    socket_.SendMsg(id_msg_, ZMQ_SNDMORE);
+    socket_.SendMsg(host_msg_, 0);
 }
 
 void* Client::ReceiveReadAnswer()
@@ -96,25 +96,25 @@ void* Client::ReceiveReadAnswer()
     if ( ! socket_.ReceiveMsg(kReadAnswerTimeout) )
         return NULL;
 
-    zframe_t* key_frame = socket_.PopFrame();
+    zmq_msg_t key_frame = socket_.PopMsg();
 
-    if ( ! zframe_eq(key_frame, key_frame_) )
+    if ( ! IsMsgEqual(key_frame, key_msg_) )
     {
-        zframe_destroy(&key_frame);
+        zmq_msg_close(&key_frame);
         return NULL;
     }
 
-    zframe_t* frame = socket_.PopFrame();
-    void* data = malloc(zframe_size(frame));
-    memcpy(data, zframe_data(frame), zframe_size(frame));
-    zframe_destroy(&frame);
+    zmq_msg_t msg = socket_.PopMsg();
+    void* data = malloc(zmq_msg_size(&msg));
+    memcpy(data, zmq_msg_data(&msg), zmq_msg_size(&msg));
+    zmq_msg_close(&msg);
 
     return data;
 }
 
 void Client::SetHost(string host)
 {
-    host_frame_ = zframe_new(host.c_str(), host.size());
+    zmq_msg_init_data(&host_msg_, (void*)host.c_str(), host.size(), NULL, NULL);
 }
 
 void Client::SetQueueSize(int size)
