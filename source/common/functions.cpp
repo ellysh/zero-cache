@@ -17,17 +17,26 @@ port_t zero_cache::FrameToPort(zframe_t* frame)
     return *result;
 }
 
-port_t zero_cache::MsgToPort(zmq_msg_t& frame)
+port_t zero_cache::MsgToPort(zmq_msg_t& msg)
 {
-    port_t* result = (port_t*)zmq_msg_data(&frame);
+    port_t* result = (port_t*)zmq_msg_data(&msg);
 
     return *result;
 }
 
 /* FIXME: Remove this function */
-std::string zero_cache::FrameToString(zframe_t* frame)
+string zero_cache::FrameToString(zframe_t* frame)
 {
     char* buffer =  zframe_strdup(frame);
+    string result = buffer;
+    free(buffer);
+
+    return result;
+}
+
+string zero_cache::MsgToString(zmq_msg_t& msg)
+{
+    char* buffer =  (char*)zmq_msg_data(&msg);
     string result = buffer;
     free(buffer);
 
