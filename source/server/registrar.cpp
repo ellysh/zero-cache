@@ -53,8 +53,9 @@ void Registrar::ProcessMessage()
 {
     socket_.ReceiveMsg();
 
-    zframe_t* key_frame = socket_.PopFrame();
-    string key = FrameToString(key_frame);
+    zmq_msg_t key_msg;
+    socket_.PopMsg(key_msg);
+    string key = MsgToString(key_msg);
 
     StartReactor(key);
 
@@ -83,11 +84,13 @@ void Registrar::StartReactor(string& key)
 
 void Registrar::SendAnswer(string& key)
 {
-    zframe_t* id_frame = socket_.PopFrame();
-    port_t id = FrameToPort(id_frame);
+    zmq_msg_t id_msg;
+    socket_.PopMsg(id_msg);
+    port_t id = MsgToPort(id_msg);
 
-    zframe_t* host_frame = socket_.PopFrame();
-    string host = FrameToString(host_frame);
+    zmq_msg_t host_msg;
+    socket_.PopMsg(host_msg);
+    string host = MsgToString(host_msg);
 
     Connection connection(connection_);
     connection.SetPort(id);
@@ -96,10 +99,14 @@ void Registrar::SendAnswer(string& key)
 
     port_t port = key_list_->GetPort(key);
 
-    zframe_t* key_frame = zframe_new(key.c_str(), key.size());
-    zframe_t* port_frame = zframe_new(&port, sizeof(port));
-    socket_.SendFrame(key_frame, ZFRAME_MORE);
-    socket_.SendFrame(port_frame, 0);
+    zmq_msg_t key_msg;
+    zmq_msg_init_data(&key_msg, (void*)key.c_str(), key.size(), NULL, NULL);
+
+    zmq_msg_t port_msg;
+    zmq_msg_init_data(&port_msg, &port, sizeof(port), NULL, NULL);
+
+    socket_.SendMsg(key_msg, ZFRAME_MORE);
+    socket_.SendMsg(port_msg, 0);
 
     Log() << "Registrar::ProcessMessage() - send answer = " << port << " to " << connection.GetString() << endl;
 }
