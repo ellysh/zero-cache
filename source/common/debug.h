@@ -17,7 +17,6 @@ public:
 
     std::ostream& Log();
     void Log(const char* fmt, ...);
-    void PrintFrame(zframe_t* frame);
     void PrintMsg(zmq_msg_t& msg);
 
 private:
