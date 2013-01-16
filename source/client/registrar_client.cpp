@@ -80,46 +80,51 @@ void RegistrarClient::AddKey(string& key)
 port_t RegistrarClient::ReceivePort(string& key)
 {
     port_t port = kErrorPort;
-    zframe_t* key_frame = zframe_new(key.c_str(), key.size());
-    zframe_t* id_frame = zframe_new(&id_, sizeof(id_));
-    zframe_t* host_frame = zframe_new(host_.c_str(), host_.size());
+    zmq_msg_t key_msg;
+    zmq_msg_init_data(&key_msg, (void*)key.c_str(), key.size(), NULL, NULL);
+
+    zmq_msg_t id_msg;
+    zmq_msg_init_data(&id_msg, &id_, sizeof(id_), NULL, NULL);
+
+    zmq_msg_t host_msg;
+    zmq_msg_init_data(&host_msg, (void*)host_.c_str(), host_.size(), NULL, NULL);
 
     while ( port == kErrorPort )
     {
-        socket_.SendFrame(key_frame, ZFRAME_REUSE + ZFRAME_MORE);
-        socket_.SendFrame(id_frame, ZFRAME_REUSE + ZFRAME_MORE);
-        socket_.SendFrame(host_frame, ZFRAME_REUSE);
-        port = ReceiveAnswer(key_frame);
+        socket_.SendMsg(key_msg, ZMQ_SNDMORE);
+        socket_.SendMsg(id_msg, ZMQ_SNDMORE);
+        socket_.SendMsg(host_msg, 0);
+        port = ReceiveAnswer(key_msg);
 
         if ( port == kErrorPort )
             usleep((rand() % 1000) * 100);
     }
 
-    zframe_destroy(&host_frame);
-    zframe_destroy(&id_frame);
-    zframe_destroy(&key_frame);
+    zmq_msg_close(&host_msg);
+    zmq_msg_close(&id_msg);
+    zmq_msg_close(&key_msg);
 
     return port;
 }
 
-port_t RegistrarClient::ReceiveAnswer(zframe_t* key)
+port_t RegistrarClient::ReceiveAnswer(zmq_msg_t& key)
 {
     if ( ! socket_.ReceiveMsg(kReadAnswerTimeout) )
         return kErrorPort;
 
-    zframe_t* key_frame = socket_.PopFrame();
+    zmq_msg_t key_msg = socket_.PopMsg();
 
-    if ( ! zframe_eq(key_frame, key) )
+    if ( ! IsMsgEqual(key_msg, key) )
     {
-        zframe_destroy(&key_frame);
+        zmq_msg_close(&key_msg);
         return kErrorPort;
     }
 
-    zframe_t* connection_frame = socket_.PopFrame();
-    port_t port = FrameToPort(connection_frame);
+    zmq_msg_t connection_msg = socket_.PopMsg();
+    port_t port = MsgToPort(connection_msg);
 
-    zframe_destroy(&key_frame);
-    zframe_destroy(&connection_frame);
+    zmq_msg_close(&key_msg);
+    zmq_msg_close(&connection_msg);
 
     return port;
 }

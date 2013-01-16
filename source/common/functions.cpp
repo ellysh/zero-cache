@@ -9,6 +9,7 @@ using namespace zero_cache;
 
 static const size_t kFileNamePos = 6;
 
+/* FIXME: Remove this function */
 port_t zero_cache::FrameToPort(zframe_t* frame)
 {
     port_t* result = (port_t*)zframe_data(frame);
@@ -16,6 +17,14 @@ port_t zero_cache::FrameToPort(zframe_t* frame)
     return *result;
 }
 
+port_t zero_cache::MsgToPort(zmq_msg_t& frame)
+{
+    port_t* result = (port_t*)zmq_msg_data(&frame);
+
+    return *result;
+}
+
+/* FIXME: Remove this function */
 std::string zero_cache::FrameToString(zframe_t* frame)
 {
     char* buffer =  zframe_strdup(frame);
@@ -54,7 +63,7 @@ port_t zero_cache::GenerateId(void* pointer)
     return result;
 }
 
-bool IsMsgEqual(zmq_msg_t& left, zmq_msg_t& right)
+bool zero_cache::IsMsgEqual(zmq_msg_t& left, zmq_msg_t& right)
 {
     size_t left_size = zmq_msg_size(&left);
 

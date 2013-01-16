@@ -35,7 +35,7 @@ private:
     void AddKey(std::string& key);
     Client* GetClient(std::string& key);
     port_t ReceivePort(std::string& key);
-    port_t ReceiveAnswer(zframe_t* key);
+    port_t ReceiveAnswer(zmq_msg_t& key);
 };
 
 }
