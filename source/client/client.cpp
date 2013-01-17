@@ -15,8 +15,8 @@ Client::Client(const char* log_file, Connection connection, SocketType type) : D
     Log() << "Client::Client() - connect " << connection.GetString() << endl;
     socket_.ConnectOut(connection);
 
-    port_t id = GenerateId(this);
-    connection.SetPort(id);
+    port_t* id = new port_t(GenerateId(this));
+    connection.SetPort(*id);
 
     SetHost(connection.GetHost());
 
@@ -27,7 +27,7 @@ Client::Client(const char* log_file, Connection connection, SocketType type) : D
     socket_.BindIn(connection);
     socket_.SetQueueSize(10);
 
-    zmq_msg_init_data(&id_msg_, &id, sizeof(id), NULL, NULL);
+    zmq_msg_init_data(&id_msg_, id, sizeof(*id), MsgDataFree, NULL);
 
     zmq_msg_init(&command_msg_);
     zmq_msg_init(&key_msg_);

@@ -70,3 +70,8 @@ bool zero_cache::IsMsgEqual(zmq_msg_t& left, zmq_msg_t& right)
     else
         return true;
 }
+
+void zero_cache::MsgDataFree(void* data, void* hint)
+{
+    free(data);
+}
