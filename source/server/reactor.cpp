@@ -87,6 +87,7 @@ void Reactor::ReadData(string& key, port_t id)
     if ( data == NULL )
     {
         is_data_empty = true;
+        data = new zmq_msg_t();
         zmq_msg_init(data);
     }
 
@@ -98,7 +99,10 @@ void Reactor::ReadData(string& key, port_t id)
     out_sockets_.GetSocket(id).SendMsg(*data, 0);
 
     if ( is_data_empty )
+    {
         zmq_msg_close(data);
+        delete data;
+    }
 }
 
 void Reactor::SetQueueSize(int size)
