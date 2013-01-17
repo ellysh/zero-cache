@@ -49,15 +49,17 @@ void Client::WriteData(string& key, void* data, size_t size)
 
     Command command = kWrite;
 
-    zmq_msg_init_data(&command_msg_, &command, sizeof(Command), NULL, NULL);
-    zmq_msg_init_data(&key_msg_, (void*)key.c_str(), key.size(), NULL, NULL);
-    zmq_msg_init_data(&data_msg_, data, size, NULL, NULL);
+    MsgInitData(command_msg_, &command, sizeof(Command));
+    MsgInitString(key_msg_, key);
+    MsgInitData(data_msg_, data, size);
 
     socket_.SendMsg(command_msg_, ZMQ_SNDMORE);
     socket_.SendMsg(key_msg_, ZMQ_SNDMORE);
     socket_.SendMsg(id_msg_, ZMQ_SNDMORE);
     socket_.SendMsg(host_msg_, ZMQ_SNDMORE);
     socket_.SendMsg(data_msg_, 0);
+
+    zmq_msg_close(&data_msg_);
 }
 
 void* Client::ReadData(string& key)
