@@ -75,3 +75,15 @@ void zero_cache::MsgDataFree(void* data, void* hint)
 {
     free(data);
 }
+
+void zero_cache::MsgInitString(zmq_msg_t& msg, string& str)
+{
+    MsgInitData(msg, (void*)str.c_str(), str.size());
+}
+
+void zero_cache::MsgInitData(zmq_msg_t& msg, void* data, size_t size)
+{
+    zmq_msg_init_size(&msg, size);
+
+    memcpy(zmq_msg_data(&msg), data, size);
+}

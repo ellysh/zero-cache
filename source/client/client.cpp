@@ -116,10 +116,7 @@ void* Client::ReceiveReadAnswer()
 
 void Client::SetHost(string& host)
 {
-    size_t size = host.size();
-    zmq_msg_init_size(&host_msg_, host.size());
-
-    memcpy(zmq_msg_data(&host_msg_), host.c_str(), size);
+    MsgInitString(host_msg_, host);
 }
 
 void Client::SetQueueSize(int size)
