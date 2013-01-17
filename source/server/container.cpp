@@ -5,15 +5,15 @@
 using namespace std;
 using namespace zero_cache;
 
-static void RemoveFrame(Container::DataMap::value_type frame_pair)
+static void RemoveMsg(Container::DataMap::value_type msg_pair)
 {
-    zmq_msg_close(&frame_pair.second);
+    zmq_msg_close(&msg_pair.second);
 }
 
 Container::~Container()
 {
     for_each(map_.begin(), map_.end(),
-             RemoveFrame);
+             RemoveMsg);
 }
 
 void Container::WriteData(string& key, zmq_msg_t& data)
