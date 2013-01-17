@@ -38,6 +38,8 @@ private:
     void* out_socket_;
     zmq_pollitem_t items_[1];
 
+    void ClearMessages();
+
     DISALLOW_COPY_AND_ASSIGN(Socket)
 };
 

@@ -1,5 +1,7 @@
 #include "socket.h"
 
+#include <algorithm>
+
 #include "zsignal.h"
 #include "functions.h"
 #include "connection.h"
@@ -29,10 +31,24 @@ Socket::Socket(SocketType type)
 
 Socket::~Socket()
 {
-    /* FIXME: Clear the messages_ list correctly */
+    ClearMessages();
+
     zsocket_destroy(context_, out_socket_);
     zsocket_destroy(context_, in_socket_);
     zctx_destroy(&context_);
+}
+
+static void CloseMessage(zmq_msg_t& msg)
+{
+    zmq_msg_close(&msg);
+}
+
+void Socket::ClearMessages()
+{
+    for_each(messages_.begin(), messages_.end(),
+             CloseMessage);
+
+    messages_.clear();
 }
 
 static Connection IncrementPort(Connection& connection)
@@ -57,8 +73,7 @@ void Socket::BindIn(Connection& connection)
 
 bool Socket::ReceiveMsg(long timeout)
 {
-    /* FIXME: Clear the messages correctly here */
-    messages_.clear();
+    ClearMessages();
 
     zmq_msg_t msg;
     zmq_msg_init(&msg);
