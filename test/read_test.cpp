@@ -21,6 +21,7 @@ void* WriteLoop(void* args)
 
         result = static_cast<char*>(client.ReadData(key));
         assert( ! memcmp(result, key, sizeof(result)) );
+        free(result);
         usleep(1000);
     }
 }

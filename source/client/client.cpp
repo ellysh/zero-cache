@@ -84,8 +84,8 @@ void Client::SendReadRequest(string& key)
 {
     Command command = kRead;
 
-    zmq_msg_init_data(&command_msg_, &command, sizeof(Command), NULL, NULL);
-    zmq_msg_init_data(&key_msg_, (void*)key.c_str(), key.size(), NULL, NULL);
+    MsgInitData(command_msg_, &command, sizeof(Command));
+    MsgInitString(key_msg_, key);
 
     socket_.SendMsg(command_msg_, ZMQ_SNDMORE);
     socket_.SendMsg(key_msg_, ZMQ_SNDMORE);
