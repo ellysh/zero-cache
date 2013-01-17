@@ -22,7 +22,7 @@ public:
     void WriteData(std::string& key, void* data, size_t size);
     void* ReadData(std::string& key);
 
-    void SetHost(std::string host);
+    void SetHost(std::string& host);
     void SetQueueSize(int size);
 
 private:
