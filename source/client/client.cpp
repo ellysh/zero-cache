@@ -27,11 +27,11 @@ Client::Client(const char* log_file, Connection connection, SocketType type) : D
     socket_.BindIn(connection);
     socket_.SetQueueSize(10);
 
-     zmq_msg_init(&host_msg_);
-     zmq_msg_init(&id_msg_);
-     zmq_msg_init(&command_msg_);
-     zmq_msg_init(&key_msg_);
-     zmq_msg_init(&data_msg_);
+    zmq_msg_init_data(&id_msg_, &id, sizeof(id), NULL, NULL);
+
+    zmq_msg_init(&command_msg_);
+    zmq_msg_init(&key_msg_);
+    zmq_msg_init(&data_msg_);
 }
 
 Client::~Client()

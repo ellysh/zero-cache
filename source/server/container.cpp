@@ -22,8 +22,12 @@ void Container::WriteData(string& key, zmq_msg_t& data)
         zmq_msg_copy(&map_[key], &data);
     else
     {
+        size_t size = zmq_msg_size(&data);
+
         zmq_msg_t msg;
-        zmq_msg_copy(&msg, &data);
+        zmq_msg_init_size(&msg, size);
+        memcpy(zmq_msg_data(&msg), zmq_msg_data(&data), size);
+
         map_.insert(DataMap::value_type(key, msg));
     }
 }
