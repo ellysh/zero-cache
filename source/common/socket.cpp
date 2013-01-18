@@ -1,6 +1,7 @@
 #include "socket.h"
 
 #include <algorithm>
+#include <string.h>
 
 #include "interrupt_signal.h"
 #include "functions.h"
@@ -11,18 +12,18 @@ using namespace zero_cache;
 
 Socket::Socket(SocketType type)
 {
-    context_ = zctx_new();
+    context_ = zmq_ctx_new();
 
     if ( type == kDealer )
     {
-        in_socket_ = zsocket_new(context_, ZMQ_DEALER);
-        out_socket_ = zsocket_new(context_, ZMQ_DEALER);
+        in_socket_ = zmq_socket(context_, ZMQ_DEALER);
+        out_socket_ = zmq_socket(context_, ZMQ_DEALER);
     }
     else if (type == kPubSub)
     {
-        in_socket_ = zsocket_new(context_, ZMQ_SUB);
+        in_socket_ = zmq_socket(context_, ZMQ_SUB);
         zmq_setsockopt(in_socket_, ZMQ_SUBSCRIBE, "", 0);
-        out_socket_ = zsocket_new(context_, ZMQ_PUB);
+        out_socket_ = zmq_socket(context_, ZMQ_PUB);
     }
 
     zmq_pollitem_t items[1] = { { in_socket_, 0, ZMQ_POLLIN, 0 } };
@@ -33,9 +34,9 @@ Socket::~Socket()
 {
     ClearMessages();
 
-    zsocket_destroy(context_, out_socket_);
-    zsocket_destroy(context_, in_socket_);
-    zctx_destroy(&context_);
+    zmq_close(out_socket_);
+    zmq_close(in_socket_);
+    zmq_ctx_destroy(context_);
 }
 
 static void CloseMessage(zmq_msg_t& msg)
@@ -62,12 +63,12 @@ static Connection IncrementPort(Connection& connection)
 
 void Socket::ConnectOut(Connection& connection)
 {
-    zsocket_connect(out_socket_, connection.GetString().c_str());
+    zmq_connect(out_socket_, connection.GetString().c_str());
 }
 
 void Socket::BindIn(Connection& connection)
 {
-    zsocket_bind(in_socket_, connection.GetString().c_str());
+    zmq_bind(in_socket_, connection.GetString().c_str());
     SetPermission(connection.GetString().c_str());
 }
 
@@ -132,6 +133,9 @@ void Socket::SendMsg(zmq_msg_t& msg, int flags)
 
 void Socket::SetQueueSize(int size)
 {
-    zsocket_set_hwm(in_socket_, size);
-    zsocket_set_hwm(out_socket_, size);
+    zmq_setsockopt(in_socket_, ZMQ_SNDHWM, &size, sizeof(size));
+    zmq_setsockopt(in_socket_, ZMQ_RCVHWM, &size, sizeof(size));
+
+    zmq_setsockopt(out_socket_, ZMQ_SNDHWM, &size, sizeof(size));
+    zmq_setsockopt(out_socket_, ZMQ_RCVHWM, &size, sizeof(size));
 }

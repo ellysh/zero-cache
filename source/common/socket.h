@@ -3,7 +3,7 @@
 
 #include <string>
 #include <list>
-#include <czmq.h>
+#include <zmq.h>
 
 #include "types_zcache.h"
 
@@ -33,7 +33,7 @@ public:
 
 private:
     MsgList messages_;
-    zctx_t* context_;
+    void* context_;
     void* in_socket_;
     void* out_socket_;
     zmq_pollitem_t items_[1];
