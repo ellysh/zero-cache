@@ -1,8 +1,7 @@
 #include <iostream>
 
-#include <czmq.h>
-
 #include "registrar_client.h"
+#include "thread.h"
 
 using namespace std;
 using namespace zero_cache;
@@ -31,12 +30,12 @@ void* ReadOperation(void* args)
 
 void StartWriteThread(const char* args)
 {
-    zthread_new(WriteOperation, const_cast<char*>(args));
+    CreateThread(WriteOperation, const_cast<char*>(args));
 }
 
 void StartReadThread(const char* args)
 {
-    zthread_new(ReadOperation, const_cast<char*>(args));
+    CreateThread(ReadOperation, const_cast<char*>(args));
 }
 
 int main()

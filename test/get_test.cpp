@@ -1,7 +1,5 @@
 #include <iostream>
 
-#include <czmq.h>
-
 #include "registrar_client.h"
 #include "speed_test.h"
 
