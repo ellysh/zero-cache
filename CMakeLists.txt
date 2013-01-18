@@ -11,7 +11,6 @@ project(zero-cache)
 
 if(UNIX)
   find_package(ZMQ REQUIRED)
-  find_package(CZMQ REQUIRED)
 endif(UNIX)
 
 if(UNIX)

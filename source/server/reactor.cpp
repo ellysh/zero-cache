@@ -1,6 +1,6 @@
 #include "reactor.h"
 
-#include <czmq.h>
+#include <assert.h>
 
 #include "interrupt_signal.h"
 #include "functions.h"

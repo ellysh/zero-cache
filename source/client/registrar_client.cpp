@@ -1,5 +1,8 @@
 #include "registrar_client.h"
 
+#include <string.h>
+#include <stdlib.h>
+
 #include "client.h"
 #include "functions.h"
 

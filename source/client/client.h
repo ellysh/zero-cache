@@ -2,7 +2,7 @@
 #define CLIENT_H
 
 #include <string>
-#include <czmq.h>
+#include <zmq.h>
 
 #include "debug.h"
 #include "types_zcache.h"

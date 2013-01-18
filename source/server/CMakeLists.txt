@@ -14,7 +14,7 @@ set(zero_cached_SRCS
 add_executable(zero-cache ${zero_cached_SRCS})
 
 if(UNIX)
-    target_link_libraries(zero-cache common ${ZMQ_LIBRARY} ${CZMQ_LIBRARY})
+    target_link_libraries(zero-cache common ${ZMQ_LIBRARY})
 endif(UNIX)
 
 install(TARGETS zero-cache DESTINATION bin)

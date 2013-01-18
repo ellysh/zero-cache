@@ -12,7 +12,7 @@ set(common_LIB_SRCS
 add_library(common STATIC ${common_LIB_SRCS})
 
 if(UNIX)
-    target_link_libraries(common pthread ${ZMQ_LIBRARY} ${CZMQ_LIBRARY})
+    target_link_libraries(common pthread ${ZMQ_LIBRARY})
 endif(UNIX)
 
 install(FILES

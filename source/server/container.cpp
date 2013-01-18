@@ -1,6 +1,7 @@
 #include "container.h"
 
 #include <algorithm>
+#include <string.h>
 
 using namespace std;
 using namespace zero_cache;

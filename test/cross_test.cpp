@@ -1,5 +1,9 @@
 #include <iostream>
 
+#include <string.h>
+#include <stdlib.h>
+#include <assert.h>
+
 #include "registrar_client.h"
 #include "thread.h"
 
