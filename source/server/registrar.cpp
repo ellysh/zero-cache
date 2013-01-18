@@ -1,6 +1,6 @@
 #include "registrar.h"
 
-#include "zsignal.h"
+#include "interrupt_signal.h"
 #include "reactor.h"
 #include "key_list.h"
 #include "functions.h"

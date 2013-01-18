@@ -2,7 +2,7 @@
 
 #include <czmq.h>
 
-#include "zsignal.h"
+#include "interrupt_signal.h"
 #include "functions.h"
 #include "connection.h"
 
