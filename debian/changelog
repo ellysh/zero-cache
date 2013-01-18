@@ -1,3 +1,10 @@
+zero-cache (1.1) precise; urgency=low
+
+  * Don't use the CZMQ interface library
+  * Fix the memory leaks
+
+ -- Ilya Shpigor <petrsum@gmail.com>  Fri, 18 Jan 2013 15:47:46 +0400
+
 zero-cache (1.0) precise; urgency=low
 
   * Fix working with the TCP sockets

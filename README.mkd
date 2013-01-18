@@ -1,4 +1,4 @@
-Zero-cache 1.0 version
+Zero-cache 1.1 version
 ======================
 
 INTRODUCTION
@@ -13,9 +13,9 @@ for requests synchronization. All synchronization is performed by messages proce
 BUILDING
 --------
 
-You need the CMake build system, C++ compiler and libraries ZMQ, CZMQ to build this software.
+You need the CMake build system, C++ compiler and ZMQ library to build this software.
 
-1. Copy CMake find modules for ZMQ and CZMQ libraries to your CMake modules system path.<br/>
+1. Copy CMake find module for ZMQ library to your CMake modules system path.<br/>
 This is example for Ubuntu users:
 
     $ cp *.cmake /usr/share/cmake-2.8/Modules

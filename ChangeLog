@@ -1,3 +1,11 @@
+* zero-cache 1.1
+	- Don't use the CZMQ interface library
+	- Fix the memory leaks
+
+* zero-cache 1.0
+	- Fix working with the TCP sockets
+	- Add CMake find modules
+
 * zero-cache 1.0
 	- Fix working with the TCP sockets
 	- Add CMake find modules
