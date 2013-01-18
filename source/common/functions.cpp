@@ -2,6 +2,8 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <assert.h>
+#include <string.h>
 #include <sys/stat.h>
 
 using namespace std;

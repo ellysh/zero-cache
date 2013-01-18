@@ -2,7 +2,7 @@
 #define FUNCTIONS_H
 
 #include <string>
-#include <czmq.h>
+#include <zmq.h>
 
 #include "types_zcache.h"
 
