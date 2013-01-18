@@ -6,7 +6,8 @@ set(common_LIB_SRCS
     debug.cpp
     functions.cpp
     socket.cpp
-    speaker.cpp)
+    speaker.cpp
+    thread.cpp)
 
 add_library(common STATIC ${common_LIB_SRCS})
 

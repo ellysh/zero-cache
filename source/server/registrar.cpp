@@ -5,6 +5,7 @@
 #include "key_list.h"
 #include "functions.h"
 #include "connection.h"
+#include "thread.h"
 
 using namespace std;
 using namespace zero_cache;
@@ -76,9 +77,9 @@ void Registrar::StartReactor(string& key)
     connection.SetPort(port);
 
     string* connection_str = new string(connection.GetString());
-    Log() << "zthread_new() - connection = " << connection.GetString() << endl;
+    Log() << "CreateThread() - connection = " << connection.GetString() << endl;
 
-    zthread_new(ReactorStart, (void*)connection_str);
+    CreateThread(ReactorStart, (void*)connection_str);
     ports_.insert(port);
 }
 
