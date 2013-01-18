@@ -49,7 +49,7 @@ void Client::WriteData(string& key, void* data, size_t size)
 
     Command command = kWrite;
 
-    MsgInitData(command_msg_, &command, sizeof(Command));
+    MsgInitData(command_msg_, &command, sizeof(command));
     MsgInitString(key_msg_, key);
     MsgInitData(data_msg_, data, size);
 

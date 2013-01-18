@@ -100,10 +100,10 @@ void Registrar::SendAnswer(string& key)
     port_t port = key_list_->GetPort(key);
 
     zmq_msg_t key_msg;
-    zmq_msg_init_data(&key_msg, (void*)key.c_str(), key.size(), NULL, NULL);
+    MsgInitString(key_msg, key);
 
     zmq_msg_t port_msg;
-    zmq_msg_init_data(&port_msg, &port, sizeof(port), NULL, NULL);
+    MsgInitData(port_msg, &port, sizeof(port));
 
     socket_.SendMsg(key_msg, ZMQ_SNDMORE);
     socket_.SendMsg(port_msg, 0);
