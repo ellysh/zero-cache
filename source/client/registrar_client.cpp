@@ -6,7 +6,7 @@
 #include "client.h"
 #include "functions.h"
 
-#define STREAM Log()
+#define PRINTF Log
 #include "speed_test.h"
 
 using namespace std;
@@ -19,7 +19,7 @@ RegistrarClient::RegistrarClient(const char* log_file, Connection connection, So
 {
     srand(time(NULL));
 
-    Log() << "RegistrarClient::RegistrarClient() - connect to " << connection.GetString() << endl;
+    Log("RegistrarClient::RegistrarClient() - connect to %s\n", connection.GetString().c_str());
     socket_.ConnectOut(connection);
 
     id_ = GenerateId(this);
@@ -30,14 +30,14 @@ RegistrarClient::RegistrarClient(const char* log_file, Connection connection, So
     if ( connection.GetProtocol() == kTcpProtocol )
         connection.SetHost("*:");
 
-    Log() << "RegistrarClient::RegistrarClient() - bind to " << connection.GetString() << endl;
+    Log("RegistrarClient::RegistrarClient() - bind to %s\n", connection.GetString().c_str());
     socket_.BindIn(connection);
     socket_.SetQueueSize(1);
 }
 
 void RegistrarClient::WriteData(string key, void* data, size_t size)
 {
-    Log() << "RegistrarClient::WriteData() - key = " << key << " data_size = " << size << endl;
+    Log("RegistrarClient::WriteData() - key = %s data_size = %lu\n", key.c_str(), size);
 
     PRE_TIME_MEASURE("RegistrarClient::WriteData() ")
 
@@ -48,7 +48,7 @@ void RegistrarClient::WriteData(string key, void* data, size_t size)
 
 void* RegistrarClient::ReadData(string key)
 {
-    Log() << "RegistrarClient::ReadData() - key = " << key << endl;
+    Log("RegistrarClient::ReadData() - key = %s\n", key.c_str());
 
     PRE_TIME_MEASURE("RegistrarClient::ReadData() ")
 
@@ -73,7 +73,7 @@ void RegistrarClient::AddKey(string& key)
 
     int port = ReceivePort(key);
 
-    Log() << "RegistrarClient::AddKey() - add key = " << key << " port = " << port << endl;
+    Log("RegistrarClient::AddKey() - add key = %s port = %lu\n", key.c_str(), port);
 
     clients_.AddKey(key, port);
 

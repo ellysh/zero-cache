@@ -70,7 +70,7 @@ void Reactor::WriteData(string& key)
     zmq_msg_t data;
     socket_.PopMsg(data);
 
-    Log() << "write: key = " << key;
+    Log("write: key = %s", key.c_str());
     PrintMsg(data);
 
     container_.WriteData(key, data);
@@ -79,7 +79,7 @@ void Reactor::WriteData(string& key)
 
 void Reactor::ReadData(string& key, port_t id)
 {
-    Log() << "read: key = " << key;
+    Log("read: key = %s", key.c_str());
 
     zmq_msg_t* data = container_.ReadData(key);
     bool is_data_empty = false;

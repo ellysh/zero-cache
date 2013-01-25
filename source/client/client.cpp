@@ -15,7 +15,7 @@ Client::Client(const char* log_file, Connection connection, SocketType type) : D
 {
     srand(time(NULL));
 
-    Log() << "Client::Client() - connect " << connection.GetString() << endl;
+    Log("Client::Client() - connect %s\n", connection.GetString().c_str());
     socket_.ConnectOut(connection);
 
     port_t* id = new port_t(GenerateId(this));
@@ -26,7 +26,7 @@ Client::Client(const char* log_file, Connection connection, SocketType type) : D
     if ( connection.GetProtocol() == kTcpProtocol )
         connection.SetHost("*:");
 
-    Log() << "Client::Client() - bind " << connection.GetString() << endl;
+    Log("Client::Client() - bind %s\n", connection.GetString().c_str());
     socket_.BindIn(connection);
     socket_.SetQueueSize(10);
 
@@ -48,7 +48,7 @@ Client::~Client()
 
 void Client::WriteData(string& key, void* data, size_t size)
 {
-    Log() << "Client::WriteData() - key = " << key << " data_size = " << size << endl;
+    Log("Client::WriteData() - key = %s data_size = %lu\n", key.c_str(), size);
 
     Command command = kWrite;
 
@@ -67,7 +67,7 @@ void Client::WriteData(string& key, void* data, size_t size)
 
 void* Client::ReadData(string& key)
 {
-    Log() << "Client::ReadData() - key = " << key << endl;
+    Log("Client::ReadData() - key = %s\n", key.c_str());
 
     void* result = NULL;
 

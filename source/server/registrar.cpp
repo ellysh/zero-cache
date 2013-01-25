@@ -65,7 +65,7 @@ void Registrar::ProcessMessage()
 
 void Registrar::StartReactor(string& key)
 {
-    Log() << "Registrar::StartReactor() - key = " << key << endl;
+    Log("Registrar::StartReactor() - key = %s\n", key.c_str());
     key_list_->AddKey(key);
 
     port_t port = key_list_->GetPort(key);
@@ -77,7 +77,7 @@ void Registrar::StartReactor(string& key)
     connection.SetPort(port);
 
     string* connection_str = new string(connection.GetString());
-    Log() << "CreateThread() - connection = " << connection.GetString() << endl;
+    Log("CreateThread() - connection = %s\n", connection.GetString().c_str());
 
     CreateThread(ReactorStart, (void*)connection_str);
     ports_.insert(port);
@@ -109,7 +109,7 @@ void Registrar::SendAnswer(string& key)
     socket_.SendMsg(key_msg, ZMQ_SNDMORE);
     socket_.SendMsg(port_msg, 0);
 
-    Log() << "Registrar::ProcessMessage() - send answer = " << port << " to " << connection.GetString() << endl;
+    Log("Registrar::ProcessMessage() - send answer = %lu to %s\n", port, connection.GetString().c_str());
 }
 
 void Registrar::SetKeyLimit(int limit)

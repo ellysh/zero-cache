@@ -35,13 +35,15 @@ ostream& Debug::Log()
 
 void Debug::Log(const char* fmt, ...)
 {
+#ifdef __DEBUG__
     char buf[4096];
     va_list arg_list;
     va_start( arg_list, fmt );
     vsprintf( buf, fmt, arg_list );
 
-    Log() << buf << endl;
+    Log() << buf;
     va_end( arg_list );
+#endif
 }
 
 void Debug::PrintMsg(zmq_msg_t& msg)

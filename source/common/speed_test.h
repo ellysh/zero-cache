@@ -7,12 +7,12 @@
 #include <stdio.h>
 #include <unistd.h>
 
-#ifndef STREAM
-#define STREAM cout
+#ifndef PRINTF
+#define PRINTF printf
 #endif
 
 #define PRE_TIME_MEASURE(function) \
-    STREAM << function; \
+    PRINTF(function); \
     struct timeval start, end; \
     long mtime, seconds, useconds; \
     gettimeofday(&start, NULL);
@@ -22,6 +22,6 @@
     seconds  = end.tv_sec  - start.tv_sec; \
     useconds = end.tv_usec - start.tv_usec; \
     mtime = ((seconds) * 1000 + useconds/1000.0) + 0.5; \
-    STREAM << " - " << mtime << " milliseconds" << endl;
+    PRINTF(" - %lu milliseconds\n", mtime);
 
 #endif
