@@ -12,14 +12,14 @@ target_link_libraries(get_test zero_cache)
 install(TARGETS get_test DESTINATION bin)
 
 
-set(speed_test_SRCS
-    speed_test.cpp)
+set(write_test_SRCS
+    write_test.cpp)
 
-add_executable(speed_test ${speed_test_SRCS})
+add_executable(write_test ${write_test_SRCS})
 
-target_link_libraries(speed_test zero_cache)
+target_link_libraries(write_test zero_cache)
 
-install(TARGETS speed_test DESTINATION bin)
+install(TARGETS write_test DESTINATION bin)
 
 
 set(memory_leak_test_SRCS

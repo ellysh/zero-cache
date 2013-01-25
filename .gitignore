@@ -15,7 +15,7 @@ Makefile
 *.a
 zero-cache
 read_test
-speed_test
+write_test
 memory_leak_test
 get_test
 tcp_test
