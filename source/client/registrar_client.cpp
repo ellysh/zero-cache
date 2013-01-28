@@ -60,9 +60,18 @@ KeyArray RegistrarClient::GetKeys()
 
 KeyArray RegistrarClient::ReceiveKeys()
 {
-    /* FIXME: Implement this method */
+    if ( ! socket_.ReceiveMsg(kReadAnswerTimeout) )
+        return KeyArray();
 
-    return KeyArray();
+    zmq_msg_t keys_msg;
+    socket_.PopMsg(keys_msg);
+
+    KeyArray keys;
+    keys.swap(*((KeyArray*)zmq_msg_data(&keys_msg)));
+
+    zmq_msg_close(&keys_msg);
+
+    return keys;
 }
 
 void RegistrarClient::WriteData(string key, void* data, size_t size)
