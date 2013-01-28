@@ -88,7 +88,10 @@ void RegistrarClient::AddKey(string& key)
 
 port_t RegistrarClient::ReceivePort(string& key)
 {
-    port_t port = kErrorPort;
+    Command command = kGetPort;
+    zmq_msg_t command_msg;
+    zmq_msg_init_data(&command_msg, &command, sizeof(command), NULL, NULL);
+
     zmq_msg_t key_msg;
     zmq_msg_init_data(&key_msg, (void*)key.c_str(), key.size(), NULL, NULL);
 
@@ -98,8 +101,11 @@ port_t RegistrarClient::ReceivePort(string& key)
     zmq_msg_t host_msg;
     zmq_msg_init_data(&host_msg, (void*)host_.c_str(), host_.size(), NULL, NULL);
 
+    port_t port = kErrorPort;
+
     while ( port == kErrorPort )
     {
+        socket_.SendMsg(command_msg, ZMQ_SNDMORE);
         socket_.SendMsg(key_msg, ZMQ_SNDMORE);
         socket_.SendMsg(id_msg, ZMQ_SNDMORE);
         socket_.SendMsg(host_msg, 0);

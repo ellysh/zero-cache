@@ -20,7 +20,8 @@ typedef std::vector<std::string> KeyArray;
 enum Command
 {
     kWrite = 0,
-    kRead
+    kRead,
+    kGetPort
 };
 
 enum SocketType

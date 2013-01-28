@@ -54,6 +54,9 @@ void Registrar::ProcessMessage()
 {
     socket_.ReceiveMsg();
 
+    zmq_msg_t command_msg;
+    socket_.PopMsg(command_msg);
+
     zmq_msg_t key_msg;
     socket_.PopMsg(key_msg);
     string key = MsgToString(key_msg);
