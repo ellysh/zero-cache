@@ -35,6 +35,12 @@ RegistrarClient::RegistrarClient(const char* log_file, Connection connection, So
     socket_.SetQueueSize(1);
 }
 
+KeyArray RegistrarClient::GetKeys()
+{
+    /* FIXME: Implement this method */
+    return KeyArray();
+}
+
 void RegistrarClient::WriteData(string key, void* data, size_t size)
 {
     Log("RegistrarClient::WriteData() - key = %s data_size = %lu\n", key.c_str(), size);
