@@ -21,7 +21,8 @@ enum Command
 {
     kWrite = 0,
     kRead,
-    kGetPort
+    kGetPort,
+    kGetKeys
 };
 
 enum SocketType

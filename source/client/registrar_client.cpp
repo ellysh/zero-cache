@@ -37,7 +37,31 @@ RegistrarClient::RegistrarClient(const char* log_file, Connection connection, So
 
 KeyArray RegistrarClient::GetKeys()
 {
+    KeyArray keys;
+    Command command = kGetKeys;
+
+    zmq_msg_t command_msg;
+    zmq_msg_init_data(&command_msg, &command, sizeof(command), NULL, NULL);
+
+    zmq_msg_t id_msg;
+    zmq_msg_init_data(&id_msg, &id_, sizeof(id_), NULL, NULL);
+
+    zmq_msg_t host_msg;
+    zmq_msg_init_data(&host_msg, (void*)host_.c_str(), host_.size(), NULL, NULL);
+
+    socket_.SendMsg(command_msg, ZMQ_SNDMORE);
+    socket_.SendMsg(id_msg, ZMQ_SNDMORE);
+    socket_.SendMsg(host_msg, 0);
+
+    keys = ReceiveKeys();
+
+    return keys;
+}
+
+KeyArray RegistrarClient::ReceiveKeys()
+{
     /* FIXME: Implement this method */
+
     return KeyArray();
 }
 
@@ -77,7 +101,7 @@ void RegistrarClient::AddKey(string& key)
     if ( clients_.IsKeyExist(key) )
         return;
 
-    int port = ReceivePort(key);
+    port_t port = SendPortRequest(key);
 
     Log("RegistrarClient::AddKey() - add key = %s port = %lu\n", key.c_str(), port);
 
@@ -86,7 +110,7 @@ void RegistrarClient::AddKey(string& key)
     clients_.CreateClient(port);
 }
 
-port_t RegistrarClient::ReceivePort(string& key)
+port_t RegistrarClient::SendPortRequest(string& key)
 {
     Command command = kGetPort;
     zmq_msg_t command_msg;
@@ -109,7 +133,8 @@ port_t RegistrarClient::ReceivePort(string& key)
         socket_.SendMsg(key_msg, ZMQ_SNDMORE);
         socket_.SendMsg(id_msg, ZMQ_SNDMORE);
         socket_.SendMsg(host_msg, 0);
-        port = ReceiveAnswer(key_msg);
+
+        port = ReceivePort(key_msg);
 
         if ( port == kErrorPort )
             usleep((rand() % 1000) * 100);
@@ -122,7 +147,7 @@ port_t RegistrarClient::ReceivePort(string& key)
     return port;
 }
 
-port_t RegistrarClient::ReceiveAnswer(zmq_msg_t& key)
+port_t RegistrarClient::ReceivePort(zmq_msg_t& key)
 {
     if ( ! socket_.ReceiveMsg(kReadAnswerTimeout) )
         return kErrorPort;
