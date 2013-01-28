@@ -22,15 +22,6 @@ void Reactor::Start()
         ProcessMessage();
 }
 
-static Command DecodeCommand(zmq_msg_t& msg)
-{
-    Command* command = (Command*)zmq_msg_data(&msg);
-
-    assert( command != NULL );
-
-    return *command;
-}
-
 void Reactor::ProcessMessage()
 {
     socket_.ReceiveMsg();

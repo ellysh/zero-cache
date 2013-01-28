@@ -21,6 +21,8 @@ void MsgDataFree(void* data, void* hint);
 void MsgInitString(zmq_msg_t& msg, std::string& str);
 void MsgInitData(zmq_msg_t& msg, void* data, size_t size);
 
+Command DecodeCommand(zmq_msg_t& msg);
+
 }
 
 #endif

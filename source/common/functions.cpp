@@ -89,3 +89,12 @@ void zero_cache::MsgInitData(zmq_msg_t& msg, void* data, size_t size)
 
     memcpy(zmq_msg_data(&msg), data, size);
 }
+
+Command zero_cache::DecodeCommand(zmq_msg_t& msg)
+{
+    Command* command = (Command*)zmq_msg_data(&msg);
+
+    assert( command != NULL );
+
+    return *command;
+}
