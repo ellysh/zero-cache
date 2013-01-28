@@ -20,6 +20,7 @@ memory_leak_test
 get_test
 tcp_test
 cross_test
+key_test
 
 # debian build files
 debian/*~

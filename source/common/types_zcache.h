@@ -1,6 +1,7 @@
 #ifndef TYPES_ZCACHE_H
 #define TYPES_ZCACHE_H
 
+#include <vector>
 #include <string>
 
 namespace zero_cache
@@ -14,6 +15,7 @@ private: \
     TypeName& operator=(const TypeName&);
 
 typedef unsigned long port_t;
+typedef std::vector<std::string> KeyArray;
 
 enum Command
 {

@@ -5,7 +5,6 @@
 #include <assert.h>
 
 #include "registrar_client.h"
-#include "speed_test.h"
 
 using namespace std;
 using namespace zero_cache;
