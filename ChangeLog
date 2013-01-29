@@ -1,3 +1,8 @@
+* zero-cache 1.2
+	- Add function to get all available keys from cache
+	- Disable all operation to write logs from Release build
+	- Remove key values from the Reactor and Registrar answers
+
 * zero-cache 1.1
 	- Don't use the CZMQ interface library
 	- Fix the memory leaks

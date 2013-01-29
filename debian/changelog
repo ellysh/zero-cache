@@ -1,3 +1,11 @@
+zero-cache (1.2) precise; urgency=low
+
+  * Add function to get all available keys from cache
+  * Disable all operation to write logs from Release build
+  * Remove key values from the Reactor and Registrar answers
+
+ -- Ilya Shpigor <petrsum@gmail.com>  Tue, 29 Jan 2013 15:06:04 +0400
+
 zero-cache (1.1) precise; urgency=low
 
   * Don't use the CZMQ interface library
