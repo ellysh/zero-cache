@@ -72,8 +72,6 @@ void Registrar::ProcessMessage()
 
     if ( DecodeCommand(command) == kGetKeys )
     {
-        KeyArray keys = key_list_->GetKeys();
-
         SendKeys();
     }
 }
@@ -120,12 +118,34 @@ void Registrar::SendPort(string& key)
 
     socket_.SendMsg(port_msg, 0);
 
-    Log("Registrar::ProcessMessage() - send answer = %lu to %s\n", port, connection.GetString().c_str());
+    Log("Registrar::SendPort() - send answer = %lu to %s\n", port, connection.GetString().c_str());
 }
 
 void Registrar::SendKeys()
 {
-    /* FIXME: Implement this method */
+    /* FIXME: This method looks like SendPort one */
+
+    zmq_msg_t id_msg;
+    socket_.PopMsg(id_msg);
+    port_t id = MsgToPort(id_msg);
+
+    zmq_msg_t host_msg;
+    socket_.PopMsg(host_msg);
+    string host = MsgToString(host_msg);
+
+    Connection connection(connection_);
+    connection.SetPort(id);
+    connection.SetHost(host);
+    socket_.ConnectOut(connection);
+
+    KeyArray keys = key_list_->GetKeys();
+
+    zmq_msg_t keys_msg;
+    MsgInitData(keys_msg, &keys, keys.size());
+
+    socket_.SendMsg(keys_msg, 0);
+
+    Log("Registrar::SendKeys() - send answer to %s\n", connection.GetString().c_str());
 }
 
 void Registrar::SetKeyLimit(int limit)
