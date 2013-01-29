@@ -22,8 +22,10 @@ void InitData(RegistrarClient& client)
 
 void CheckKeys(RegistrarClient& client)
 {
-    /* FIXME: Add assert for the GetKeys method result */
     KeyArray keys = client.GetKeys();
+
+    string result(keys.begin(), keys.end());
+    cout << "CheckKeys() - keys = " << result << endl;
 }
 
 int main()

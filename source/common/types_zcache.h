@@ -15,7 +15,7 @@ private: \
     TypeName& operator=(const TypeName&);
 
 typedef unsigned long port_t;
-typedef std::vector<unsigned char> KeyArray;
+typedef std::vector<char> KeyArray;
 
 enum Command
 {

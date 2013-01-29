@@ -10,7 +10,7 @@
 using namespace std;
 using namespace zero_cache;
 
-static void RemovePort(KeyList::KeyPort::value_type port_pair)
+static void RemovePort(KeyList::KeyPort::value_type& port_pair)
 {
     delete port_pair.second;
 }
@@ -48,9 +48,25 @@ port_t KeyList::GetPort(string& key)
         return kErrorPort;
 }
 
+struct AddKeyArray : public binary_function<KeyList::KeyPort::value_type, KeyArray&, void>
+{
+    void operator()(KeyList::KeyPort::value_type port_pair, KeyArray& keys) const
+    {
+        copy(port_pair.first.begin(), port_pair.first.end(),
+             back_inserter(keys));
+
+        keys.push_back('\0');
+    }
+};
+
 KeyArray KeyList::GetKeys()
 {
-    /* FIXME: Implement this mehtod */
+    KeyArray keys;
+
+    for_each(ports_.begin(), ports_.end(),
+             bind2nd(AddKeyArray(), keys));
+
+    return keys;
 }
 
 void KeyList::SetKeyLimit(int key_limit)

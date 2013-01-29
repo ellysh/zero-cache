@@ -27,6 +27,15 @@ string zero_cache::MsgToString(zmq_msg_t& msg)
     return result;
 }
 
+KeyArray zero_cache::MsgToKeyArray(zmq_msg_t& msg)
+{
+    char* buffer =  (char*)zmq_msg_data(&msg);
+    assert( buffer != NULL );
+    KeyArray result(buffer, buffer + zmq_msg_size(&msg));
+
+    return result;
+}
+
 port_t zero_cache::StringToPort(string& value)
 {
     char* endptr;

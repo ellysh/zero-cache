@@ -141,7 +141,7 @@ void Registrar::SendKeys()
     KeyArray keys = key_list_->GetKeys();
 
     zmq_msg_t keys_msg;
-    MsgInitData(keys_msg, &keys, keys.size());
+    MsgInitData(keys_msg, &keys[0], keys.size());
 
     socket_.SendMsg(keys_msg, 0);
 

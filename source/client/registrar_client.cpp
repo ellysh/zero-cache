@@ -66,8 +66,7 @@ KeyArray RegistrarClient::ReceiveKeys()
     zmq_msg_t keys_msg;
     socket_.PopMsg(keys_msg);
 
-    KeyArray keys;
-    keys.swap(*((KeyArray*)zmq_msg_data(&keys_msg)));
+    KeyArray keys = MsgToKeyArray(keys_msg);
 
     zmq_msg_close(&keys_msg);
 
