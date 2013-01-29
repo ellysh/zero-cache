@@ -20,12 +20,34 @@ void InitData(RegistrarClient& client)
     client.WriteData(kKey2, const_cast<char*>(kData.c_str()), kData.size());
 }
 
+vector<string> ParseKeys(KeyArray& keys)
+{
+    vector<string> result;
+
+    string tmp;
+    for (int i = 0; i < keys.size(); i++)
+    {
+        if ( keys[i] != '\0' )
+            tmp += keys[i];
+        else
+        {
+            result.push_back(tmp);
+            tmp.clear();
+        }
+    }
+
+    return result;
+}
+
 void CheckKeys(RegistrarClient& client)
 {
     KeyArray keys = client.GetKeys();
 
-    string result(keys.begin(), keys.end());
-    cout << "CheckKeys() - keys = " << result << endl;
+    vector<string> result = ParseKeys(keys);
+
+    assert( result.size() == 2 );
+    assert( result[0] == kKey1 );
+    assert( result[1] == kKey2 );
 }
 
 int main()
