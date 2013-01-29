@@ -19,10 +19,10 @@ public:
     Client(const char* log_file, Connection connection, SocketType type);
     virtual ~Client();
 
+    virtual void SetQueueSize(int size);
+
     void WriteData(std::string& key, void* data, size_t size);
     void* ReadData(std::string& key);
-
-    void SetQueueSize(int size);
 
 private:
     zmq_msg_t data_msg_;

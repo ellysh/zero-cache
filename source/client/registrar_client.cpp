@@ -15,24 +15,9 @@ using namespace zero_cache;
 static const long kReadAnswerTimeout = 10;
 
 RegistrarClient::RegistrarClient(const char* log_file, Connection connection, SocketType type) :
-    Debug(log_file), socket_(type), clients_(connection, type)
+    ClientBase(log_file, connection, type), clients_(connection, type)
 {
     srand(time(NULL));
-
-    Log("RegistrarClient::RegistrarClient() - connect to %s\n", connection.GetString().c_str());
-    socket_.ConnectOut(connection);
-
-    id_ = GenerateId(this);
-    connection.SetPort(id_);
-
-    SetHost(connection.GetHost());
-
-    if ( connection.GetProtocol() == kTcpProtocol )
-        connection.SetHost("*:");
-
-    Log("RegistrarClient::RegistrarClient() - bind to %s\n", connection.GetString().c_str());
-    socket_.BindIn(connection);
-    socket_.SetQueueSize(1);
 }
 
 KeyArray RegistrarClient::GetKeys()
@@ -43,15 +28,9 @@ KeyArray RegistrarClient::GetKeys()
     zmq_msg_t command_msg;
     zmq_msg_init_data(&command_msg, &command, sizeof(command), NULL, NULL);
 
-    zmq_msg_t id_msg;
-    zmq_msg_init_data(&id_msg, &id_, sizeof(id_), NULL, NULL);
-
-    zmq_msg_t host_msg;
-    zmq_msg_init_data(&host_msg, (void*)host_.c_str(), host_.size(), NULL, NULL);
-
     socket_.SendMsg(command_msg, ZMQ_SNDMORE);
-    socket_.SendMsg(id_msg, ZMQ_SNDMORE);
-    socket_.SendMsg(host_msg, 0);
+    socket_.SendMsg(id_msg_, ZMQ_SNDMORE);
+    socket_.SendMsg(host_msg_, 0);
 
     keys = ReceiveKeys();
 
@@ -124,33 +103,22 @@ port_t RegistrarClient::SendPortRequest(string& key)
     zmq_msg_t command_msg;
     zmq_msg_init_data(&command_msg, &command, sizeof(command), NULL, NULL);
 
-    zmq_msg_t key_msg;
-    zmq_msg_init_data(&key_msg, (void*)key.c_str(), key.size(), NULL, NULL);
-
-    zmq_msg_t id_msg;
-    zmq_msg_init_data(&id_msg, &id_, sizeof(id_), NULL, NULL);
-
-    zmq_msg_t host_msg;
-    zmq_msg_init_data(&host_msg, (void*)host_.c_str(), host_.size(), NULL, NULL);
+    MsgInitString(key_msg_, key);
 
     port_t port = kErrorPort;
 
     while ( port == kErrorPort )
     {
         socket_.SendMsg(command_msg, ZMQ_SNDMORE);
-        socket_.SendMsg(key_msg, ZMQ_SNDMORE);
-        socket_.SendMsg(id_msg, ZMQ_SNDMORE);
-        socket_.SendMsg(host_msg, 0);
+        socket_.SendMsg(key_msg_, ZMQ_SNDMORE);
+        socket_.SendMsg(id_msg_, ZMQ_SNDMORE);
+        socket_.SendMsg(host_msg_, 0);
 
-        port = ReceivePort(key_msg);
+        port = ReceivePort(key_msg_);
 
         if ( port == kErrorPort )
             usleep((rand() % 1000) * 100);
     }
-
-    zmq_msg_close(&host_msg);
-    zmq_msg_close(&id_msg);
-    zmq_msg_close(&key_msg);
 
     return port;
 }
@@ -171,7 +139,7 @@ port_t RegistrarClient::ReceivePort(zmq_msg_t& key)
 
 void RegistrarClient::SetHost(string host)
 {
-    host_ = host;
+    ClientBase::SetHost(host);
 
     clients_.SetHost(host);
 }

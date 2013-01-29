@@ -8,30 +8,28 @@
 #include "types_zcache.h"
 #include "socket.h"
 #include "client_list.h"
+#include "client_base.h"
 
 namespace zero_cache
 {
 
 class Client;
 
-class RegistrarClient : protected Debug
+class RegistrarClient : public ClientBase
 {
 public:
     RegistrarClient(const char* log_file, Connection connection, SocketType type);
     virtual ~RegistrarClient() {};
 
+    virtual void SetQueueSize(int size);
+    virtual void SetHost(std::string host);
+
     void WriteData(std::string key, void* data, size_t size);
     void* ReadData(std::string key);
     KeyArray GetKeys();
 
-    void SetHost(std::string host);
-    void SetQueueSize(int size);
-
 private:
-    Socket socket_;
     ClientList clients_;
-    port_t id_;
-    std::string host_;
 
     void AddKey(std::string& key);
     Client* GetClient(std::string& key);
