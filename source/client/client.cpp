@@ -101,15 +101,6 @@ void* Client::ReceiveReadAnswer()
     if ( ! socket_.ReceiveMsg(kReadAnswerTimeout) )
         return NULL;
 
-    zmq_msg_t key_msg;
-    socket_.PopMsg(key_msg);
-
-    if ( ! IsMsgEqual(key_msg, key_msg_) )
-    {
-        zmq_msg_close(&key_msg);
-        return NULL;
-    }
-
     zmq_msg_t msg;
     socket_.PopMsg(msg);
     void* data = malloc(zmq_msg_size(&msg));

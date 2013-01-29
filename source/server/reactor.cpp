@@ -84,10 +84,6 @@ void Reactor::ReadData(string& key, port_t id)
 
     PrintMsg(*data);
 
-    zmq_msg_t key_msg;
-    MsgInitString(key_msg, key);
-
-    out_sockets_.GetSocket(id).SendMsg(key_msg, ZMQ_SNDMORE);
     out_sockets_.GetSocket(id).SendMsg(*data, 0);
 
     if ( is_data_empty )
