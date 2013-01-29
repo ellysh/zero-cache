@@ -3,8 +3,6 @@
 #
 # Debug build type (by default):
 # cmake -D CMAKE_BUILD_TYPE=Debug CMakeLists.txt
-# or
-# cmake CMakeLists.txt
 
 cmake_minimum_required(VERSION 2.6)
 project(zero-cache)
