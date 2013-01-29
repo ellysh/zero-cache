@@ -48,6 +48,11 @@ port_t KeyList::GetPort(string& key)
         return kErrorPort;
 }
 
+KeyArray KeyList::GetKeys()
+{
+    /* FIXME: Implement this mehtod */
+}
+
 void KeyList::SetKeyLimit(int key_limit)
 {
     key_limit_ = key_limit;

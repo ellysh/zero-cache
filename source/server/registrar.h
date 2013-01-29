@@ -35,7 +35,8 @@ private:
 
     void ProcessMessage();
     void StartReactor(std::string& key);
-    void SendAnswer(std::string& key);
+    void SendPort(std::string& key);
+    void SendKeys();
 
     DISALLOW_COPY_AND_ASSIGN(Registrar)
 };

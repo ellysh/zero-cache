@@ -23,6 +23,7 @@ public:
 
     void AddKey(std::string& key);
     port_t GetPort(std::string& key);
+    KeyArray GetKeys();
 
     void SetKeyLimit(int key_limit);
 

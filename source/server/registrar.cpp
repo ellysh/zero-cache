@@ -52,18 +52,30 @@ static void* ReactorStart(void* args)
 
 void Registrar::ProcessMessage()
 {
+    /* FIXME: Refactoring this method */
+
     socket_.ReceiveMsg();
 
-    zmq_msg_t command_msg;
-    socket_.PopMsg(command_msg);
+    zmq_msg_t command;
+    socket_.PopMsg(command);
 
-    zmq_msg_t key_msg;
-    socket_.PopMsg(key_msg);
-    string key = MsgToString(key_msg);
+    if ( DecodeCommand(command) == kGetPort )
+    {
+        zmq_msg_t key_msg;
+        socket_.PopMsg(key_msg);
+        string key = MsgToString(key_msg);
 
-    StartReactor(key);
+        StartReactor(key);
 
-    SendAnswer(key);
+        SendPort(key);
+    }
+
+    if ( DecodeCommand(command) == kGetKeys )
+    {
+        KeyArray keys = key_list_->GetKeys();
+
+        SendKeys();
+    }
 }
 
 void Registrar::StartReactor(string& key)
@@ -86,7 +98,7 @@ void Registrar::StartReactor(string& key)
     ports_.insert(port);
 }
 
-void Registrar::SendAnswer(string& key)
+void Registrar::SendPort(string& key)
 {
     zmq_msg_t id_msg;
     socket_.PopMsg(id_msg);
@@ -113,6 +125,11 @@ void Registrar::SendAnswer(string& key)
     socket_.SendMsg(port_msg, 0);
 
     Log("Registrar::ProcessMessage() - send answer = %lu to %s\n", port, connection.GetString().c_str());
+}
+
+void Registrar::SendKeys()
+{
+    /* FIXME: Implement this method */
 }
 
 void Registrar::SetKeyLimit(int limit)
