@@ -14,11 +14,8 @@ static int gQueueSize = 1000;
 static SocketType gSocketType;
 
 Registrar::Registrar(const char* log_file, Connection connection, SocketType type) :
-    Debug(log_file), socket_(type), connection_(connection)
+    ServerBase(log_file, connection, type), connection_(connection)
 {
-    socket_.BindIn(connection);
-    socket_.SetQueueSize(1);
-
     key_list_ = new KeyList(connection);
 
     gSocketType = type;
@@ -27,14 +24,6 @@ Registrar::Registrar(const char* log_file, Connection connection, SocketType typ
 Registrar::~Registrar()
 {
     delete key_list_;
-}
-
-void Registrar::Start()
-{
-    s_catch_signals();
-
-    while ( ! s_interrupted )
-        ProcessMessage();
 }
 
 static void* ReactorStart(void* args)
