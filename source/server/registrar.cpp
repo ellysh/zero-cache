@@ -52,14 +52,11 @@ static void* ReactorStart(void* args)
 
 void Registrar::ProcessMessage()
 {
-    /* FIXME: Refactoring this method */
-
     request_.Receive(socket_);
 
     if ( request_.GetCommand() == kGetPort )
     {
         StartReactor();
-
         SendPort();
     }
 
