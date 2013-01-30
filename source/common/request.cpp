@@ -1,5 +1,7 @@
 #include "request.h"
 
+#include <assert.h>
+
 #include "socket.h"
 #include "functions.h"
 
@@ -52,6 +54,16 @@ void Request::SetData(void* data, size_t size)
     MsgInitData(data_msg_, data, size);
 }
 
+port_t Request::GetId()
+{
+    return MsgToPort(id_msg_);
+}
+
+string Request::GetHost()
+{
+    return MsgToString(host_msg_);
+}
+
 Command& Request::GetCommand()
 {
     Command* command = (Command*)zmq_msg_data(&command_msg_);
@@ -61,11 +73,13 @@ Command& Request::GetCommand()
 
 string Request::GetKey()
 {
+    assert( zmq_msg_size(&key_msg_) != 0 );
     return MsgToString(key_msg_);
 }
 
 zmq_msg_t& Request::GetData()
 {
+    assert( zmq_msg_size(&data_msg_) != 0 );
     return data_msg_;
 }
 

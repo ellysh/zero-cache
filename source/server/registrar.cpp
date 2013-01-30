@@ -54,30 +54,23 @@ void Registrar::ProcessMessage()
 {
     /* FIXME: Refactoring this method */
 
-    socket_.ReceiveMsg();
+    request_.Receive(socket_);
 
-    zmq_msg_t command;
-    socket_.PopMsg(command);
-
-    if ( DecodeCommand(command) == kGetPort )
+    if ( request_.GetCommand() == kGetPort )
     {
-        zmq_msg_t key_msg;
-        socket_.PopMsg(key_msg);
-        string key = MsgToString(key_msg);
+        StartReactor();
 
-        StartReactor(key);
-
-        SendPort(key);
+        SendPort();
     }
 
-    if ( DecodeCommand(command) == kGetKeys )
-    {
+    if ( request_.GetCommand() == kGetKeys )
         SendKeys();
-    }
 }
 
-void Registrar::StartReactor(string& key)
+void Registrar::StartReactor()
 {
+    string key = request_.GetKey();
+
     Log("Registrar::StartReactor() - key = %s\n", key.c_str());
     key_list_->AddKey(key);
 
@@ -96,19 +89,13 @@ void Registrar::StartReactor(string& key)
     ports_.insert(port);
 }
 
-void Registrar::SendPort(string& key)
+void Registrar::SendPort()
 {
-    zmq_msg_t id_msg;
-    socket_.PopMsg(id_msg);
-    port_t id = MsgToPort(id_msg);
-
-    zmq_msg_t host_msg;
-    socket_.PopMsg(host_msg);
-    string host = MsgToString(host_msg);
+    string key = request_.GetKey();
 
     Connection connection(connection_);
-    connection.SetPort(id);
-    connection.SetHost(host);
+    connection.SetPort(request_.GetId());
+    connection.SetHost(request_.GetHost());
     socket_.ConnectOut(connection);
 
     port_t port = key_list_->GetPort(key);
@@ -125,17 +112,9 @@ void Registrar::SendKeys()
 {
     /* FIXME: This method looks like SendPort one */
 
-    zmq_msg_t id_msg;
-    socket_.PopMsg(id_msg);
-    port_t id = MsgToPort(id_msg);
-
-    zmq_msg_t host_msg;
-    socket_.PopMsg(host_msg);
-    string host = MsgToString(host_msg);
-
     Connection connection(connection_);
-    connection.SetPort(id);
-    connection.SetHost(host);
+    connection.SetPort(request_.GetId());
+    connection.SetHost(request_.GetHost());
     socket_.ConnectOut(connection);
 
     KeyArray keys = key_list_->GetKeys();

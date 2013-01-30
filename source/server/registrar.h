@@ -6,6 +6,7 @@
 #include "types_zcache.h"
 #include "socket.h"
 #include "debug.h"
+#include "request.h"
 #include "connection.h"
 
 namespace zero_cache
@@ -32,10 +33,11 @@ private:
     Connection connection_;
     KeyList* key_list_;
     PortSet ports_;
+    Request request_;
 
     void ProcessMessage();
-    void StartReactor(std::string& key);
-    void SendPort(std::string& key);
+    void StartReactor();
+    void SendPort();
     void SendKeys();
 
     DISALLOW_COPY_AND_ASSIGN(Registrar)

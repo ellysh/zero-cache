@@ -23,6 +23,8 @@ public:
     void SetKey(std::string& key);
     void SetData(void* data, size_t size);
 
+    port_t GetId();
+    std::string GetHost();
     Command& GetCommand();
     std::string GetKey();
     zmq_msg_t& GetData();
