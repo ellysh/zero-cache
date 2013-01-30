@@ -85,7 +85,7 @@ zmq_msg_t& Request::GetData()
 
 void Request::Send(Socket& socket)
 {
-    /* FIXME: Refactoring this method */
+    /* FIXME: Refactoring this method. Use the std::map to do it */
 
     socket.SendMsg(command_msg_, ZMQ_SNDMORE);
     socket.SendMsg(id_msg_, ZMQ_SNDMORE);
