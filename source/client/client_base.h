@@ -27,7 +27,7 @@ public:
 protected:
     Socket socket_;
     Request* request_;
-    port_t* id_;
+    port_t id_;
 
 private:
     DISALLOW_COPY_AND_ASSIGN(ClientBase);

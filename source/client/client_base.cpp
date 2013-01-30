@@ -14,8 +14,8 @@ ClientBase::ClientBase(const char* log_file, Connection connection, SocketType t
     Log("ClientBase::ClientBase() - connect %s\n", connection.GetString().c_str());
     socket_.ConnectOut(connection);
 
-    id_ = new port_t(GenerateId(this));
-    connection.SetPort(*id_);
+    id_ = GenerateId(this);
+    connection.SetPort(id_);
 
     if ( connection.GetProtocol() == kTcpProtocol )
         connection.SetHost("*:");
@@ -27,13 +27,11 @@ ClientBase::ClientBase(const char* log_file, Connection connection, SocketType t
 
 ClientBase::~ClientBase()
 {
-    delete id_;
-
     assert( request_ != NULL );
     delete request_;
 }
 
 void ClientBase::SetHost(string host)
 {
-    request_ = new Request(*id_, host);
+    request_ = new Request(id_, host);
 }

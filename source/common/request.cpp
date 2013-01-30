@@ -14,7 +14,7 @@ Request::Request(port_t id, string& host)
     zmq_msg_init(&key_msg_);
     zmq_msg_init(&data_msg_);
 
-    zmq_msg_init_data(&id_msg_, &id, sizeof(id), MsgDataFree, NULL);
+    MsgInitData(id_msg_, &id, sizeof(id));
     MsgInitString(host_msg_, host);
 }
 
