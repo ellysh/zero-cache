@@ -46,17 +46,17 @@ void Request::Send(Socket& socket)
 {
     /* FIXME: Change messages sending order here */
 
-    socket.SendMsgClear(command_msg_, ZMQ_SNDMORE);
+    socket.SendMsg(command_msg_, ZMQ_SNDMORE);
 
     if ( zmq_msg_size(&key_msg_) != 0 )
-        socket.SendMsgClear(key_msg_, ZMQ_SNDMORE);
+        socket.SendMsg(key_msg_, ZMQ_SNDMORE);
 
     socket.SendMsg(id_msg_, ZMQ_SNDMORE);
 
     if ( zmq_msg_size(&data_msg_) != 0 )
     {
         socket.SendMsg(host_msg_, ZMQ_SNDMORE);
-        socket.SendMsgClear(data_msg_, 0);
+        socket.SendMsg(data_msg_, 0);
     }
     else
         socket.SendMsg(host_msg_, 0);

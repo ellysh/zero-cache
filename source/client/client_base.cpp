@@ -9,7 +9,8 @@
 using namespace std;
 using namespace zero_cache;
 
-ClientBase::ClientBase(const char* log_file, Connection connection, SocketType type) : Debug(log_file), socket_(type)
+ClientBase::ClientBase(const char* log_file, Connection connection, SocketType type) :
+    Debug(log_file), socket_(type), request_(NULL)
 {
     Log("ClientBase::ClientBase() - connect %s\n", connection.GetString().c_str());
     socket_.ConnectOut(connection);
@@ -33,5 +34,8 @@ ClientBase::~ClientBase()
 
 void ClientBase::SetHost(string host)
 {
+    if ( request_ != NULL )
+        delete request_;
+
     request_ = new Request(id_, host);
 }
