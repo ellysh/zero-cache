@@ -64,7 +64,9 @@ void Reactor::ReadData()
 
     PrintMsg(*data);
 
-    out_sockets_.GetSocket(request_.GetId()).SendMsg(*data, 0);
+    answer_.SetData(data);
+    Socket& socket = out_sockets_.GetSocket(request_.GetId());
+    answer_.Send(socket);
 
     if ( is_data_empty )
     {

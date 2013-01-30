@@ -18,7 +18,7 @@ public:
 
     void SetPort(port_t port);
     void SetKeys(KeyArray& keys);
-    void SetData(void* data, size_t size);
+    void SetData(zmq_msg_t* data);
 
     port_t GetPort();
     KeyArray GetKeys();

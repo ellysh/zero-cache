@@ -10,6 +10,7 @@
 #include "connection.h"
 #include "socket_list.h"
 #include "request.h"
+#include "answer.h"
 
 namespace zero_cache
 {
@@ -32,6 +33,7 @@ private:
     SocketList out_sockets_;
     Container container_;
     Request request_;
+    Answer answer_;
 
     void ProcessMessage();
     void WriteData();

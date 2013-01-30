@@ -28,9 +28,9 @@ void Answer::SetKeys(KeyArray& keys)
     MsgInitData(msg_, &keys[0], keys.size());
 }
 
-void Answer::SetData(void* data, size_t size)
+void Answer::SetData(zmq_msg_t* data)
 {
-    MsgInitData(msg_, data, size);
+    zmq_msg_copy(&msg_, data);
 }
 
 port_t Answer::GetPort()
