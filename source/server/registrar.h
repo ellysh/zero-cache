@@ -7,6 +7,7 @@
 #include "socket.h"
 #include "debug.h"
 #include "request.h"
+#include "answer.h"
 #include "connection.h"
 
 namespace zero_cache
@@ -34,11 +35,13 @@ private:
     KeyList* key_list_;
     PortSet ports_;
     Request request_;
+    Answer answer_;
 
     void ProcessMessage();
     void StartReactor();
-    void SendPort();
-    void SendKeys();
+    void SendAnswer();
+    void SetPortAnswer();
+    void SetKeysAnswer();
 
     DISALLOW_COPY_AND_ASSIGN(Registrar)
 };

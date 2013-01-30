@@ -57,11 +57,13 @@ void Registrar::ProcessMessage()
     if ( request_.GetCommand() == kGetPort )
     {
         StartReactor();
-        SendPort();
+        SetPortAnswer();
     }
 
     if ( request_.GetCommand() == kGetKeys )
-        SendKeys();
+        SetKeysAnswer();
+
+    SendAnswer();
 }
 
 void Registrar::StartReactor()
@@ -86,7 +88,22 @@ void Registrar::StartReactor()
     ports_.insert(port);
 }
 
-void Registrar::SendPort()
+void Registrar::SetPortAnswer()
+{
+    string key = request_.GetKey();
+    port_t port = key_list_->GetPort(key);
+
+    answer_.SetPort(port);
+}
+
+void Registrar::SetKeysAnswer()
+{
+    KeyArray keys = key_list_->GetKeys();
+
+    answer_.SetKeys(keys);
+}
+
+void Registrar::SendAnswer()
 {
     string key = request_.GetKey();
 
@@ -95,33 +112,9 @@ void Registrar::SendPort()
     connection.SetHost(request_.GetHost());
     socket_.ConnectOut(connection);
 
-    port_t port = key_list_->GetPort(key);
+    answer_.Send(socket_);
 
-    zmq_msg_t port_msg;
-    MsgInitData(port_msg, &port, sizeof(port));
-
-    socket_.SendMsg(port_msg, 0);
-
-    Log("Registrar::SendPort() - send answer = %lu to %s\n", port, connection.GetString().c_str());
-}
-
-void Registrar::SendKeys()
-{
-    /* FIXME: This method looks like SendPort one */
-
-    Connection connection(connection_);
-    connection.SetPort(request_.GetId());
-    connection.SetHost(request_.GetHost());
-    socket_.ConnectOut(connection);
-
-    KeyArray keys = key_list_->GetKeys();
-
-    zmq_msg_t keys_msg;
-    MsgInitData(keys_msg, &keys[0], keys.size());
-
-    socket_.SendMsg(keys_msg, 0);
-
-    Log("Registrar::SendKeys() - send answer to %s\n", connection.GetString().c_str());
+    Log("Registrar::SendPort() - send answer to %s\n", connection.GetString().c_str());
 }
 
 void Registrar::SetKeyLimit(int limit)
