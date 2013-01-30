@@ -22,7 +22,7 @@ public:
 
     port_t GetPort();
     KeyArray GetKeys();
-    zmq_msg_t& GetData();
+    void* GetData();
 
     void Send(Socket& socket);
     bool Receive(Socket& socket, long timeout = -1);

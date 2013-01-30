@@ -1,5 +1,7 @@
 #include "answer.h"
 
+#include <string.h>
+#include <stdlib.h>
 #include <assert.h>
 
 #include "socket.h"
@@ -43,10 +45,12 @@ KeyArray Answer::GetKeys()
     return MsgToKeyArray(msg_);
 }
 
-zmq_msg_t& Answer::GetData()
+void* Answer::GetData()
 {
-    assert( zmq_msg_size(&msg_) != 0 );
-    return msg_;
+    void* data = malloc(zmq_msg_size(&msg_));
+    memcpy(data, zmq_msg_data(&msg_), zmq_msg_size(&msg_));
+
+    return data;
 }
 
 void Answer::Send(Socket& socket)

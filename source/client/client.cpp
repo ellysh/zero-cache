@@ -1,6 +1,5 @@
 #include "client.h"
 
-#include <string.h>
 #include <stdlib.h>
 
 #include "connection.h"
@@ -57,16 +56,10 @@ void Client::SendReadRequest(string& key)
 
 void* Client::ReceiveReadAnswer()
 {
-    if ( ! socket_.ReceiveMsg(kReadAnswerTimeout) )
+    if ( ! answer_.Receive(socket_, kReadAnswerTimeout) )
         return NULL;
 
-    zmq_msg_t msg;
-    socket_.PopMsg(msg);
-    void* data = malloc(zmq_msg_size(&msg));
-    memcpy(data, zmq_msg_data(&msg), zmq_msg_size(&msg));
-    zmq_msg_close(&msg);
-
-    return data;
+    return answer_.GetData();
 }
 
 void Client::SetQueueSize(int size)
