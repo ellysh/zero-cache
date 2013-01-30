@@ -14,8 +14,6 @@ ClientBase::ClientBase(const char* log_file, Connection connection, SocketType t
     port_t* id = new port_t(GenerateId(this));
     connection.SetPort(*id);
 
-    SetHost(connection.GetHost());
-
     if ( connection.GetProtocol() == kTcpProtocol )
         connection.SetHost("*:");
 

@@ -15,6 +15,8 @@ Client::Client(const char* log_file, Connection connection, SocketType type) : C
 {
     srand(time(NULL));
 
+    SetHost(connection.GetHost());
+
     zmq_msg_init(&data_msg_);
 }
 

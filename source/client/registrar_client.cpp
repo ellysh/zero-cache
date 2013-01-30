@@ -18,6 +18,8 @@ RegistrarClient::RegistrarClient(const char* log_file, Connection connection, So
     ClientBase(log_file, connection, type), clients_(connection, type)
 {
     srand(time(NULL));
+
+    SetHost(connection.GetHost());
 }
 
 KeyArray RegistrarClient::GetKeys()
