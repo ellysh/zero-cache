@@ -131,6 +131,11 @@ void Socket::SendMsg(zmq_msg_t& msg, int flags)
     zmq_msg_send(&send, out_socket_, flags);
 }
 
+void Socket::SendMsgClear(zmq_msg_t& msg, int flags)
+{
+    zmq_msg_send(&msg, out_socket_, flags);
+}
+
 void Socket::SetQueueSize(int size)
 {
     zmq_setsockopt(in_socket_, ZMQ_SNDHWM, &size, sizeof(size));
