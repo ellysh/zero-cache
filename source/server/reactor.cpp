@@ -24,52 +24,32 @@ void Reactor::Start()
 
 void Reactor::ProcessMessage()
 {
-    socket_.ReceiveMsg();
+    request_.Receive(socket_);
 
-    zmq_msg_t command;
-    socket_.PopMsg(command);
-    zmq_msg_t key;
-    socket_.PopMsg(key);
+    connection_.SetHost(request_.GetHost());
+    out_sockets_.CreateSocket(connection_, request_.GetId());
 
-    string key_str = MsgToString(key);
+    if ( request_.GetCommand() == kWrite )
+        WriteData();
 
-    zmq_msg_t id_msg;
-    if ( ! socket_.PopMsg(id_msg) )
-        return;
-    port_t id = MsgToPort(id_msg);
-
-    zmq_msg_t host_msg;
-    if ( ! socket_.PopMsg(host_msg) )
-        return;
-    string host = MsgToString(host_msg);
-
-    connection_.SetHost(host);
-    out_sockets_.CreateSocket(connection_, id);
-
-    if ( DecodeCommand(command) == kWrite )
-        WriteData(key_str);
-
-    if ( DecodeCommand(command) == kRead )
-        ReadData(key_str, id);
-
-    zmq_msg_close(&key);
-    zmq_msg_close(&command);
+    if ( request_.GetCommand() == kRead )
+        ReadData();
 }
 
-void Reactor::WriteData(string& key)
+void Reactor::WriteData()
 {
-    zmq_msg_t data;
-    socket_.PopMsg(data);
+    zmq_msg_t& data = request_.GetData();
+    string key = request_.GetKey();
 
     Log("write: key = %s", key.c_str());
     PrintMsg(data);
 
     container_.WriteData(key, data);
-    zmq_msg_close(&data);
 }
 
-void Reactor::ReadData(string& key, port_t id)
+void Reactor::ReadData()
 {
+    string key = request_.GetKey();
     Log("read: key = %s", key.c_str());
 
     zmq_msg_t* data = container_.ReadData(key);
@@ -84,7 +64,7 @@ void Reactor::ReadData(string& key, port_t id)
 
     PrintMsg(*data);
 
-    out_sockets_.GetSocket(id).SendMsg(*data, 0);
+    out_sockets_.GetSocket(request_.GetId()).SendMsg(*data, 0);
 
     if ( is_data_empty )
     {

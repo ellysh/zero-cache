@@ -9,6 +9,7 @@
 #include "types_zcache.h"
 #include "connection.h"
 #include "socket_list.h"
+#include "request.h"
 
 namespace zero_cache
 {
@@ -30,10 +31,11 @@ private:
     Connection connection_;
     SocketList out_sockets_;
     Container container_;
+    Request request_;
 
     void ProcessMessage();
-    void WriteData(std::string& key);
-    void ReadData(std::string& key, port_t id);
+    void WriteData();
+    void ReadData();
 };
 
 }
