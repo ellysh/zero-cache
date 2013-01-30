@@ -15,10 +15,10 @@ class Socket;
 class Request
 {
 public:
-    Request();
+    Request(port_t id, std::string& host);
     ~Request();
 
-    void SetPreamble(Command command, port_t id, std::string& host);
+    void SetCommand(Command command);
     void SetKey(std::string& key);
     void SetData(void* data, size_t size);
 
