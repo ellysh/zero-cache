@@ -4,6 +4,7 @@
 #include <stdlib.h>
 
 #include "client.h"
+#include "request.h"
 #include "functions.h"
 
 #define PRINTF Log
@@ -25,14 +26,9 @@ RegistrarClient::RegistrarClient(const char* log_file, Connection connection, So
 KeyArray RegistrarClient::GetKeys()
 {
     KeyArray keys;
-    Command command = kGetKeys;
 
-    zmq_msg_t command_msg;
-    zmq_msg_init_data(&command_msg, &command, sizeof(command), NULL, NULL);
-
-    socket_.SendMsg(command_msg, ZMQ_SNDMORE);
-    socket_.SendMsg(id_msg_, ZMQ_SNDMORE);
-    socket_.SendMsg(host_msg_, 0);
+    request_->SetCommand(kGetKeys);
+    request_->Send(socket_);
 
     keys = ReceiveKeys();
 
@@ -101,22 +97,16 @@ void RegistrarClient::AddKey(string& key)
 
 port_t RegistrarClient::SendPortRequest(string& key)
 {
-    Command command = kGetPort;
-    zmq_msg_t command_msg;
-    zmq_msg_init_data(&command_msg, &command, sizeof(command), NULL, NULL);
-
-    MsgInitString(key_msg_, key);
+    request_->SetCommand(kGetPort);
+    request_->SetKey(key);
 
     port_t port = kErrorPort;
 
     while ( port == kErrorPort )
     {
-        socket_.SendMsg(command_msg, ZMQ_SNDMORE);
-        socket_.SendMsg(key_msg_, ZMQ_SNDMORE);
-        socket_.SendMsg(id_msg_, ZMQ_SNDMORE);
-        socket_.SendMsg(host_msg_, 0);
+        request_->Send(socket_);
 
-        port = ReceivePort(key_msg_);
+        port = ReceivePort();
 
         if ( port == kErrorPort )
             usleep((rand() % 1000) * 100);
@@ -125,7 +115,7 @@ port_t RegistrarClient::SendPortRequest(string& key)
     return port;
 }
 
-port_t RegistrarClient::ReceivePort(zmq_msg_t& key)
+port_t RegistrarClient::ReceivePort()
 {
     if ( ! socket_.ReceiveMsg(kReadAnswerTimeout) )
         return kErrorPort;
