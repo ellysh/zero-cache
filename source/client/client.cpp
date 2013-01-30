@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 #include "connection.h"
-#include "functions.h"
+#include "request.h"
 
 using namespace std;
 using namespace zero_cache;
@@ -16,32 +16,17 @@ Client::Client(const char* log_file, Connection connection, SocketType type) : C
     srand(time(NULL));
 
     SetHost(connection.GetHost());
-
-    zmq_msg_init(&data_msg_);
-}
-
-Client::~Client()
-{
-    zmq_msg_close(&data_msg_);
 }
 
 void Client::WriteData(string& key, void* data, size_t size)
 {
     Log("Client::WriteData() - key = %s data_size = %lu\n", key.c_str(), size);
 
-    Command command = kWrite;
+    request_->SetCommand(kWrite);
+    request_->SetKey(key);
+    request_->SetData(data, size);
 
-    MsgInitData(command_msg_, &command, sizeof(command));
-    MsgInitString(key_msg_, key);
-    MsgInitData(data_msg_, data, size);
-
-    socket_.SendMsg(command_msg_, ZMQ_SNDMORE);
-    socket_.SendMsg(key_msg_, ZMQ_SNDMORE);
-    socket_.SendMsg(id_msg_, ZMQ_SNDMORE);
-    socket_.SendMsg(host_msg_, ZMQ_SNDMORE);
-    socket_.SendMsg(data_msg_, 0);
-
-    zmq_msg_close(&data_msg_);
+    request_->Send(socket_);
 }
 
 void* Client::ReadData(string& key)
@@ -64,15 +49,10 @@ void* Client::ReadData(string& key)
 
 void Client::SendReadRequest(string& key)
 {
-    Command command = kRead;
+    request_->SetCommand(kRead);
+    request_->SetKey(key);
 
-    MsgInitData(command_msg_, &command, sizeof(Command));
-    MsgInitString(key_msg_, key);
-
-    socket_.SendMsg(command_msg_, ZMQ_SNDMORE);
-    socket_.SendMsg(key_msg_, ZMQ_SNDMORE);
-    socket_.SendMsg(id_msg_, ZMQ_SNDMORE);
-    socket_.SendMsg(host_msg_, 0);
+    request_->Send(socket_);
 }
 
 void* Client::ReceiveReadAnswer()

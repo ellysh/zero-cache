@@ -12,6 +12,7 @@ namespace zero_cache
 {
 
 class Connection;
+class Request;
 
 class ClientBase : protected Debug
 {
@@ -25,10 +26,8 @@ public:
 
 protected:
     Socket socket_;
-    zmq_msg_t host_msg_;
-    zmq_msg_t id_msg_;
-    zmq_msg_t command_msg_;
-    zmq_msg_t key_msg_;
+    Request* request_;
+    port_t* id_;
 
 private:
     DISALLOW_COPY_AND_ASSIGN(ClientBase);

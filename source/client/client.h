@@ -17,7 +17,7 @@ class Client : public ClientBase
 {
 public:
     Client(const char* log_file, Connection connection, SocketType type);
-    virtual ~Client();
+    virtual ~Client() {};
 
     virtual void SetQueueSize(int size);
 
@@ -25,8 +25,6 @@ public:
     void* ReadData(std::string& key);
 
 private:
-    zmq_msg_t data_msg_;
-
     void SendReadRequest(std::string& key);
     void* ReceiveReadAnswer();
 };
