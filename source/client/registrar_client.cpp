@@ -117,16 +117,10 @@ port_t RegistrarClient::SendPortRequest(string& key)
 
 port_t RegistrarClient::ReceivePort()
 {
-    if ( ! socket_.ReceiveMsg(kReadAnswerTimeout) )
+    if ( ! answer_.Receive(socket_, kReadAnswerTimeout) )
         return kErrorPort;
 
-    zmq_msg_t connection_msg;
-    socket_.PopMsg(connection_msg);
-    port_t port = MsgToPort(connection_msg);
-
-    zmq_msg_close(&connection_msg);
-
-    return port;
+    return answer_.GetPort();
 }
 
 void RegistrarClient::SetHost(string host)

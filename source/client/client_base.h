@@ -7,6 +7,7 @@
 #include "debug.h"
 #include "types_zcache.h"
 #include "socket.h"
+#include "answer.h"
 
 namespace zero_cache
 {
@@ -28,6 +29,7 @@ protected:
     Socket socket_;
     Request* request_;
     port_t id_;
+    Answer answer_;
 
 private:
     DISALLOW_COPY_AND_ASSIGN(ClientBase);

@@ -25,7 +25,7 @@ public:
     zmq_msg_t& GetData();
 
     void Send(Socket& socket);
-    void Receive(Socket& socket);
+    bool Receive(Socket& socket, long timeout = -1);
 
 private:
     zmq_msg_t msg_;

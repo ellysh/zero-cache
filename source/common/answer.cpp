@@ -54,10 +54,12 @@ void Answer::Send(Socket& socket)
     socket.SendMsg(msg_, 0);
 }
 
-void Answer::Receive(Socket& socket)
+bool Answer::Receive(Socket& socket, long timeout)
 {
-    /* FIXME: Add timeout for this receiving if this is needed */
-    socket.ReceiveMsg();
+    if ( ! socket.ReceiveMsg(timeout) )
+        return false;
 
     socket.PopMsg(msg_);
+
+    return true;
 }
