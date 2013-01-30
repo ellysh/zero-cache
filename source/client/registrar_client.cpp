@@ -105,7 +105,6 @@ port_t RegistrarClient::SendPortRequest(string& key)
     while ( port == kErrorPort )
     {
         request_->Send(socket_);
-
         port = ReceivePort();
 
         if ( port == kErrorPort )

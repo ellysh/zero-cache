@@ -25,7 +25,6 @@ public:
     void* ReadData(std::string& key);
 
 private:
-    void SendReadRequest(std::string& key);
     void* ReceiveReadAnswer();
 };
 

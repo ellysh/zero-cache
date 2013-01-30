@@ -32,11 +32,14 @@ void* Client::ReadData(string& key)
 {
     Log("Client::ReadData() - key = %s\n", key.c_str());
 
+    request_->SetCommand(kRead);
+    request_->SetKey(key);
+
     void* result = NULL;
 
     while ( result == NULL )
     {
-        SendReadRequest(key);
+        request_->Send(socket_);
         result = ReceiveReadAnswer();
 
         if (result == NULL )
@@ -44,14 +47,6 @@ void* Client::ReadData(string& key)
     }
 
     return result;
-}
-
-void Client::SendReadRequest(string& key)
-{
-    request_->SetCommand(kRead);
-    request_->SetKey(key);
-
-    request_->Send(socket_);
 }
 
 void* Client::ReceiveReadAnswer()
