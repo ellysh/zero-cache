@@ -97,7 +97,7 @@ port_t RegistrarClient::SendPortRequest(string& key)
     request_->SetCommand(kGetPort);
     request_->SetKey(key);
 
-    SendRequest(key);
+    SendRequest();
 
     return answer_.GetPort();
 }

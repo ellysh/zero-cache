@@ -45,7 +45,7 @@ void ClientBase::SetHost(string host)
     request_ = new Request(id_, host);
 }
 
-zmq_msg_t* ClientBase::SendRequest(string& key)
+zmq_msg_t* ClientBase::SendRequest()
 {
     zmq_msg_t* result = NULL;
 

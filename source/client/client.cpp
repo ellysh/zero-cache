@@ -29,7 +29,7 @@ void* Client::ReadData(string& key)
     request_->SetCommand(kRead);
     request_->SetKey(key);
 
-    SendRequest(key);
+    SendRequest();
 
     return answer_.GetData();
 }

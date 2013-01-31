@@ -31,7 +31,7 @@ protected:
     port_t id_;
     Answer answer_;
 
-    zmq_msg_t* SendRequest(std::string& key);
+    zmq_msg_t* SendRequest();
     zmq_msg_t* ReceiveAnswer();
 
 private:
