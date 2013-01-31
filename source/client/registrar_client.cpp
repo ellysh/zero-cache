@@ -1,7 +1,5 @@
 #include "registrar_client.h"
 
-#include <string.h>
-
 #include "client.h"
 #include "request.h"
 #include "functions.h"
@@ -12,8 +10,6 @@
 using namespace std;
 using namespace zero_cache;
 
-static const long kReadAnswerTimeout = 10;
-
 RegistrarClient::RegistrarClient(const char* log_file, Connection connection, SocketType type) :
     ClientBase(log_file, connection, type), clients_(connection, type)
 {
@@ -22,29 +18,12 @@ RegistrarClient::RegistrarClient(const char* log_file, Connection connection, So
 
 KeyArray RegistrarClient::GetKeys()
 {
-    KeyArray keys;
-
     request_->SetCommand(kGetKeys);
     request_->Send(socket_);
 
-    keys = ReceiveKeys();
+    SendRequest();
 
-    return keys;
-}
-
-KeyArray RegistrarClient::ReceiveKeys()
-{
-    if ( ! socket_.ReceiveMsg(kReadAnswerTimeout) )
-        return KeyArray();
-
-    zmq_msg_t keys_msg;
-    socket_.PopMsg(keys_msg);
-
-    KeyArray keys = MsgToKeyArray(keys_msg);
-
-    zmq_msg_close(&keys_msg);
-
-    return keys;
+    return answer_.GetKeys();
 }
 
 void RegistrarClient::WriteData(string key, void* data, size_t size)
