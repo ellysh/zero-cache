@@ -10,7 +10,7 @@
 using namespace std;
 using namespace zero_cache;
 
-ServerBase::ServerBase(const char* log_file, Connection connection, SocketType type) :
+ServerBase::ServerBase(const char* log_file, Connection connection, const SocketType type) :
     Debug(log_file), socket_(type), connection_(connection)
 {
     SocketList::Instance(type);

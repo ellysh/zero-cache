@@ -14,10 +14,10 @@ namespace zero_cache
 class ServerBase : protected Debug
 {
 public:
-    ServerBase(const char* log_file, Connection connection, SocketType type = kDealer);
+    ServerBase(const char* log_file, Connection connection, const SocketType type = kDealer);
     virtual ~ServerBase() {};
 
-    virtual void SetQueueSize(int size) = 0;
+    virtual void SetQueueSize(const int size) = 0;
 
     void Start();
 
