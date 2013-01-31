@@ -53,6 +53,11 @@ void* Answer::GetData()
     return data;
 }
 
+zmq_msg_t* Answer::GetMsg()
+{
+    return &msg_;
+}
+
 void Answer::Send(Socket& socket)
 {
     socket.SendMsg(msg_, 0);

@@ -35,26 +35,34 @@ void* Client::ReadData(string& key)
     request_->SetCommand(kRead);
     request_->SetKey(key);
 
-    void* result = NULL;
+    SendRequest(key);
 
-    while ( result == NULL )
+    return answer_.GetData();
+}
+
+zmq_msg_t* Client::SendRequest(string& key)
+{
+    zmq_msg_t* result = NULL;
+
+    do
     {
         request_->Send(socket_);
-        result = ReceiveReadAnswer();
+        result = ReceiveAnswer();
 
         if (result == NULL )
             usleep(rand() % 1000);
     }
+    while ( zmq_msg_size(result) == 0 );
 
     return result;
 }
 
-void* Client::ReceiveReadAnswer()
+zmq_msg_t* Client::ReceiveAnswer()
 {
     if ( ! answer_.Receive(socket_, kReadAnswerTimeout) )
         return NULL;
 
-    return answer_.GetData();
+    return answer_.GetMsg();
 }
 
 void Client::SetQueueSize(int size)

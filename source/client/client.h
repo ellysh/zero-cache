@@ -25,7 +25,8 @@ public:
     void* ReadData(std::string& key);
 
 private:
-    void* ReceiveReadAnswer();
+    zmq_msg_t* SendRequest(std::string& key);
+    zmq_msg_t* ReceiveAnswer();
 };
 
 }
