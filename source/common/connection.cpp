@@ -6,7 +6,7 @@
 using namespace std;
 using namespace zero_cache;
 
-Connection::Connection(string& connection)
+Connection::Connection(const string& connection)
 {
     Constructor(connection);
 }
@@ -18,7 +18,7 @@ Connection::Connection(const char* connection)
     Constructor(connection_str);
 }
 
-void Connection::Constructor(string& connection)
+void Connection::Constructor(const string& connection)
 {
     size_t pos;
     if ( connection.find(kTcpProtocol) != string::npos )
@@ -38,27 +38,27 @@ void Connection::Constructor(string& connection)
     host_ = connection.substr(6, (pos - 6));
 }
 
-void Connection::SetHost(string host)
+void Connection::SetHost(const string host)
 {
     host_ = host;
 }
 
-string& Connection::GetHost()
+string& Connection::GetHost() const
 {
     return host_;
 }
 
-void Connection::SetPort(port_t port)
+void Connection::SetPort(const port_t port)
 {
     port_ = port;
 }
 
-port_t Connection::GetPort()
+port_t Connection::GetPort() const
 {
     return port_;
 }
 
-string& Connection::GetProtocol()
+string& Connection::GetProtocol() const
 {
     return protocol_;
 }

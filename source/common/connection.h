@@ -12,24 +12,24 @@ class Connection
 {
 public:
     Connection() {};
-    Connection(std::string& connection);
+    Connection(const std::string& connection);
     Connection(const char* connection);
 
-    void SetHost(std::string host);
-    std::string& GetHost();
+    void SetHost(const std::string host);
+    std::string& GetHost() const;
 
-    void SetPort(port_t port);
-    port_t GetPort();
+    void SetPort(const port_t port);
+    port_t GetPort() const;
 
-    std::string& GetProtocol();
+    std::string& GetProtocol() const;
     std::string GetString() const;
 
 private:
-    std::string protocol_;
-    std::string host_;
-    port_t port_;
+    mutable std::string protocol_;
+    mutable std::string host_;
+    mutable port_t port_;
 
-    void Constructor(std::string& connection);
+    void Constructor(const std::string& connection);
 };
 
 }
