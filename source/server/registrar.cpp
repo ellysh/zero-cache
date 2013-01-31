@@ -1,11 +1,11 @@
 #include "registrar.h"
 
-#include "interrupt_signal.h"
 #include "reactor.h"
 #include "key_list.h"
 #include "functions.h"
 #include "connection.h"
 #include "thread.h"
+#include "socket_list.h"
 
 using namespace std;
 using namespace zero_cache;
@@ -42,6 +42,11 @@ static void* ReactorStart(void* args)
 void Registrar::ProcessMessage()
 {
     request_.Receive(socket_);
+
+    connection_.SetHost(request_.GetHost());
+
+    SocketList* out_sockets = SocketList::Instance();
+    out_sockets->CreateSocket(connection_, request_.GetId());
 
     if ( request_.GetCommand() == kGetPort )
     {
@@ -96,14 +101,10 @@ void Registrar::SendAnswer()
 {
     string key = request_.GetKey();
 
-    Connection connection(connection_);
-    connection.SetPort(request_.GetId());
-    connection.SetHost(request_.GetHost());
-    socket_.ConnectOut(connection);
+    SocketList* out_sockets = SocketList::Instance();
+    Socket& socket = out_sockets->GetSocket(request_.GetId());
 
-    answer_.Send(socket_);
-
-    Log("Registrar::SendPort() - send answer to %s\n", connection.GetString().c_str());
+    answer_.Send(socket);
 }
 
 void Registrar::SetKeyLimit(int limit)

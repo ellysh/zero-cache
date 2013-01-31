@@ -2,7 +2,6 @@
 
 #include <assert.h>
 
-#include "interrupt_signal.h"
 #include "functions.h"
 #include "connection.h"
 #include "socket_list.h"
@@ -13,7 +12,6 @@ using namespace zero_cache;
 Reactor::Reactor(const char* log_file, Connection connection, SocketType type) :
     ServerBase(log_file, connection, type), connection_(connection)
 {
-    SocketList::Instance(type);
 }
 
 void Reactor::ProcessMessage()

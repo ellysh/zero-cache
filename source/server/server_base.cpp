@@ -5,6 +5,7 @@
 #include "interrupt_signal.h"
 #include "functions.h"
 #include "connection.h"
+#include "socket_list.h"
 
 using namespace std;
 using namespace zero_cache;
@@ -12,6 +13,8 @@ using namespace zero_cache;
 ServerBase::ServerBase(const char* log_file, Connection connection, SocketType type) :
     Debug(log_file), socket_(type)
 {
+    SocketList::Instance(type);
+
     socket_.BindIn(connection);
     socket_.SetQueueSize(1000);
 }
