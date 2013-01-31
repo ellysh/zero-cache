@@ -22,25 +22,25 @@ public:
     ClientList(Connection& connection, SocketType type);
     ~ClientList();
 
-    Client* GetClient(std::string& key);
+    Client* GetClient(const std::string& key) const;
 
-    void AddKey(std::string& key, port_t port);
-    void CreateClient(port_t port);
+    void AddKey(const std::string& key, const port_t port);
+    void CreateClient(const port_t port);
 
-    bool IsKeyExist(std::string& key);
+    bool IsKeyExist(const std::string& key) const;
 
-    void SetHost(std::string host);
-    void SetQueueSize(int size);
+    void SetHost(const std::string host);
+    void SetQueueSize(const int size);
 
 private:
     Connection connection_;
     SocketType type_;
     int queue_size_;
     std::string host_;
-    KeyPort ports_;
-    PortClient clients_;
+    mutable KeyPort ports_;
+    mutable PortClient clients_;
 
-    bool IsPortExist(port_t port);
+    bool IsPortExist(const port_t port) const;
 };
 
 }

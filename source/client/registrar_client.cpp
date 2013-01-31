@@ -10,7 +10,7 @@
 using namespace std;
 using namespace zero_cache;
 
-RegistrarClient::RegistrarClient(const char* log_file, Connection connection, SocketType type) :
+RegistrarClient::RegistrarClient(const char* log_file, Connection connection, const SocketType type) :
     ClientBase(log_file, connection, type), clients_(connection, type)
 {
     SetHost(connection.GetHost());
@@ -26,7 +26,7 @@ KeyArray RegistrarClient::GetKeys()
     return answer_.GetKeys();
 }
 
-void RegistrarClient::WriteData(string key, void* data, size_t size)
+void RegistrarClient::WriteData(const string key, const void* data, const size_t size)
 {
     Log("RegistrarClient::WriteData() - key = %s data_size = %lu\n", key.c_str(), size);
 
@@ -50,14 +50,14 @@ void* RegistrarClient::ReadData(string key)
     return result;
 }
 
-Client* RegistrarClient::GetClient(string& key)
+Client* RegistrarClient::GetClient(const string& key)
 {
     AddKey(key);
 
     return clients_.GetClient(key);
 }
 
-void RegistrarClient::AddKey(string& key)
+void RegistrarClient::AddKey(const string& key)
 {
     if ( clients_.IsKeyExist(key) )
         return;
@@ -71,7 +71,7 @@ void RegistrarClient::AddKey(string& key)
     clients_.CreateClient(port);
 }
 
-port_t RegistrarClient::SendPortRequest(string& key)
+port_t RegistrarClient::SendPortRequest(const string& key)
 {
     request_->SetCommand(kGetPort);
     request_->SetKey(key);

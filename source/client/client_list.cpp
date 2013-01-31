@@ -26,7 +26,7 @@ ClientList::~ClientList()
     clients_.clear();
 }
 
-Client* ClientList::GetClient(string& key)
+Client* ClientList::GetClient(const string& key) const
 {
     if ( ! IsKeyExist(key) )
         return NULL;
@@ -39,7 +39,7 @@ Client* ClientList::GetClient(string& key)
     return clients_[port];
 }
 
-void ClientList::AddKey(string& key, port_t port)
+void ClientList::AddKey(const string& key, const port_t port)
 {
     ports_.insert(KeyPort::value_type(key, port));
 }
@@ -60,7 +60,7 @@ void ClientList::CreateClient(port_t port)
     }
 }
 
-bool ClientList::IsPortExist(port_t port)
+bool ClientList::IsPortExist(const port_t port) const
 {
     if ( clients_.count(port) != 0 )
         return true;
@@ -68,7 +68,7 @@ bool ClientList::IsPortExist(port_t port)
         return false;
 }
 
-bool ClientList::IsKeyExist(string& key)
+bool ClientList::IsKeyExist(const string& key) const
 {
     if ( ports_.count(key) != 0 )
         return true;
