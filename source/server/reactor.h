@@ -4,7 +4,6 @@
 #include "container.h"
 #include "types_zcache.h"
 #include "connection.h"
-#include "socket_list.h"
 #include "server_base.h"
 
 namespace zero_cache
@@ -25,7 +24,6 @@ protected:
 
 private:
     Connection connection_;
-    SocketList out_sockets_;
     Container container_;
 
     void WriteData();

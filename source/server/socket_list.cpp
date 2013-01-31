@@ -8,6 +8,16 @@
 using namespace std;
 using namespace zero_cache;
 
+SocketList* SocketList::instance_ = NULL;
+
+SocketList* SocketList::Instance(SocketType type)
+{
+    if (instance_ == NULL)
+        instance_ = new SocketList(type);
+
+    return instance_;
+}
+
 static void RemoveSocket(SocketList::PortSocket::value_type socket_pair)
 {
     delete socket_pair.second;

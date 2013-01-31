@@ -5,13 +5,15 @@
 #include "interrupt_signal.h"
 #include "functions.h"
 #include "connection.h"
+#include "socket_list.h"
 
 using namespace std;
 using namespace zero_cache;
 
 Reactor::Reactor(const char* log_file, Connection connection, SocketType type) :
-    ServerBase(log_file, connection, type), connection_(connection), out_sockets_(type)
+    ServerBase(log_file, connection, type), connection_(connection)
 {
+    SocketList::Instance(type);
 }
 
 void Reactor::ProcessMessage()
@@ -19,7 +21,9 @@ void Reactor::ProcessMessage()
     request_.Receive(socket_);
 
     connection_.SetHost(request_.GetHost());
-    out_sockets_.CreateSocket(connection_, request_.GetId());
+
+    SocketList* out_sockets = SocketList::Instance();
+    out_sockets->CreateSocket(connection_, request_.GetId());
 
     if ( request_.GetCommand() == kWrite )
         WriteData();
@@ -57,7 +61,8 @@ void Reactor::ReadData()
     PrintMsg(*data);
 
     answer_.SetData(data);
-    Socket& socket = out_sockets_.GetSocket(request_.GetId());
+    SocketList* out_sockets = SocketList::Instance();
+    Socket& socket = out_sockets->GetSocket(request_.GetId());
     answer_.Send(socket);
 
     if ( is_data_empty )
