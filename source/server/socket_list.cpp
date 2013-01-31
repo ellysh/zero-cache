@@ -31,12 +31,12 @@ SocketList::~SocketList()
     sockets_.clear();
 }
 
-Socket& SocketList::GetSocket(port_t port)
+Socket& SocketList::GetSocket(const port_t port) const
 {
     return *sockets_[port];
 }
 
-void SocketList::CreateSocket(Connection& connection, port_t port)
+void SocketList::CreateSocket(const Connection& connection, const port_t port)
 {
     if ( sockets_.count(port) != 0 )
         return;

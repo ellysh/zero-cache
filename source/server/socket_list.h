@@ -17,20 +17,20 @@ public:
     typedef std::map<port_t, Socket*> PortSocket;
 
 public:
-    static SocketList* Instance(SocketType type = kDealer);
+    static SocketList* Instance(const SocketType type = kDealer);
 
     ~SocketList();
 
-    void CreateSocket(Connection& connection, port_t port);
-    Socket& GetSocket(port_t port);
+    void CreateSocket(const Connection& connection, const port_t port);
+    Socket& GetSocket(const port_t port) const;
 
 private:
     static SocketList* instance_;
 
     SocketType type_;
-    PortSocket sockets_;
+    mutable PortSocket sockets_;
 
-    SocketList(SocketType type = kDealer) : type_(type) {};
+    SocketList(const SocketType type = kDealer) : type_(type) {};
 };
 
 }

@@ -18,12 +18,12 @@ private:
     typedef std::set<port_t> PortSet;
 
 public:
-    Registrar(const char* log_file, Connection connection, SocketType type = kDealer);
+    Registrar(const char* log_file, Connection connection, const SocketType type = kDealer);
     virtual ~Registrar();
 
-    virtual void SetQueueSize(int size);
+    virtual void SetQueueSize(const int size);
 
-    void SetKeyLimit(int limit);
+    void SetKeyLimit(const int limit);
 
 protected:
     virtual void PerformCommand();
@@ -33,7 +33,7 @@ private:
     PortSet ports_;
 
     void StartReactor();
-    void SendAnswer();
+    void SendAnswer() const;
     void SetPortAnswer();
     void SetKeysAnswer();
 };

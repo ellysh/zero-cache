@@ -12,7 +12,7 @@ using namespace zero_cache;
 static int gQueueSize = 1000;
 static SocketType gSocketType;
 
-Registrar::Registrar(const char* log_file, Connection connection, SocketType type) :
+Registrar::Registrar(const char* log_file, Connection connection, const SocketType type) :
     ServerBase(log_file, connection, type)
 {
     key_list_ = new KeyList(connection);
@@ -89,7 +89,7 @@ void Registrar::SetKeysAnswer()
     answer_.SetKeys(keys);
 }
 
-void Registrar::SendAnswer()
+void Registrar::SendAnswer() const
 {
     string key = request_.GetKey();
 
@@ -99,12 +99,12 @@ void Registrar::SendAnswer()
     answer_.Send(socket);
 }
 
-void Registrar::SetKeyLimit(int limit)
+void Registrar::SetKeyLimit(const int limit)
 {
     key_list_->SetKeyLimit(limit);
 }
 
-void Registrar::SetQueueSize(int size)
+void Registrar::SetQueueSize(const int size)
 {
     gQueueSize = size;
 }
