@@ -5,7 +5,6 @@
 
 #include "types_zcache.h"
 #include "socket.h"
-#include "connection.h"
 #include "server_base.h"
 
 namespace zero_cache
@@ -27,10 +26,9 @@ public:
     void SetKeyLimit(int limit);
 
 protected:
-    virtual void ProcessMessage();
+    virtual void PerformCommand();
 
 private:
-    Connection connection_;
     KeyList* key_list_;
     PortSet ports_;
 

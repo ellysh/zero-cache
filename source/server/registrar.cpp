@@ -3,7 +3,6 @@
 #include "reactor.h"
 #include "key_list.h"
 #include "functions.h"
-#include "connection.h"
 #include "thread.h"
 #include "socket_list.h"
 
@@ -14,7 +13,7 @@ static int gQueueSize = 1000;
 static SocketType gSocketType;
 
 Registrar::Registrar(const char* log_file, Connection connection, SocketType type) :
-    ServerBase(log_file, connection, type), connection_(connection)
+    ServerBase(log_file, connection, type)
 {
     key_list_ = new KeyList(connection);
 
@@ -39,15 +38,8 @@ static void* ReactorStart(void* args)
     reactor.Start();
 }
 
-void Registrar::ProcessMessage()
+void Registrar::PerformCommand()
 {
-    request_.Receive(socket_);
-
-    connection_.SetHost(request_.GetHost());
-
-    SocketList* out_sockets = SocketList::Instance();
-    out_sockets->CreateSocket(connection_, request_.GetId());
-
     if ( request_.GetCommand() == kGetPort )
     {
         StartReactor();

@@ -3,7 +3,6 @@
 
 #include "container.h"
 #include "types_zcache.h"
-#include "connection.h"
 #include "server_base.h"
 
 namespace zero_cache
@@ -20,10 +19,9 @@ public:
     virtual void SetQueueSize(int size);
 
 protected:
-    virtual void ProcessMessage();
+    virtual void PerformCommand();
 
 private:
-    Connection connection_;
     Container container_;
 
     void WriteData();

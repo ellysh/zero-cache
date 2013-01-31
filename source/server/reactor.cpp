@@ -3,26 +3,18 @@
 #include <assert.h>
 
 #include "functions.h"
-#include "connection.h"
 #include "socket_list.h"
 
 using namespace std;
 using namespace zero_cache;
 
 Reactor::Reactor(const char* log_file, Connection connection, SocketType type) :
-    ServerBase(log_file, connection, type), connection_(connection)
+    ServerBase(log_file, connection, type)
 {
 }
 
-void Reactor::ProcessMessage()
+void Reactor::PerformCommand()
 {
-    request_.Receive(socket_);
-
-    connection_.SetHost(request_.GetHost());
-
-    SocketList* out_sockets = SocketList::Instance();
-    out_sockets->CreateSocket(connection_, request_.GetId());
-
     if ( request_.GetCommand() == kWrite )
         WriteData();
 

@@ -11,7 +11,7 @@ using namespace std;
 using namespace zero_cache;
 
 ServerBase::ServerBase(const char* log_file, Connection connection, SocketType type) :
-    Debug(log_file), socket_(type)
+    Debug(log_file), socket_(type), connection_(connection)
 {
     SocketList::Instance(type);
 
@@ -25,4 +25,16 @@ void ServerBase::Start()
 
     while (! s_interrupted )
         ProcessMessage();
+}
+
+void ServerBase::ProcessMessage()
+{
+    request_.Receive(socket_);
+
+    connection_.SetHost(request_.GetHost());
+
+    SocketList* out_sockets = SocketList::Instance();
+    out_sockets->CreateSocket(connection_, request_.GetId());
+
+    PerformCommand();
 }
