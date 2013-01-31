@@ -19,11 +19,11 @@ public:
     Container() {};
     ~Container();
 
-    void WriteData(std::string& key, zmq_msg_t& data);
-    zmq_msg_t* ReadData(std::string& key);
+    void WriteData(const std::string& key, const zmq_msg_t& data);
+    zmq_msg_t* ReadData(const std::string& key) const;
 
 private:
-    DataMap map_;
+    mutable DataMap map_;
 
     DISALLOW_COPY_AND_ASSIGN(Container)
 };

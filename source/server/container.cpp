@@ -3,6 +3,8 @@
 #include <algorithm>
 #include <string.h>
 
+#include "functions.h"
+
 using namespace std;
 using namespace zero_cache;
 
@@ -17,23 +19,23 @@ Container::~Container()
              RemoveMsg);
 }
 
-void Container::WriteData(string& key, zmq_msg_t& data)
+void Container::WriteData(const string& key, const zmq_msg_t& data)
 {
     if ( map_.count(key) != 0 )
-        zmq_msg_copy(&map_[key], &data);
+        zmq_msg_copy(&map_[key], const_cast<zmq_msg_t*>(&data));
     else
     {
-        size_t size = zmq_msg_size(&data);
+        size_t size = ZmqMsgSize(data);
 
         zmq_msg_t msg;
         zmq_msg_init_size(&msg, size);
-        memcpy(zmq_msg_data(&msg), zmq_msg_data(&data), size);
+        memcpy(ZmqMsgData(msg), ZmqMsgData(data), size);
 
         map_.insert(DataMap::value_type(key, msg));
     }
 }
 
-zmq_msg_t* Container::ReadData(string& key)
+zmq_msg_t* Container::ReadData(const string& key) const
 {
     if ( map_.count(key) != 0 )
         return &map_[key];
