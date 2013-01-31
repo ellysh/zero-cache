@@ -24,7 +24,7 @@ public:
     void ConnectOut(Connection& connection);
     void BindIn(Connection& connection);
 
-    void SendMsg(zmq_msg_t& msg, int flags);
+    void SendMsg(const zmq_msg_t& msg, int flags);
 
     bool ReceiveMsg(long timeout = -1);
     bool PopMsg(zmq_msg_t& msg);

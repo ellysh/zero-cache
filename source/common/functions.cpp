@@ -11,32 +11,42 @@ using namespace zero_cache;
 
 static const size_t kFileNamePos = 6;
 
-port_t zero_cache::MsgToPort(zmq_msg_t& msg)
+void* ZmqMsgData(const zmq_msg_t& msg)
 {
-    port_t* result = (port_t*)zmq_msg_data(&msg);
+    return zmq_msg_data(const_cast<zmq_msg_t*>(&msg));
+}
+
+size_t ZmqMsgSize(const zmq_msg_t& msg)
+{
+    return zmq_msg_size(const_cast<zmq_msg_t*>(&msg));
+}
+
+port_t zero_cache::MsgToPort(const zmq_msg_t& msg)
+{
+    port_t* result = (port_t*)ZmqMsgData(msg);
 
     return *result;
 }
 
-string zero_cache::MsgToString(zmq_msg_t& msg)
+string zero_cache::MsgToString(const zmq_msg_t& msg)
 {
-    char* buffer =  (char*)zmq_msg_data(&msg);
+    char* buffer =  (char*)ZmqMsgData(msg);
     assert( buffer != NULL );
-    string result(buffer, zmq_msg_size(&msg));
+    string result(buffer, ZmqMsgSize(msg));
 
     return result;
 }
 
-KeyArray zero_cache::MsgToKeyArray(zmq_msg_t& msg)
+KeyArray zero_cache::MsgToKeyArray(const zmq_msg_t& msg)
 {
-    char* buffer =  (char*)zmq_msg_data(&msg);
+    char* buffer =  (char*)ZmqMsgData(msg);
     assert( buffer != NULL );
-    KeyArray result(buffer, buffer + zmq_msg_size(&msg));
+    KeyArray result(buffer, buffer + ZmqMsgSize(msg));
 
     return result;
 }
 
-port_t zero_cache::StringToPort(string& value)
+port_t zero_cache::StringToPort(const string& value)
 {
     char* endptr;
     port_t result = strtoul(value.c_str(), &endptr, 10);
@@ -56,7 +66,7 @@ void zero_cache::SetPermission(const char* connection)
     chmod(file, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
 }
 
-port_t zero_cache::GenerateId(void* pointer)
+port_t zero_cache::GenerateId(const void* pointer)
 {
     srand((unsigned long)pointer);
 
@@ -75,7 +85,7 @@ void zero_cache::MsgInitString(zmq_msg_t& msg, string& str)
     MsgInitData(msg, (void*)str.c_str(), str.size());
 }
 
-void zero_cache::MsgInitData(zmq_msg_t& msg, void* data, size_t size)
+void zero_cache::MsgInitData(zmq_msg_t& msg, const void* data, const size_t size)
 {
     zmq_msg_init_size(&msg, size);
 

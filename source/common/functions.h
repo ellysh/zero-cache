@@ -9,17 +9,17 @@
 namespace zero_cache
 {
 
-port_t MsgToPort(zmq_msg_t& msg);
-std::string MsgToString(zmq_msg_t& msg);
-KeyArray MsgToKeyArray(zmq_msg_t& msg);
+port_t MsgToPort(const zmq_msg_t& msg);
+std::string MsgToString(const zmq_msg_t& msg);
+KeyArray MsgToKeyArray(const zmq_msg_t& msg);
 
-port_t StringToPort(std::string& value);
+port_t StringToPort(const std::string& value);
 void SetPermission(const char* connection);
-port_t GenerateId(void* pointer);
+port_t GenerateId(const void* const pointer);
 
 void MsgDataFree(void* data, void* hint);
 void MsgInitString(zmq_msg_t& msg, std::string& str);
-void MsgInitData(zmq_msg_t& msg, void* data, size_t size);
+void MsgInitData(zmq_msg_t& msg, const void* data, const size_t size);
 
 }
 

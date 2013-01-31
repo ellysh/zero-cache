@@ -16,20 +16,20 @@ public:
     Answer();
     ~Answer();
 
-    void SetPort(port_t port);
-    void SetKeys(KeyArray& keys);
-    void SetData(zmq_msg_t* data);
+    void SetPort(const port_t port);
+    void SetKeys(const KeyArray& keys);
+    void SetData(zmq_msg_t* const data);
 
-    port_t GetPort();
-    KeyArray GetKeys();
-    void* GetData();
-    zmq_msg_t* GetMsg();
+    port_t GetPort() const;
+    KeyArray GetKeys() const;
+    void* GetData(); const
+    zmq_msg_t* GetMsg() const;
 
-    void Send(Socket& socket);
+    void Send(Socket& socket) const;
     bool Receive(Socket& socket, long timeout = -1);
 
 private:
-    zmq_msg_t msg_;
+    mutable zmq_msg_t msg_;
 };
 
 }

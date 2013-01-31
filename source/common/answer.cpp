@@ -20,27 +20,27 @@ Answer::~Answer()
     zmq_msg_close(&msg_);
 }
 
-void Answer::SetPort(port_t port)
+void Answer::SetPort(const port_t port)
 {
     MsgInitData(msg_, &port, sizeof(port));
 }
 
-void Answer::SetKeys(KeyArray& keys)
+void Answer::SetKeys(const KeyArray& keys)
 {
     MsgInitData(msg_, &keys[0], keys.size());
 }
 
-void Answer::SetData(zmq_msg_t* data)
+void Answer::SetData(zmq_msg_t* const data)
 {
     zmq_msg_copy(&msg_, data);
 }
 
-port_t Answer::GetPort()
+port_t Answer::GetPort() const
 {
     return MsgToPort(msg_);
 }
 
-KeyArray Answer::GetKeys()
+KeyArray Answer::GetKeys() const
 {
     return MsgToKeyArray(msg_);
 }
@@ -53,12 +53,12 @@ void* Answer::GetData()
     return data;
 }
 
-zmq_msg_t* Answer::GetMsg()
+const zmq_msg_t* Answer::GetMsg() const
 {
     return &msg_;
 }
 
-void Answer::Send(Socket& socket)
+void Answer::Send(Socket& socket) const
 {
     socket.SendMsg(msg_, 0);
 }
