@@ -38,8 +38,6 @@ private:
     void SendAnswer();
     void SetPortAnswer();
     void SetKeysAnswer();
-
-    DISALLOW_COPY_AND_ASSIGN(Registrar)
 };
 
 }
