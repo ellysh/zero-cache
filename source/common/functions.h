@@ -9,6 +9,9 @@
 namespace zero_cache
 {
 
+void* ZmqMsgData(const zmq_msg_t& msg);
+size_t ZmqMsgSize(const zmq_msg_t& msg);
+
 port_t MsgToPort(const zmq_msg_t& msg);
 std::string MsgToString(const zmq_msg_t& msg);
 KeyArray MsgToKeyArray(const zmq_msg_t& msg);

@@ -61,18 +61,18 @@ static Connection IncrementPort(Connection& connection)
     return result;
 }
 
-void Socket::ConnectOut(Connection& connection)
+void Socket::ConnectOut(const Connection& connection)
 {
     zmq_connect(out_socket_, connection.GetString().c_str());
 }
 
-void Socket::BindIn(Connection& connection)
+void Socket::BindIn(const Connection& connection)
 {
     zmq_bind(in_socket_, connection.GetString().c_str());
     SetPermission(connection.GetString().c_str());
 }
 
-bool Socket::ReceiveMsg(long timeout)
+bool Socket::ReceiveMsg(const long timeout)
 {
     ClearMessages();
 
@@ -119,19 +119,19 @@ bool Socket::PopMsg(zmq_msg_t& msg)
     return true;
 }
 
-void Socket::SendMsg(zmq_msg_t& msg, int flags)
+void Socket::SendMsg(const zmq_msg_t& msg, const int flags) const
 {
-    size_t size = zmq_msg_size(&msg);
+    size_t size = ZmqMsgSize(msg);
 
     zmq_msg_t send;
     zmq_msg_init_size(&send, size);
 
-    memcpy(zmq_msg_data(&send), zmq_msg_data(&msg), size);
+    memcpy(zmq_msg_data(&send), ZmqMsgData(msg), size);
 
     zmq_msg_send(&send, out_socket_, flags);
 }
 
-void Socket::SetQueueSize(int size)
+void Socket::SetQueueSize(const int size)
 {
     zmq_setsockopt(in_socket_, ZMQ_SNDHWM, &size, sizeof(size));
     zmq_setsockopt(in_socket_, ZMQ_RCVHWM, &size, sizeof(size));

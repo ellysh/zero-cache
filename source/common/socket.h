@@ -21,15 +21,15 @@ public:
     explicit Socket(SocketType type = kDealer);
     virtual ~Socket();
 
-    void ConnectOut(Connection& connection);
-    void BindIn(Connection& connection);
+    void ConnectOut(const Connection& connection);
+    void BindIn(const Connection& connection);
 
-    void SendMsg(const zmq_msg_t& msg, int flags);
+    void SendMsg(const zmq_msg_t& msg, const int flags) const;
 
-    bool ReceiveMsg(long timeout = -1);
+    bool ReceiveMsg(const long timeout = -1);
     bool PopMsg(zmq_msg_t& msg);
 
-    void SetQueueSize(int size);
+    void SetQueueSize(const int size);
 
 private:
     MsgList messages_;

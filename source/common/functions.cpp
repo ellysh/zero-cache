@@ -11,12 +11,12 @@ using namespace zero_cache;
 
 static const size_t kFileNamePos = 6;
 
-void* ZmqMsgData(const zmq_msg_t& msg)
+void* zero_cache::ZmqMsgData(const zmq_msg_t& msg)
 {
     return zmq_msg_data(const_cast<zmq_msg_t*>(&msg));
 }
 
-size_t ZmqMsgSize(const zmq_msg_t& msg)
+size_t zero_cache::ZmqMsgSize(const zmq_msg_t& msg)
 {
     return zmq_msg_size(const_cast<zmq_msg_t*>(&msg));
 }

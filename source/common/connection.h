@@ -22,7 +22,7 @@ public:
     port_t GetPort();
 
     std::string& GetProtocol();
-    std::string GetString();
+    std::string GetString() const;
 
 private:
     std::string protocol_;

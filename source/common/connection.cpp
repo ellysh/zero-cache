@@ -63,7 +63,7 @@ string& Connection::GetProtocol()
     return protocol_;
 }
 
-string Connection::GetString()
+string Connection::GetString() const
 {
     char port[100];
     sprintf(port, "%lu", port_);
