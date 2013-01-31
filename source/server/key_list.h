@@ -18,19 +18,19 @@ public:
     typedef std::map<std::string, PortCounter*> KeyPort;
 
 public:
-    explicit KeyList(Connection& connection) : connection_(connection), current_counter_(NULL) {};
+    explicit KeyList(const Connection& connection) : connection_(connection), current_counter_(NULL) {};
     ~KeyList();
 
-    void AddKey(std::string& key);
-    port_t GetPort(std::string& key);
-    KeyArray GetKeys();
+    void AddKey(const std::string& key);
+    port_t GetPort(const std::string& key) const;
+    KeyArray GetKeys() const;
 
-    void SetKeyLimit(int key_limit);
+    void SetKeyLimit(const int key_limit);
 
 private:
-    Connection& connection_;
+    const Connection& connection_;
     PortCounter* current_counter_;
-    KeyPort ports_;
+    mutable KeyPort ports_;
     int key_limit_;
 
     DISALLOW_COPY_AND_ASSIGN(KeyList)

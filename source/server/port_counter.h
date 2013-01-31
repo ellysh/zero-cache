@@ -14,8 +14,8 @@ public:
     PortCounter(port_t port, int limit);
 
     void Increment();
-    port_t GetPort();
-    bool IsLimit();
+    port_t GetPort() const;
+    bool IsLimit() const;
 
 private:
     int limit_;

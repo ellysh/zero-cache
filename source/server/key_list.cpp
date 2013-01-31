@@ -23,7 +23,7 @@ KeyList::~KeyList()
     ports_.clear();
 }
 
-void KeyList::AddKey(string& key)
+void KeyList::AddKey(const string& key)
 {
     if ( ports_.count(key) != 0 )
         return;
@@ -40,7 +40,7 @@ void KeyList::AddKey(string& key)
     ports_.insert(KeyPort::value_type(key, current_counter_));
 }
 
-port_t KeyList::GetPort(string& key)
+port_t KeyList::GetPort(const string& key) const
 {
     if ( ports_.count(key) != 0 )
         return ports_[key]->GetPort();
@@ -55,7 +55,7 @@ BINARY_FUNCTOR(AddKeyArray, KeyList::KeyPort::value_type, port_pair, KeyArray&, 
     keys.push_back('\0');
 END_BINARY_FUNCTOR
 
-KeyArray KeyList::GetKeys()
+KeyArray KeyList::GetKeys() const
 {
     KeyArray keys;
 
@@ -65,7 +65,7 @@ KeyArray KeyList::GetKeys()
     return keys;
 }
 
-void KeyList::SetKeyLimit(int key_limit)
+void KeyList::SetKeyLimit(const int key_limit)
 {
     key_limit_ = key_limit;
 }

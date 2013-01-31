@@ -15,7 +15,7 @@ void PortCounter::Increment()
     counter_++;
 }
 
-bool PortCounter::IsLimit()
+bool PortCounter::IsLimit() const
 {
     if ( counter_ >= limit_ )
         return true;
@@ -23,7 +23,7 @@ bool PortCounter::IsLimit()
         return false;
 }
 
-port_t PortCounter::GetPort()
+port_t PortCounter::GetPort() const
 {
     return port_;
 }
