@@ -28,12 +28,12 @@ Debug::~Debug()
 #endif
 }
 
-ostream& Debug::Log()
+ostream& Debug::Log() const
 {
     return file_;
 }
 
-void Debug::Log(const char* fmt, ...)
+void Debug::Log(const char* fmt, ...) const
 {
 #ifdef __DEBUG__
     char buf[4096];
@@ -46,7 +46,7 @@ void Debug::Log(const char* fmt, ...)
 #endif
 }
 
-void Debug::PrintMsg(zmq_msg_t& msg)
+void Debug::PrintMsg(zmq_msg_t& msg) const
 {
 #ifdef __DEBUG__
     char* data_hex = (char*)zmq_msg_data(&msg);

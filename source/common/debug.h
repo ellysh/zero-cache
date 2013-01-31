@@ -15,13 +15,13 @@ public:
     Debug(const char* log_file);
     virtual ~Debug();
 
-    void Log(const char* fmt, ...);
-    void PrintMsg(zmq_msg_t& msg);
+    void Log(const char* fmt, ...) const;
+    void PrintMsg(zmq_msg_t& msg) const;
 
 private:
-    std::ofstream file_;
+    mutable std::ofstream file_;
 
-    std::ostream& Log();
+    std::ostream& Log() const;
 
     DISALLOW_COPY_AND_ASSIGN(Debug);
 };
