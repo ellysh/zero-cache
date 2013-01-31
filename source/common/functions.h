@@ -21,7 +21,7 @@ void SetPermission(const char* connection);
 port_t GenerateId(const void* const pointer);
 
 void MsgDataFree(void* data, void* hint);
-void MsgInitString(zmq_msg_t& msg, std::string& str);
+void MsgInitString(zmq_msg_t& msg, const std::string& str);
 void MsgInitData(zmq_msg_t& msg, const void* data, const size_t size);
 
 }

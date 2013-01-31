@@ -14,7 +14,7 @@ Request::Request()
     Constructor();
 }
 
-Request::Request(port_t id, string& host)
+Request::Request(const port_t id, const string& host)
 {
     Constructor();
 
@@ -45,52 +45,52 @@ void Request::SetCommand(Command command)
     MsgInitData(command_msg_, &command, sizeof(command));
 }
 
-void Request::SetKey(string& key)
+void Request::SetKey(const string& key)
 {
     MsgInitString(key_msg_, key);
 }
 
-void Request::SetData(void* data, size_t size)
+void Request::SetData(const void* data, const size_t size)
 {
     MsgInitData(data_msg_, data, size);
 }
 
-port_t Request::GetId()
+port_t Request::GetId() const
 {
     return MsgToPort(id_msg_);
 }
 
-string Request::GetHost()
+string Request::GetHost() const
 {
     return MsgToString(host_msg_);
 }
 
-Command& Request::GetCommand()
+Command& Request::GetCommand() const
 {
-    Command* command = (Command*)zmq_msg_data(&command_msg_);
+    Command* command = (Command*)ZmqMsgData(command_msg_);
 
     return *command;
 }
 
-string Request::GetKey()
+string Request::GetKey() const
 {
-    assert( zmq_msg_size(&key_msg_) != 0 );
+    assert( ZmqMsgSize(key_msg_) != 0 );
     return MsgToString(key_msg_);
 }
 
-zmq_msg_t& Request::GetData()
+zmq_msg_t& Request::GetData() const
 {
-    assert( zmq_msg_size(&data_msg_) != 0 );
+    assert( ZmqMsgSize(data_msg_) != 0 );
     return data_msg_;
 }
 
-typedef pair<zmq_msg_t*, int> Message;
+typedef pair<const zmq_msg_t*, int> Message;
 
 BINARY_FUNCTOR(SendMsg, Message, msg, Socket&, socket)
     socket.SendMsg(*msg.first, msg.second);
 END_BINARY_FUNCTOR
 
-void Request::Send(Socket& socket)
+void Request::Send(const Socket& socket) const
 {
     typedef list<Message> MsgQueue;
     MsgQueue queue;
@@ -98,10 +98,10 @@ void Request::Send(Socket& socket)
     queue.push_back(MsgQueue::value_type(&id_msg_, ZMQ_SNDMORE));
     queue.push_back(MsgQueue::value_type(&host_msg_, ZMQ_SNDMORE));
 
-    if ( zmq_msg_size(&key_msg_) != 0 )
+    if ( ZmqMsgSize(key_msg_) != 0 )
         queue.push_back(MsgQueue::value_type(&key_msg_, ZMQ_SNDMORE));
 
-    if ( zmq_msg_size(&data_msg_) != 0 )
+    if ( ZmqMsgSize(data_msg_) != 0 )
         queue.push_back(MsgQueue::value_type(&data_msg_, ZMQ_SNDMORE));
 
     queue.back().second = 0;

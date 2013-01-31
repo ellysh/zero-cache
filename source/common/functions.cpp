@@ -80,7 +80,7 @@ void zero_cache::MsgDataFree(void* data, void* hint)
     free(data);
 }
 
-void zero_cache::MsgInitString(zmq_msg_t& msg, string& str)
+void zero_cache::MsgInitString(zmq_msg_t& msg, const string& str)
 {
     MsgInitData(msg, (void*)str.c_str(), str.size());
 }
