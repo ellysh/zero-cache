@@ -18,12 +18,12 @@ class Request;
 class ClientBase : protected Debug
 {
 public:
-    ClientBase(const char* log_file, Connection connection, SocketType type);
+    ClientBase(const char* log_file, Connection connection, const SocketType type);
     virtual ~ClientBase();
 
-    virtual void SetQueueSize(int size) = 0;
+    virtual void SetQueueSize(const int size) = 0;
 
-    virtual void SetHost(std::string host);
+    virtual void SetHost(const std::string host);
 
 protected:
     Socket socket_;

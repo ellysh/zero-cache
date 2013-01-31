@@ -45,7 +45,7 @@ KeyArray Answer::GetKeys() const
     return MsgToKeyArray(msg_);
 }
 
-void* Answer::GetData()
+void* Answer::GetData() const
 {
     void* data = malloc(zmq_msg_size(&msg_));
     memcpy(data, zmq_msg_data(&msg_), zmq_msg_size(&msg_));
@@ -53,7 +53,7 @@ void* Answer::GetData()
     return data;
 }
 
-const zmq_msg_t* Answer::GetMsg() const
+zmq_msg_t* Answer::GetMsg() const
 {
     return &msg_;
 }

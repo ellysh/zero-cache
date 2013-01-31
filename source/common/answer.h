@@ -22,7 +22,7 @@ public:
 
     port_t GetPort() const;
     KeyArray GetKeys() const;
-    void* GetData(); const
+    void* GetData() const;
     zmq_msg_t* GetMsg() const;
 
     void Send(Socket& socket) const;

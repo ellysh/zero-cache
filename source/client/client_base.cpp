@@ -12,7 +12,7 @@ using namespace zero_cache;
 
 static const long kReadAnswerTimeout = 10;
 
-ClientBase::ClientBase(const char* log_file, Connection connection, SocketType type) :
+ClientBase::ClientBase(const char* log_file, Connection connection, const SocketType type) :
     Debug(log_file), socket_(type), request_(NULL)
 {
     srand(time(NULL));
@@ -37,7 +37,7 @@ ClientBase::~ClientBase()
     delete request_;
 }
 
-void ClientBase::SetHost(string host)
+void ClientBase::SetHost(const string host)
 {
     if ( request_ != NULL )
         delete request_;
