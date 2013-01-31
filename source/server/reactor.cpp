@@ -8,7 +8,7 @@
 using namespace std;
 using namespace zero_cache;
 
-Reactor::Reactor(const char* log_file, Connection connection, SocketType type) :
+Reactor::Reactor(const char* log_file, Connection connection, const SocketType type) :
     ServerBase(log_file, connection, type)
 {
 }

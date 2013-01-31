@@ -13,10 +13,10 @@ class Connection;
 class Reactor : public ServerBase
 {
 public:
-    Reactor(const char* log_file, Connection connection, SocketType type = kDealer);
+    Reactor(const char* log_file, Connection connection, const SocketType type = kDealer);
     virtual ~Reactor() {};
 
-    virtual void SetQueueSize(int size);
+    virtual void SetQueueSize(const int size);
 
 protected:
     virtual void PerformCommand();
