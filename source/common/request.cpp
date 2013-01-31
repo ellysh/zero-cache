@@ -1,5 +1,6 @@
 #include "request.h"
 
+#include <algorithm>
 #include <assert.h>
 
 #include "socket.h"
@@ -83,34 +84,36 @@ zmq_msg_t& Request::GetData()
     return data_msg_;
 }
 
+struct SendMsg : public binary_function<pair<zmq_msg_t*, int>, Socket&, void>
+{
+    void operator()(pair<zmq_msg_t*, int> msg, Socket& socket) const
+    {
+        socket.SendMsg(*msg.first, msg.second);
+    }
+};
+
 void Request::Send(Socket& socket)
 {
-    /* FIXME: Refactoring this method. Use the std::map to do it */
+    typedef list< pair<zmq_msg_t*, int> > MsgQueue;
+    MsgQueue queue;
+    queue.push_back(MsgQueue::value_type(&command_msg_, ZMQ_SNDMORE));
+    queue.push_back(MsgQueue::value_type(&id_msg_, ZMQ_SNDMORE));
+    queue.push_back(MsgQueue::value_type(&host_msg_, ZMQ_SNDMORE));
 
-    socket.SendMsg(command_msg_, ZMQ_SNDMORE);
-    socket.SendMsg(id_msg_, ZMQ_SNDMORE);
+    if ( zmq_msg_size(&key_msg_) != 0 )
+        queue.push_back(MsgQueue::value_type(&key_msg_, ZMQ_SNDMORE));
 
-    size_t key_size = zmq_msg_size(&key_msg_);
+    if ( zmq_msg_size(&data_msg_) != 0 )
+        queue.push_back(MsgQueue::value_type(&data_msg_, ZMQ_SNDMORE));
 
-    if ( key_size != 0 )
-        socket.SendMsg(host_msg_, ZMQ_SNDMORE);
-    else
-        socket.SendMsg(host_msg_, 0);
+    queue.back().second = 0;
 
-    size_t data_size = zmq_msg_size(&data_msg_);
-
-    if ( (key_size != 0) && (data_size != 0) )
-    {
-        socket.SendMsg(key_msg_, ZMQ_SNDMORE);
-        socket.SendMsg(data_msg_, 0);
-    }
-    else if ( key_size != 0 )
-        socket.SendMsg(key_msg_, 0);
+    for_each(queue.begin(), queue.end(),
+             bind2nd(SendMsg(), socket));
 }
 
 void Request::Receive(Socket& socket)
 {
-    /* FIXME: Add timeout for this receiving if this is needed */
     socket.ReceiveMsg();
 
     bool is_msg_more = true;
