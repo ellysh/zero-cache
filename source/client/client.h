@@ -2,9 +2,7 @@
 #define CLIENT_H
 
 #include <string>
-#include <zmq.h>
 
-#include "debug.h"
 #include "types_zcache.h"
 #include "client_base.h"
 
@@ -16,13 +14,13 @@ class Connection;
 class Client : public ClientBase
 {
 public:
-    Client(const char* log_file, Connection connection, SocketType type);
+    Client(const char* log_file, Connection connection, const SocketType type);
     virtual ~Client() {};
 
-    virtual void SetQueueSize(int size);
+    virtual void SetQueueSize(const int size);
 
-    void WriteData(std::string& key, void* data, size_t size);
-    void* ReadData(std::string& key);
+    void WriteData(const std::string& key, const void* data, const size_t size) const;
+    void* ReadData(const std::string& key);
 };
 
 }

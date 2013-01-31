@@ -6,12 +6,13 @@
 using namespace std;
 using namespace zero_cache;
 
-Client::Client(const char* log_file, Connection connection, SocketType type) : ClientBase(log_file, connection, type)
+Client::Client(const char* log_file, Connection connection, const SocketType type) :
+    ClientBase(log_file, connection, type)
 {
     SetHost(connection.GetHost());
 }
 
-void Client::WriteData(string& key, void* data, size_t size)
+void Client::WriteData(const string& key, const void* data, const size_t size) const
 {
     Log("Client::WriteData() - key = %s data_size = %lu\n", key.c_str(), size);
 
@@ -22,7 +23,7 @@ void Client::WriteData(string& key, void* data, size_t size)
     request_->Send(socket_);
 }
 
-void* Client::ReadData(string& key)
+void* Client::ReadData(const string& key)
 {
     Log("Client::ReadData() - key = %s\n", key.c_str());
 
@@ -34,7 +35,7 @@ void* Client::ReadData(string& key)
     return answer_.GetData();
 }
 
-void Client::SetQueueSize(int size)
+void Client::SetQueueSize(const int size)
 {
     socket_.SetQueueSize(size);
 }
