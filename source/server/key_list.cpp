@@ -48,16 +48,12 @@ port_t KeyList::GetPort(string& key)
         return kErrorPort;
 }
 
-struct AddKeyArray : public binary_function<KeyList::KeyPort::value_type, KeyArray&, void>
-{
-    void operator()(KeyList::KeyPort::value_type port_pair, KeyArray& keys) const
-    {
-        copy(port_pair.first.begin(), port_pair.first.end(),
-             back_inserter(keys));
+BINARY_FUNCTOR(AddKeyArray, KeyList::KeyPort::value_type, port_pair, KeyArray&, keys)
+    copy(port_pair.first.begin(), port_pair.first.end(),
+         back_inserter(keys));
 
-        keys.push_back('\0');
-    }
-};
+    keys.push_back('\0');
+END_BINARY_FUNCTOR
 
 KeyArray KeyList::GetKeys()
 {

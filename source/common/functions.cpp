@@ -59,7 +59,7 @@ void zero_cache::SetPermission(const char* connection)
 port_t zero_cache::GenerateId(void* pointer)
 {
     srand((unsigned long)pointer);
-    /* FIXME: Use rand() % 0x1000000000 instead this */
+
     port_t result = rand() % 0x10000;
 
     return result;

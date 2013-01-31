@@ -84,17 +84,15 @@ zmq_msg_t& Request::GetData()
     return data_msg_;
 }
 
-struct SendMsg : public binary_function<pair<zmq_msg_t*, int>, Socket&, void>
-{
-    void operator()(pair<zmq_msg_t*, int> msg, Socket& socket) const
-    {
-        socket.SendMsg(*msg.first, msg.second);
-    }
-};
+typedef pair<zmq_msg_t*, int> Message;
+
+BINARY_FUNCTOR(SendMsg, Message, msg, Socket&, socket)
+    socket.SendMsg(*msg.first, msg.second);
+END_BINARY_FUNCTOR
 
 void Request::Send(Socket& socket)
 {
-    typedef list< pair<zmq_msg_t*, int> > MsgQueue;
+    typedef list<Message> MsgQueue;
     MsgQueue queue;
     queue.push_back(MsgQueue::value_type(&command_msg_, ZMQ_SNDMORE));
     queue.push_back(MsgQueue::value_type(&id_msg_, ZMQ_SNDMORE));

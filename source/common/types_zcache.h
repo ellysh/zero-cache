@@ -14,6 +14,17 @@ private: \
     TypeName(const TypeName&);               \
     TypeName& operator=(const TypeName&);
 
+/* Macros for binary functor for STL container definition */
+#define BINARY_FUNCTOR(Name, type1, name1, type2, name2) \
+struct Name : public binary_function<type1, type2, void> \
+{ \
+    void operator()(type1 name1, type2 name2) const \
+    {
+
+#define END_BINARY_FUNCTOR \
+    } \
+};
+
 typedef unsigned long port_t;
 typedef std::vector<char> KeyArray;
 
