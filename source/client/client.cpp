@@ -1,19 +1,13 @@
 #include "client.h"
 
-#include <stdlib.h>
-
 #include "connection.h"
 #include "request.h"
 
 using namespace std;
 using namespace zero_cache;
 
-static const long kReadAnswerTimeout = 1000;
-
 Client::Client(const char* log_file, Connection connection, SocketType type) : ClientBase(log_file, connection, type)
 {
-    srand(time(NULL));
-
     SetHost(connection.GetHost());
 }
 
@@ -38,31 +32,6 @@ void* Client::ReadData(string& key)
     SendRequest(key);
 
     return answer_.GetData();
-}
-
-zmq_msg_t* Client::SendRequest(string& key)
-{
-    zmq_msg_t* result = NULL;
-
-    do
-    {
-        request_->Send(socket_);
-        result = ReceiveAnswer();
-
-        if (result == NULL )
-            usleep(rand() % 1000);
-    }
-    while ( zmq_msg_size(result) == 0 );
-
-    return result;
-}
-
-zmq_msg_t* Client::ReceiveAnswer()
-{
-    if ( ! answer_.Receive(socket_, kReadAnswerTimeout) )
-        return NULL;
-
-    return answer_.GetMsg();
 }
 
 void Client::SetQueueSize(int size)

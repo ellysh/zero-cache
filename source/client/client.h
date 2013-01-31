@@ -23,10 +23,6 @@ public:
 
     void WriteData(std::string& key, void* data, size_t size);
     void* ReadData(std::string& key);
-
-private:
-    zmq_msg_t* SendRequest(std::string& key);
-    zmq_msg_t* ReceiveAnswer();
 };
 
 }
