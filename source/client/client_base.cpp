@@ -10,7 +10,7 @@
 using namespace std;
 using namespace zero_cache;
 
-static const long kReadAnswerTimeout = 1000;
+static const long kReadAnswerTimeout = 10;
 
 ClientBase::ClientBase(const char* log_file, Connection connection, SocketType type) :
     Debug(log_file), socket_(type), request_(NULL)
@@ -55,9 +55,9 @@ zmq_msg_t* ClientBase::SendRequest(string& key)
         result = ReceiveAnswer();
 
         if (result == NULL )
-            usleep(rand() % 1000);
+            usleep(rand() % 100);
     }
-    while ( zmq_msg_size(result) == 0 );
+    while ( result == NULL );
 
     return result;
 }

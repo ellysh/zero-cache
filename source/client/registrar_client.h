@@ -34,7 +34,6 @@ private:
     void AddKey(std::string& key);
     Client* GetClient(std::string& key);
     port_t SendPortRequest(std::string& key);
-    port_t ReceivePort();
     KeyArray ReceiveKeys();
 };
 

@@ -1,7 +1,6 @@
 #include "registrar_client.h"
 
 #include <string.h>
-#include <stdlib.h>
 
 #include "client.h"
 #include "request.h"
@@ -18,8 +17,6 @@ static const long kReadAnswerTimeout = 10;
 RegistrarClient::RegistrarClient(const char* log_file, Connection connection, SocketType type) :
     ClientBase(log_file, connection, type), clients_(connection, type)
 {
-    srand(time(NULL));
-
     SetHost(connection.GetHost());
 }
 
@@ -100,24 +97,7 @@ port_t RegistrarClient::SendPortRequest(string& key)
     request_->SetCommand(kGetPort);
     request_->SetKey(key);
 
-    port_t port = kErrorPort;
-
-    while ( port == kErrorPort )
-    {
-        request_->Send(socket_);
-        port = ReceivePort();
-
-        if ( port == kErrorPort )
-            usleep((rand() % 1000) * 100);
-    }
-
-    return port;
-}
-
-port_t RegistrarClient::ReceivePort()
-{
-    if ( ! answer_.Receive(socket_, kReadAnswerTimeout) )
-        return kErrorPort;
+    SendRequest(key);
 
     return answer_.GetPort();
 }
