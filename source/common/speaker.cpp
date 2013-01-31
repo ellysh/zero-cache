@@ -17,7 +17,7 @@ Speaker* Speaker::Instance()
     return instance_;
 }
 
-void Speaker::PrintError(ErrorType error)
+void Speaker::PrintError(const ErrorType error) const
 {
     if ( error == kSocketTypeError )
         cout << "error: undefined connection type" << endl;

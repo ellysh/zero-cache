@@ -15,7 +15,7 @@ class Speaker
 public:
     static Speaker* Instance();
 
-    void PrintError(ErrorType error);
+    void PrintError(const ErrorType error) const;
 
 private:
     static Speaker* instance_;
