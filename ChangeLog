@@ -1,3 +1,8 @@
+* zero-cache 1.3
+	- Implement receiving a list of all cached keys
+	- Use const-correctness form for all classes
+	- Refactoring of the project's code
+
 * zero-cache 1.2
 	- Add function to get all available keys from cache
 	- Disable all operation to write logs from Release build
