@@ -35,8 +35,7 @@ void CheckData(RegistrarClient& client)
     free(result);
 
     result = static_cast<char*>(client.ReadData(kKey3));
-    assert( strlen(result) == 0 );
-    free(result);
+    assert( result == NULL );
 }
 
 int main()

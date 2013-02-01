@@ -47,6 +47,9 @@ KeyArray Answer::GetKeys() const
 
 void* Answer::GetData() const
 {
+    if ( zmq_msg_size(&msg_) == 0 )
+        return NULL;
+
     void* data = malloc(zmq_msg_size(&msg_));
     memcpy(data, zmq_msg_data(&msg_), zmq_msg_size(&msg_));
 
