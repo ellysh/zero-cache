@@ -3,6 +3,7 @@
 cscope.out
 *-journal
 *.log
+*~
 
 # CMake temporary files
 *.cmake
