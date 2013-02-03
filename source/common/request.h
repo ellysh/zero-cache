@@ -40,6 +40,8 @@ private:
     mutable zmq_msg_t data_msg_;
 
     void Constructor();
+
+    DISALLOW_COPY_AND_ASSIGN(Request);
 };
 
 }

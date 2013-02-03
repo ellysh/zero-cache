@@ -30,6 +30,8 @@ public:
 
 private:
     mutable zmq_msg_t msg_;
+
+    DISALLOW_COPY_AND_ASSIGN(Answer);
 };
 
 }

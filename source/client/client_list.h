@@ -41,6 +41,8 @@ private:
     mutable PortClient clients_;
 
     bool IsPortExist(const port_t port) const;
+
+    DISALLOW_COPY_AND_ASSIGN(ClientList);
 };
 
 }
