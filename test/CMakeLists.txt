@@ -70,3 +70,13 @@ add_executable(key_test ${key_test_SRCS})
 target_link_libraries(key_test zero_cache)
 
 install(TARGETS key_test DESTINATION bin)
+
+
+set(wrap_test_SRCS
+    wrap_test.cpp)
+
+add_executable(wrap_test ${wrap_test_SRCS})
+
+target_link_libraries(wrap_test zero_cache)
+
+install(TARGETS wrap_test DESTINATION bin)
