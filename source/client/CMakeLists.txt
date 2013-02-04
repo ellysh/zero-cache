@@ -5,6 +5,7 @@ set(zero_cache_LIB_SRCS
     client.cpp
     client_base.cpp
     client_list.cpp
+    client_wrap.cpp
     registrar_client.cpp)
 
 add_library(zero_cache SHARED ${zero_cache_LIB_SRCS})
