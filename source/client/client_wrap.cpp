@@ -1,5 +1,7 @@
 #include "client_wrap.h"
 
+#include <stdlib.h>
+
 using namespace std;
 using namespace zero_cache;
 
@@ -20,35 +22,59 @@ void ClientWrap::SetHost(const string host)
 
 void ClientWrap::WriteLong(const string key, const long value)
 {
-    /* FIXME: Implement this method */
+    client_.WriteData(key, &value, sizeof(value));
 }
 
 void ClientWrap::WriteDouble(const string key, const double value)
 {
-    /* FIXME: Implement this method */
+    client_.WriteData(key, &value, sizeof(value));
 }
 
 void ClientWrap::WriteString(const string key, const string value)
 {
-    /* FIXME: Implement this method */
+    client_.WriteData(key, value.c_str(), value.size());
 }
 
 long ClientWrap::ReadLong(const string key) const
 {
-    /* FIXME: Implement this method */
-    return 0;
+    void* data = client_.ReadData(key);
+
+    if ( data == NULL )
+        return 0;
+
+    long result = *(static_cast<long*>(data));
+
+    free(data);
+
+    return result;
 }
 
 double ClientWrap::ReadDouble(const string key) const
 {
-    /* FIXME: Implement this method */
-    return 0;
+    void* data = client_.ReadData(key);
+
+    if ( data == NULL )
+        return 0;
+
+    double result = *(static_cast<double*>(data));
+
+    free(data);
+
+    return result;
 }
 
 string ClientWrap::ReadString(const string key) const
 {
-    /* FIXME: Implement this method */
-    return "";
+    void* data = client_.ReadData(key);
+
+    if ( data == NULL )
+        return "";
+
+    string result(static_cast<char*>(data));
+
+    free(data);
+
+    return result;
 }
 
 KeyArray ClientWrap::GetKeys()

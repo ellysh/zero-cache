@@ -30,7 +30,7 @@ public:
     KeyArray GetKeys();
 
 private:
-    RegistrarClient client_;
+    mutable RegistrarClient client_;
 };
 
 }
