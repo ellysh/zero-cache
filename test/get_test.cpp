@@ -19,7 +19,7 @@ static const string kKey3 = "key3";
 
 void InitData(RegistrarClient& client)
 {
-    client.WriteData(kKey1, const_cast<char*>(kData1.c_str()), kData1.size());
+    client.WriteData(kKey1, kData1.c_str(), kData1.size());
     client.WriteData(kKey2, &kData2, sizeof(kData2));
 }
 

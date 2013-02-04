@@ -49,7 +49,7 @@ void Debug::Log(const char* fmt, ...) const
 void Debug::PrintMsg(zmq_msg_t& msg) const
 {
 #ifdef __DEBUG__
-    char* data_hex = (char*)zmq_msg_data(&msg);
+    char* data_hex = static_cast<char*>(zmq_msg_data(&msg));
     file_ << " data = " << data_hex << endl;
 #endif
 }

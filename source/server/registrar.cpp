@@ -70,7 +70,7 @@ void Registrar::StartReactor()
     string* connection_str = new string(connection.GetString());
     Log("CreateThread() - connection = %s\n", connection.GetString().c_str());
 
-    CreateThread(ReactorStart, (void*)connection_str);
+    CreateThread(ReactorStart, static_cast<void*>(connection_str));
     ports_.insert(port);
 }
 

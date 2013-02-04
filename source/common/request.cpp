@@ -67,7 +67,7 @@ string Request::GetHost() const
 
 Command& Request::GetCommand() const
 {
-    Command* command = (Command*)ZmqMsgData(command_msg_);
+    Command* command = static_cast<Command*>(ZmqMsgData(command_msg_));
 
     return *command;
 }
