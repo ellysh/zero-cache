@@ -26,18 +26,18 @@ KeyArray RegistrarClient::GetKeys()
     return answer_.GetKeys();
 }
 
-void RegistrarClient::WriteData(const string key, const void* data, const size_t size)
+void RegistrarClient::WriteData(const string key, const Package package)
 {
-    Log("RegistrarClient::WriteData() - key = %s data_size = %lu\n", key.c_str(), size);
+    Log("RegistrarClient::WriteData() - key = %s data_size = %lu\n", key.c_str(), package.GetSize());
 
     PRE_TIME_MEASURE("RegistrarClient::WriteData() ")
 
-    GetClient(key)->WriteData(key, data, size);
+    GetClient(key)->WriteData(key, package.GetData(), package.GetSize());
 
     POST_TIME_MEASURE
 }
 
-void* RegistrarClient::ReadData(string key)
+Package RegistrarClient::ReadData(string key)
 {
     Log("RegistrarClient::ReadData() - key = %s\n", key.c_str());
 

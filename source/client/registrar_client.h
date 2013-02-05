@@ -9,6 +9,7 @@
 #include "socket.h"
 #include "client_list.h"
 #include "client_base.h"
+#include "package.h"
 
 namespace zero_cache
 {
@@ -24,8 +25,8 @@ public:
     virtual void SetQueueSize(const int size);
     virtual void SetHost(const std::string host);
 
-    void WriteData(const std::string key, const void* data, const size_t size);
-    void* ReadData(const std::string key);
+    void WriteData(const std::string key, const Package package);
+    Package ReadData(const std::string key);
     KeyArray GetKeys();
 
 private:

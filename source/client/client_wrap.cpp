@@ -22,57 +22,57 @@ void ClientWrap::SetHost(const string host)
 
 void ClientWrap::WriteLong(const string key, const long value)
 {
-    client_.WriteData(key, &value, sizeof(value));
+    client_.WriteData(key, Package(&value, sizeof(value)));
 }
 
 void ClientWrap::WriteDouble(const string key, const double value)
 {
-    client_.WriteData(key, &value, sizeof(value));
+    client_.WriteData(key, Package(&value, sizeof(value)));
 }
 
 void ClientWrap::WriteString(const string key, const string value)
 {
-    client_.WriteData(key, value.c_str(), value.size());
+    client_.WriteData(key, Package(value.c_str(), value.size()));
 }
 
 long ClientWrap::ReadLong(const string key) const
 {
-    void* data = client_.ReadData(key);
+    Package package = client_.ReadData(key);
 
-    if ( data == NULL )
+    if ( package.GetData() == NULL )
         return 0;
 
-    long result = *(static_cast<long*>(data));
+    long result = *(static_cast<long*>(package.GetData()));
 
-    free(data);
+    free(package.GetData());
 
     return result;
 }
 
 double ClientWrap::ReadDouble(const string key) const
 {
-    void* data = client_.ReadData(key);
+    Package package = client_.ReadData(key);
 
-    if ( data == NULL )
+    if ( package.GetData() == NULL )
         return 0;
 
-    double result = *(static_cast<double*>(data));
+    double result = *(static_cast<double*>(package.GetData()));
 
-    free(data);
+    free(package.GetData());
 
     return result;
 }
 
 string ClientWrap::ReadString(const string key) const
 {
-    void* data = client_.ReadData(key);
+    Package package = client_.ReadData(key);
 
-    if ( data == NULL )
+    if ( package.GetData() == NULL )
         return "";
 
-    string result(static_cast<char*>(data));
+    string result(static_cast<char*>(package.GetData()), package.GetSize());
 
-    free(data);
+    free(package.GetData());
 
     return result;
 }
