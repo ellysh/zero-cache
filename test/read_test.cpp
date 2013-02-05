@@ -21,7 +21,7 @@ void* WriteLoop(void* args)
         usleep(1000);
 
         Package result = client.ReadData(key);
-        assert( ! memcmp(result.GetData(), key, sizeof(result)) );
+        assert( ! memcmp(result.GetData(), key, result.GetSize()) );
         free(result.GetData());
         usleep(1000);
     }
