@@ -25,7 +25,7 @@ void* ReadOperation(void* args)
 
     Package result = client.ReadData(key);
     assert( ! memcmp(result.GetData(), key, sizeof(key)) );
-    free(result.GetData());
+    result.FreeData();
 
     usleep(2 * 1000 * 1000);
     exit(0);

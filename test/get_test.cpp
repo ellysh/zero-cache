@@ -27,11 +27,11 @@ void CheckData(RegistrarClient& client)
 {
     Package result = client.ReadData(kKey1);
     assert( ! memcmp(result.GetData(), kData1.c_str(), kData1.size()) );
-    free(result.GetData());
+    result.FreeData();
 
     result = client.ReadData(kKey2);
     assert( ! memcmp(result.GetData(), kData2, sizeof(kData2)) );
-    free(result.GetData());
+    result.FreeData();
 
     result = client.ReadData(kKey3);
     assert( result.GetData() == NULL );

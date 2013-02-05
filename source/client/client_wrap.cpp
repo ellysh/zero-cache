@@ -44,7 +44,7 @@ long ClientWrap::ReadLong(const string key) const
 
     long result = *(static_cast<long*>(package.GetData()));
 
-    free(package.GetData());
+    package.FreeData();
 
     return result;
 }
@@ -58,7 +58,7 @@ double ClientWrap::ReadDouble(const string key) const
 
     double result = *(static_cast<double*>(package.GetData()));
 
-    free(package.GetData());
+    package.FreeData();
 
     return result;
 }
@@ -72,7 +72,7 @@ string ClientWrap::ReadString(const string key) const
 
     string result(static_cast<char*>(package.GetData()), package.GetSize());
 
-    free(package.GetData());
+    package.FreeData();
 
     return result;
 }

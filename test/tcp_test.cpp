@@ -21,7 +21,7 @@ void CheckData(RegistrarClient& client)
 {
     Package result = client.ReadData(kKey);
     assert( ! memcmp(result.GetData(), kData, sizeof(kData)) );
-    free(result.GetData());
+    result.FreeData();
 }
 
 int main()

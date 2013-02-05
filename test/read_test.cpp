@@ -22,7 +22,7 @@ void* WriteLoop(void* args)
 
         Package result = client.ReadData(key);
         assert( ! memcmp(result.GetData(), key, result.GetSize()) );
-        free(result.GetData());
+        result.FreeData();
         usleep(1000);
     }
 }

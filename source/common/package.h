@@ -14,6 +14,8 @@ public:
     void* GetData() const;
     size_t GetSize() const;
 
+    void FreeData();
+
 private:
     const void* data_;
     size_t size_;
