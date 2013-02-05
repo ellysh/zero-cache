@@ -75,11 +75,6 @@ port_t zero_cache::GenerateId(const void* pointer)
     return result;
 }
 
-void zero_cache::MsgDataFree(void* data, void* hint)
-{
-    free(data);
-}
-
 void zero_cache::MsgInitString(zmq_msg_t& msg, const string& str)
 {
     MsgInitData(msg, str.c_str(), str.size());
