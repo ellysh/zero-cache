@@ -32,7 +32,7 @@ void RegistrarClient::WriteData(const string key, const Package package)
 
     PRE_TIME_MEASURE("RegistrarClient::WriteData() ")
 
-    GetClient(key)->WriteData(key, package.GetData(), package.GetSize());
+    GetClient(key)->WriteData(key, package);
 
     POST_TIME_MEASURE
 }
@@ -43,7 +43,7 @@ Package RegistrarClient::ReadData(string key)
 
     PRE_TIME_MEASURE("RegistrarClient::ReadData() ")
 
-    void* result = GetClient(key)->ReadData(key);
+    Package result = GetClient(key)->ReadData(key);
 
     POST_TIME_MEASURE
 

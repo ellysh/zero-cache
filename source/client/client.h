@@ -5,6 +5,7 @@
 
 #include "types_zcache.h"
 #include "client_base.h"
+#include "package.h"
 
 namespace zero_cache
 {
@@ -19,8 +20,8 @@ public:
 
     virtual void SetQueueSize(const int size);
 
-    void WriteData(const std::string& key, const void* data, const size_t size) const;
-    void* ReadData(const std::string& key);
+    void WriteData(const std::string& key, const Package package) const;
+    Package ReadData(const std::string& key);
 };
 
 }

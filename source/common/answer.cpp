@@ -61,6 +61,11 @@ zmq_msg_t* Answer::GetMsg() const
     return &msg_;
 }
 
+size_t Answer::GetSize() const
+{
+    return zmq_msg_size(&msg_);
+}
+
 void Answer::Send(Socket& socket) const
 {
     socket.SendMsg(msg_, 0);

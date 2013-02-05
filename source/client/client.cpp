@@ -12,18 +12,18 @@ Client::Client(const char* log_file, Connection connection, const SocketType typ
     SetHost(connection.GetHost());
 }
 
-void Client::WriteData(const string& key, const void* data, const size_t size) const
+void Client::WriteData(const string& key, const Package package) const
 {
-    Log("Client::WriteData() - key = %s data_size = %lu\n", key.c_str(), size);
+    Log("Client::WriteData() - key = %s data_size = %lu\n", key.c_str(), package.GetSize());
 
     request_->SetCommand(kWrite);
     request_->SetKey(key);
-    request_->SetData(data, size);
+    request_->SetData(package.GetData(), package.GetSize());
 
     request_->Send(socket_);
 }
 
-void* Client::ReadData(const string& key)
+Package Client::ReadData(const string& key)
 {
     Log("Client::ReadData() - key = %s\n", key.c_str());
 
@@ -32,7 +32,9 @@ void* Client::ReadData(const string& key)
 
     SendRequest();
 
-    return answer_.GetData();
+    Package result(answer_.GetData(), answer_.GetSize());
+
+    return result;
 }
 
 void Client::SetQueueSize(const int size)

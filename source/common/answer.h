@@ -24,6 +24,7 @@ public:
     KeyArray GetKeys() const;
     void* GetData() const;
     zmq_msg_t* GetMsg() const;
+    size_t GetSize() const;
 
     void Send(Socket& socket) const;
     bool Receive(Socket& socket, long timeout = -1);
