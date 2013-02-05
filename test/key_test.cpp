@@ -16,8 +16,8 @@ static const string kData = "test data 1";
 
 void InitData(RegistrarClient& client)
 {
-    client.WriteData(kKey1, kData.c_str(), kData.size());
-    client.WriteData(kKey2, kData.c_str(), kData.size());
+    client.WriteData(kKey1, Package(kData.c_str(), kData.size()));
+    client.WriteData(kKey2, Package(kData.c_str(), kData.size()));
 }
 
 vector<string> ParseKeys(KeyArray& keys)

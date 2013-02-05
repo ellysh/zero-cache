@@ -15,7 +15,7 @@ void* WriteOperation(void* args)
     char* key = static_cast<char*>(args);
     RegistrarClient client("write.log", "ipc:///var/run/zero-cache/0", kDealer);
 
-    client.WriteData(key, key, sizeof(key));
+    client.WriteData(key, Package(key, sizeof(key)));
 }
 
 void* ReadOperation(void* args)
@@ -23,10 +23,9 @@ void* ReadOperation(void* args)
     const char* key = static_cast<char*>(args);
     RegistrarClient client("read.log", "ipc:///var/run/zero-cache/0", kDealer);
 
-    char* result;
-    result = static_cast<char*>(client.ReadData(key));
-    assert( ! memcmp(result, key, sizeof(key)) );
-    free(result);
+    Package result = client.ReadData(key);
+    assert( ! memcmp(result.GetData(), key, sizeof(key)) );
+    free(result.GetData());
 
     usleep(2 * 1000 * 1000);
     exit(0);

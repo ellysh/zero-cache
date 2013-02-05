@@ -19,23 +19,22 @@ static const string kKey3 = "key3";
 
 void InitData(RegistrarClient& client)
 {
-    client.WriteData(kKey1, kData1.c_str(), kData1.size());
-    client.WriteData(kKey2, &kData2, sizeof(kData2));
+    client.WriteData(kKey1, Package(kData1.c_str(), kData1.size()));
+    client.WriteData(kKey2, Package(&kData2, sizeof(kData2)));
 }
 
 void CheckData(RegistrarClient& client)
 {
-    char* result;
-    result = static_cast<char*>(client.ReadData(kKey1));
-    assert( ! memcmp(result, kData1.c_str(), kData1.size()) );
-    free(result);
+    Package result = client.ReadData(kKey1);
+    assert( ! memcmp(result.GetData(), kData1.c_str(), kData1.size()) );
+    free(result.GetData());
 
-    result = static_cast<char*>(client.ReadData(kKey2));
-    assert( ! memcmp(result, kData2, sizeof(kData2)) );
-    free(result);
+    result = client.ReadData(kKey2);
+    assert( ! memcmp(result.GetData(), kData2, sizeof(kData2)) );
+    free(result.GetData());
 
-    result = static_cast<char*>(client.ReadData(kKey3));
-    assert( result == NULL );
+    result = client.ReadData(kKey3);
+    assert( result.GetData() == NULL );
 }
 
 int main()

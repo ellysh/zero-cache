@@ -13,7 +13,7 @@ void* WriteLoop(void* args)
 
     while (true)
     {
-        client.WriteData(key, args, 1);
+        client.WriteData(key, Package(args, 1));
         usleep(500);
     }
 }

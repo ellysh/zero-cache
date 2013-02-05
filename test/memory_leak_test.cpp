@@ -15,7 +15,7 @@ void* WriteLoop(void* args)
 
     while (true)
     {
-        client.WriteData(key, &kData, sizeof(kData));
+        client.WriteData(key, Package(&kData, sizeof(kData)));
         usleep(100);
     }
 }

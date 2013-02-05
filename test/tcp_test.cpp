@@ -14,15 +14,14 @@ static char kData[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 
 void InitData(RegistrarClient& client)
 {
-    client.WriteData(kKey, &kData, sizeof(kData));
+    client.WriteData(kKey, Package(&kData, sizeof(kData)));
 }
 
 void CheckData(RegistrarClient& client)
 {
-    char* result;
-    result = static_cast<char*>(client.ReadData(kKey));
-    assert( ! memcmp(result, kData, sizeof(kData)) );
-    free(result);
+    Package result = client.ReadData(kKey);
+    assert( ! memcmp(result.GetData(), kData, sizeof(kData)) );
+    free(result.GetData());
 }
 
 int main()

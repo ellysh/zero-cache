@@ -15,16 +15,14 @@ void* WriteLoop(void* args)
     const char* key = static_cast<char*>(args);
     RegistrarClient client(key, "ipc:///var/run/zero-cache/0", kDealer);
 
-    char* result;
-
     while (true)
     {
-        client.WriteData(key, args, sizeof(args));
+        client.WriteData(key, Package(args, sizeof(args)));
         usleep(1000);
 
-        result = static_cast<char*>(client.ReadData(key));
-        assert( ! memcmp(result, key, sizeof(result)) );
-        free(result);
+        Package result = client.ReadData(key);
+        assert( ! memcmp(result.GetData(), key, sizeof(result)) );
+        free(result.GetData());
         usleep(1000);
     }
 }
