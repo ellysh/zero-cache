@@ -1,3 +1,7 @@
+* zero-cache 1.4
+	- Add type safe client class with ClientWrap name
+	- Add class to packaging readind and writing data
+
 * zero-cache 1.3
 	- Implement receiving a list of all cached keys
 	- Use const-correctness form for all classes
