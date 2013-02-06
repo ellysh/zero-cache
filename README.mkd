@@ -84,13 +84,13 @@ This is example of typical client application for Unix socket based connection:
 
         RegistrarClient client("example.log", "ipc:///tmp/0", kDealer);
 
-        client.WriteData(key, const_cast<char*>(data.c_str()), data.size());
+        client.WriteData(key, Package(data.c_str(), data.size()));
 
-        char* read_data;
-        read_data = static_cast<char*>(client.ReadData(key));
+        Package package;
+        package = client.ReadData(key);
 
-        cout << "read_data = " << read_data << endl;
-        free(read_data);
+        cout << "read_data = " << static_cast<char*>(package.GetData()) << endl;
+        package.FreeData();
     }
 
 This is example of typical client application for TCP socket based connection:
@@ -112,13 +112,13 @@ This is example of typical client application for TCP socket based connection:
         RegistrarClient client("example.log", "tcp://192.168.0.1:5570", kDealer);
         client.SetHost("192.168.0.15:");
 
-        client.WriteData(key, const_cast<char*>(data.c_str()), data.size());
+        client.WriteData(key, Package(data.c_str(), data.size()));
 
-        char* read_data;
-        read_data = static_cast<char*>(client.ReadData(key));
+        Package package;
+        package = client.ReadData(key);
 
-        cout << "read_data = " << read_data << endl;
-        free(read_data);
+        cout << "read_data = " << static_cast<char*>(package.GetData()) << endl;
+        package.FreeData();
     }
 
 More usage examples you can find in files of 'test' directory.
