@@ -17,6 +17,8 @@ endif(UNIX)
 install(TARGETS zero_cache DESTINATION lib/${PROJECT_NAME})
 
 install(FILES
+            client_base.h
             client_list.h
+            client_wrap.h
             registrar_client.h
         DESTINATION include/${PROJECT_NAME})

@@ -19,8 +19,10 @@ if(UNIX)
 endif(UNIX)
 
 install(FILES
+            answer.h
             connection.h
             debug.h
-            types_zcache.h
+            package.h
             socket.h
+            types_zcache.h
         DESTINATION include/${PROJECT_NAME})
