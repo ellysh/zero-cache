@@ -66,6 +66,7 @@ void Registrar::StartReactor()
 
     Connection connection(connection_);
     connection.SetPort(port);
+    connection.SetHost("*:");
 
     string* connection_str = new string(connection.GetString());
     Log("CreateThread() - connection = %s\n", connection.GetString().c_str());
