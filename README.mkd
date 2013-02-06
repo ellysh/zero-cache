@@ -110,7 +110,6 @@ This is example of typical client application for TCP socket based connection:
         /* 192.168.0.1 - server ip
          * 192.168.0.15 - client ip */
         RegistrarClient client("example.log", "tcp://192.168.0.1:5570", kDealer);
-        client.SetHost("192.168.0.15:");
 
         client.WriteData(key, Package(data.c_str(), data.size()));
 

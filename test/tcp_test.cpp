@@ -27,7 +27,6 @@ void CheckData(RegistrarClient& client)
 int main()
 {
     RegistrarClient client("tcp_test.log", "tcp://localhost:5570", kDealer);
-    client.SetHost("localhost:");
 
     cout << "Start test..." << endl;
 
