@@ -49,11 +49,8 @@ port_t KeyList::GetPort(const string& key) const
 }
 
 BINARY_FUNCTOR(AddKeyArray, KeyList::KeyPort::value_type, port_pair, KeyArray&, keys)
-    /* FIXME: Copy keys by string instead by symbol variant */
-    copy(port_pair.first.begin(), port_pair.first.end(),
-         back_inserter(keys));
-
-    keys.push_back(';');
+    keys += port_pair.first;
+    keys += ';';
 END_BINARY_FUNCTOR
 
 KeyArray KeyList::GetKeys() const
