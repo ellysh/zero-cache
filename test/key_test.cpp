@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 
 #include <string.h>
 #include <stdlib.h>
@@ -27,7 +28,7 @@ vector<string> ParseKeys(KeyArray& keys)
     string tmp;
     for (int i = 0; i < keys.size(); i++)
     {
-        if ( keys[i] != '\0' )
+        if ( keys[i] != ';' )
             tmp += keys[i];
         else
         {

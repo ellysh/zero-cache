@@ -1,7 +1,6 @@
 #ifndef TYPES_ZCACHE_H
 #define TYPES_ZCACHE_H
 
-#include <vector>
 #include <string>
 
 namespace zero_cache
@@ -26,7 +25,7 @@ struct Name : public binary_function<type1, type2, void> \
 };
 
 typedef unsigned long port_t;
-typedef std::vector<char> KeyArray;
+typedef std::string KeyArray;
 
 enum Command
 {
