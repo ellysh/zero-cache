@@ -57,6 +57,8 @@ int main()
 
     cout << "Start test..." << endl;
 
+    client.GetKeys();
+
     InitData(client);
 
     CheckKeys(client);
