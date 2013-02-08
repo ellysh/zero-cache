@@ -27,7 +27,7 @@ void Answer::SetPort(const port_t port)
 
 void Answer::SetKeys(const string& keys)
 {
-    MsgInitData(msg_, &keys[0], keys.size());
+    MsgInitString(msg_, keys);
 }
 
 void Answer::SetData(zmq_msg_t* const data)

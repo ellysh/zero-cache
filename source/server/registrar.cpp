@@ -94,8 +94,6 @@ void Registrar::SetKeysAnswer()
 
 void Registrar::SendAnswer() const
 {
-    string key = request_.GetKey();
-
     SocketList* out_sockets = SocketList::Instance();
     Socket& socket = out_sockets->GetSocket(request_.GetId());
 
