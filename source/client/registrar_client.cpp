@@ -19,7 +19,6 @@ RegistrarClient::RegistrarClient(const char* log_file, Connection connection, co
 string RegistrarClient::GetKeys()
 {
     request_->SetCommand(kGetKeys);
-    request_->Send(socket_);
 
     SendRequest();
 
