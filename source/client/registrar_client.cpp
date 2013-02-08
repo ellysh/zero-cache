@@ -16,7 +16,7 @@ RegistrarClient::RegistrarClient(const char* log_file, Connection connection, co
     SetHost(connection.GetHost());
 }
 
-KeyArray RegistrarClient::GetKeys()
+string RegistrarClient::GetKeys()
 {
     request_->SetCommand(kGetKeys);
     request_->Send(socket_);

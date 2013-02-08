@@ -25,7 +25,7 @@ void Answer::SetPort(const port_t port)
     MsgInitData(msg_, &port, sizeof(port));
 }
 
-void Answer::SetKeys(const KeyArray& keys)
+void Answer::SetKeys(const string& keys)
 {
     MsgInitData(msg_, &keys[0], keys.size());
 }
@@ -40,9 +40,9 @@ port_t Answer::GetPort() const
     return MsgToPort(msg_);
 }
 
-KeyArray Answer::GetKeys() const
+string Answer::GetKeys() const
 {
-    return MsgToKeyArray(msg_);
+    return MsgToString(msg_);
 }
 
 void* Answer::GetData() const

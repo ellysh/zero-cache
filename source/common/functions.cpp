@@ -37,15 +37,6 @@ string zero_cache::MsgToString(const zmq_msg_t& msg)
     return result;
 }
 
-KeyArray zero_cache::MsgToKeyArray(const zmq_msg_t& msg)
-{
-    char* buffer =  static_cast<char*>(ZmqMsgData(msg));
-    assert( buffer != NULL );
-    KeyArray result(buffer, buffer + ZmqMsgSize(msg));
-
-    return result;
-}
-
 port_t zero_cache::StringToPort(const string& value)
 {
     char* endptr;

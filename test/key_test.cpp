@@ -21,7 +21,7 @@ void InitData(RegistrarClient& client)
     client.WriteData(kKey2, Package(kData.c_str(), kData.size()));
 }
 
-vector<string> ParseKeys(KeyArray& keys)
+vector<string> ParseKeys(string& keys)
 {
     vector<string> result;
 
@@ -42,7 +42,7 @@ vector<string> ParseKeys(KeyArray& keys)
 
 void CheckKeys(RegistrarClient& client)
 {
-    KeyArray keys = client.GetKeys();
+    string keys = client.GetKeys();
 
     vector<string> result = ParseKeys(keys);
 

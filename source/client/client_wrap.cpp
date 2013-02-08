@@ -77,7 +77,7 @@ string ClientWrap::ReadString(const string key) const
     return result;
 }
 
-KeyArray ClientWrap::GetKeys()
+string ClientWrap::GetKeys()
 {
     return client_.GetKeys();
 }

@@ -17,11 +17,11 @@ public:
     ~Answer();
 
     void SetPort(const port_t port);
-    void SetKeys(const KeyArray& keys);
+    void SetKeys(const std::string& keys);
     void SetData(zmq_msg_t* const data);
 
     port_t GetPort() const;
-    KeyArray GetKeys() const;
+    std::string GetKeys() const;
     void* GetData() const;
     zmq_msg_t* GetMsg() const;
     size_t GetSize() const;

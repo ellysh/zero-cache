@@ -25,7 +25,6 @@ struct Name : public binary_function<type1, type2, void> \
 };
 
 typedef unsigned long port_t;
-typedef std::string KeyArray;
 
 enum Command
 {

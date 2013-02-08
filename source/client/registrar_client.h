@@ -27,7 +27,7 @@ public:
 
     void WriteData(const std::string key, const Package package);
     Package ReadData(const std::string key);
-    KeyArray GetKeys();
+    std::string GetKeys();
 
 private:
     mutable ClientList clients_;

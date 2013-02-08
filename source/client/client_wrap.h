@@ -27,7 +27,7 @@ public:
     double ReadDouble(const std::string key) const;
     std::string ReadString(const std::string key) const;
 
-    KeyArray GetKeys();
+    std::string GetKeys();
 
 private:
     mutable RegistrarClient client_;

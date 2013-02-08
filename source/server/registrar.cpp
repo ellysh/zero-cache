@@ -87,7 +87,7 @@ void Registrar::SetPortAnswer()
 
 void Registrar::SetKeysAnswer()
 {
-    KeyArray keys = key_list_->GetKeys();
+    string keys = key_list_->GetKeys();
 
     answer_.SetKeys(keys);
 }

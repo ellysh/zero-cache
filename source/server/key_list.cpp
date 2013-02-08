@@ -48,14 +48,14 @@ port_t KeyList::GetPort(const string& key) const
         return kErrorPort;
 }
 
-BINARY_FUNCTOR(AddKeyArray, KeyList::KeyPort::value_type, port_pair, KeyArray&, keys)
+BINARY_FUNCTOR(AddKeyArray, KeyList::KeyPort::value_type, port_pair, string&, keys)
     keys += port_pair.first;
     keys += ';';
 END_BINARY_FUNCTOR
 
-KeyArray KeyList::GetKeys() const
+string KeyList::GetKeys() const
 {
-    KeyArray keys;
+    string keys;
 
     for_each(ports_.begin(), ports_.end(),
              bind2nd(AddKeyArray(), keys));
