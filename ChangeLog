@@ -1,3 +1,7 @@
+* zero-cache 1.5
+	- Fix bug with working through the TCP protocol
+	- Change format of the key array answer
+
 * zero-cache 1.4
 	- Add type safe client class with ClientWrap name
 	- Add class to packaging readind and writing data

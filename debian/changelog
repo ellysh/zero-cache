@@ -1,3 +1,10 @@
+zero-cache (1.5) precise; urgency=low
+
+  * Fix bug with working through the TCP protocol
+  * Change format of the key array answer
+
+ -- Ilya Shpigor <petrsum@gmail.com>  Tue, 12 Feb 2013 15:05:04 +0400
+
 zero-cache (1.4) precise; urgency=low
 
   * Add type safe client class with ClientWrap name
