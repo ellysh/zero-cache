@@ -28,21 +28,16 @@ Debug::~Debug()
 #endif
 }
 
-ostream& Debug::Log() const
-{
-    return file_;
-}
-
 void Debug::Log(const char* fmt, ...) const
 {
 #ifdef __DEBUG__
     char buf[4096];
     va_list arg_list;
-    va_start( arg_list, fmt );
-    vsprintf( buf, fmt, arg_list );
+    va_start(arg_list, fmt);
+    vsprintf(buf, fmt, arg_list);
 
-    Log() << buf;
-    va_end( arg_list );
+    file_ << buf;
+    va_end(arg_list);
 #endif
 }
 

@@ -91,7 +91,7 @@ bool Socket::ReceiveMsg(const long timeout)
         if (result == -1)
         {
             if ( zmq_errno() == ERR_INTERRUPT )
-                exit(0);
+                return false;
         }
 
         if ( ! (items_[0].revents & ZMQ_POLLIN) )

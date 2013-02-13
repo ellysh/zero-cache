@@ -21,8 +21,6 @@ public:
 private:
     mutable std::ofstream file_;
 
-    std::ostream& Log() const;
-
     DISALLOW_COPY_AND_ASSIGN(Debug);
 };
 
