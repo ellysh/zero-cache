@@ -10,16 +10,13 @@
 using namespace std;
 using namespace zero_cache;
 
-static void RemovePort(KeyList::KeyPort::value_type& port_pair)
+KeyList::KeyList(const Connection& connection) : key_counter_(0)
 {
-    delete port_pair.second;
+    current_port_ = connection.GetPort() + 1;
 }
 
 KeyList::~KeyList()
 {
-    for_each(ports_.begin(), ports_.end(),
-             RemovePort);
-
     ports_.clear();
 }
 
@@ -28,22 +25,21 @@ void KeyList::AddKey(const string& key)
     if ( ports_.count(key) != 0 )
         return;
 
-    if ( current_counter_ == NULL )
-        current_counter_ = new PortCounter(connection_.GetPort(), key_limit_);
+    if ( key_counter_ < key_limit_ )
+        key_counter_++;
     else
     {
-        if ( current_counter_->IsLimit() )
-            current_counter_ = new PortCounter(current_counter_->GetPort(), key_limit_);
+        current_port_++;
+        key_counter_ = 1;
     }
 
-    current_counter_->Increment();
-    ports_.insert(KeyPort::value_type(key, current_counter_));
+    ports_.insert(KeyPort::value_type(key, current_port_));
 }
 
 port_t KeyList::GetPort(const string& key) const
 {
     if ( ports_.count(key) != 0 )
-        return ports_[key]->GetPort();
+        return ports_[key];
     else
         return kErrorPort;
 }

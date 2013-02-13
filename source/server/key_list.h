@@ -15,10 +15,10 @@ class Connection;
 class KeyList
 {
 public:
-    typedef std::map<std::string, PortCounter*> KeyPort;
+    typedef std::map<std::string, port_t> KeyPort;
 
 public:
-    explicit KeyList(const Connection& connection) : connection_(connection), current_counter_(NULL) {};
+    explicit KeyList(const Connection& connection);
     ~KeyList();
 
     void AddKey(const std::string& key);
@@ -28,8 +28,8 @@ public:
     void SetKeyLimit(const int key_limit);
 
 private:
-    const Connection& connection_;
-    PortCounter* current_counter_;
+    int key_counter_;
+    port_t current_port_;
     mutable KeyPort ports_;
     int key_limit_;
 
