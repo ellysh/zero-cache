@@ -3,7 +3,6 @@ link_directories(${COMMON_LIBDIR})
 
 set(zero_cached_SRCS
     container.cpp
-    port_counter.cpp
     key_list.cpp
     program_options.cpp
     reactor.cpp

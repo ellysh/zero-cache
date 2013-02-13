@@ -4,7 +4,6 @@
 #include <string>
 #include <map>
 
-#include "port_counter.h"
 #include "types_zcache.h"
 
 namespace zero_cache
