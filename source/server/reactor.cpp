@@ -53,7 +53,9 @@ void Reactor::ReadData()
     answer_.SetData(data);
     SocketList* out_sockets = SocketList::Instance();
     Socket* socket = out_sockets->GetSocket(request_.GetId());
-    answer_.Send(*socket);
+
+    if ( socket != NULL )
+        answer_.Send(*socket);
 
     if ( is_data_empty )
     {

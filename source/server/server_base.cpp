@@ -26,7 +26,10 @@ void ServerBase::Start(long timeout)
     while ( ! gIsInterrupt )
     {
         if ( ! ProcessMessage(timeout) )
-            break;
+        {
+            SocketList* out_sockets = SocketList::Instance();
+            out_sockets->RemoveSockets();
+        }
     }
 }
 

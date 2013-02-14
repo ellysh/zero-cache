@@ -23,6 +23,7 @@ public:
 
     void CreateSocket(const Connection& connection, const port_t port);
     Socket* GetSocket(const port_t port) const;
+    void RemoveSockets();
 
 private:
     static SocketList* instance_;

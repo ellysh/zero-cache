@@ -18,12 +18,17 @@ SocketList* SocketList::Instance(SocketType type)
     return instance_;
 }
 
+SocketList::~SocketList()
+{
+    RemoveSockets();
+}
+
 static void RemoveSocket(SocketList::PortSocket::value_type socket_pair)
 {
     delete socket_pair.second;
 }
 
-SocketList::~SocketList()
+void SocketList::RemoveSockets()
 {
     for_each(sockets_.begin(), sockets_.end(),
              RemoveSocket);
@@ -33,7 +38,10 @@ SocketList::~SocketList()
 
 Socket* SocketList::GetSocket(const port_t port) const
 {
-    return sockets_[port];
+    if ( sockets_.count(port) != 0)
+        return sockets_[port];
+    else
+        return NULL;
 }
 
 void SocketList::CreateSocket(const Connection& connection, const port_t port)

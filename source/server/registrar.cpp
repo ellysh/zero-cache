@@ -98,7 +98,8 @@ void Registrar::SendAnswer() const
     SocketList* out_sockets = SocketList::Instance();
     Socket* socket = out_sockets->GetSocket(request_.GetId());
 
-    answer_.Send(*socket);
+    if ( socket != NULL )
+        answer_.Send(*socket);
 }
 
 void Registrar::SetKeyLimit(const int limit)
