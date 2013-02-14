@@ -40,7 +40,6 @@ enum SocketType
     kPubSub
 };
 
-static const long kDefaultTimeout = 3000;
 static const port_t kErrorPort = -1;
 static std::string kTcpProtocol = "tcp://";
 static std::string kIpcProtocol = "ipc://";
