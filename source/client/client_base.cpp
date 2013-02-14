@@ -6,11 +6,13 @@
 #include "connection.h"
 #include "functions.h"
 #include "request.h"
+#include "speaker.h"
 
 using namespace std;
 using namespace zero_cache;
 
 static const long kReadAnswerTimeout = 10;
+static const int kSendTryLimit = 10;
 
 ClientBase::ClientBase(const char* log_file, Connection connection, const SocketType type) :
     Debug(log_file), socket_(type), request_(NULL)
@@ -49,15 +51,19 @@ zmq_msg_t* ClientBase::SendRequest()
 {
     zmq_msg_t* result = NULL;
 
-    do
+    for ( int i = 0; i < kSendTryLimit; i++ )
     {
         request_->Send(socket_);
         result = ReceiveAnswer();
 
-        if (result == NULL )
+        if (result != NULL )
+            break;
+        else
             usleep(rand() % 100);
     }
-    while ( result == NULL );
+
+    if ( result == NULL )
+        Speaker::Instance()->PrintError(kServerError);
 
     return result;
 }

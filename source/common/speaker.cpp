@@ -23,6 +23,8 @@ void Speaker::PrintError(const ErrorType error) const
         cout << "error: undefined connection type" << endl;
     else if ( error == kSocketNameError )
         cout << "error: specified socked file or tcp port is not in the number format" << endl;
+    else if ( error == kServerError )
+        cout << "error: server does not respond" << endl;
 
     exit(1);
 }

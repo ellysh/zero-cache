@@ -7,7 +7,8 @@ namespace zero_cache
 enum ErrorType
 {
     kSocketTypeError = 0,
-    kSocketNameError
+    kSocketNameError,
+    kServerError
 };
 
 class Speaker
