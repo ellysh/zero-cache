@@ -30,6 +30,9 @@ static void RemoveSocket(SocketList::PortSocket::value_type socket_pair)
 
 void SocketList::RemoveSockets()
 {
+    if ( sockets_.empty() )
+        return;
+
     for_each(sockets_.begin(), sockets_.end(),
              RemoveSocket);
 
