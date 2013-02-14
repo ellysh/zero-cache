@@ -30,7 +30,7 @@ public:
     zmq_msg_t& GetData() const;
 
     void Send(const Socket& socket) const;
-    void Receive(Socket& socket);
+    void Receive(Socket& socket, long timeout = -1);
 
 private:
     zmq_msg_t command_msg_;

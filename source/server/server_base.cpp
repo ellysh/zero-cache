@@ -19,17 +19,17 @@ ServerBase::ServerBase(const char* log_file, Connection connection, const Socket
     socket_.SetQueueSize(1000);
 }
 
-void ServerBase::Start()
+void ServerBase::Start(long timeout)
 {
     s_catch_signals();
 
     while (! s_interrupted )
-        ProcessMessage();
+        ProcessMessage(timeout);
 }
 
-void ServerBase::ProcessMessage()
+void ServerBase::ProcessMessage(long timeout)
 {
-    request_.Receive(socket_);
+    request_.Receive(socket_, timeout);
 
     connection_.SetHost(request_.GetHost());
 

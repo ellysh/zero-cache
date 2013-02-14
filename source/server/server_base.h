@@ -19,7 +19,7 @@ public:
 
     virtual void SetQueueSize(const int size) = 0;
 
-    void Start();
+    void Start(long timeout = -1);
 
 protected:
     Socket socket_;
@@ -29,7 +29,7 @@ protected:
 
     virtual void PerformCommand() = 0;
 
-    void ProcessMessage();
+    void ProcessMessage(long timeout);
 
 private:
     DISALLOW_COPY_AND_ASSIGN(ServerBase)
