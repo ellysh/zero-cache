@@ -110,9 +110,10 @@ void Request::Send(const Socket& socket) const
              bind2nd(SendMsg(), socket));
 }
 
-void Request::Receive(Socket& socket, long timeout)
+bool Request::Receive(Socket& socket, long timeout)
 {
-    socket.ReceiveMsg(timeout);
+    if ( ! socket.ReceiveMsg(timeout) )
+        return false;
 
     bool is_msg_more = true;
 
@@ -125,4 +126,6 @@ void Request::Receive(Socket& socket, long timeout)
 
     if ( is_msg_more )
         socket.PopMsg(data_msg_);
+
+    return true;
 }

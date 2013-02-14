@@ -24,12 +24,16 @@ void ServerBase::Start(long timeout)
     AssignSignalHandler();
 
     while ( ! gIsInterrupt )
-        ProcessMessage(timeout);
+    {
+        if ( ! ProcessMessage(timeout) )
+            break;
+    }
 }
 
-void ServerBase::ProcessMessage(long timeout)
+bool ServerBase::ProcessMessage(long timeout)
 {
-    request_.Receive(socket_, timeout);
+    if ( ! request_.Receive(socket_, timeout) )
+        return false;
 
     connection_.SetHost(request_.GetHost());
 
@@ -37,4 +41,6 @@ void ServerBase::ProcessMessage(long timeout)
     out_sockets->CreateSocket(connection_, request_.GetId());
 
     PerformCommand();
+
+    return true;
 }

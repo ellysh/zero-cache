@@ -29,7 +29,7 @@ protected:
 
     virtual void PerformCommand() = 0;
 
-    void ProcessMessage(long timeout);
+    bool ProcessMessage(long timeout);
 
 private:
     DISALLOW_COPY_AND_ASSIGN(ServerBase)
