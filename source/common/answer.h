@@ -27,7 +27,7 @@ public:
     size_t GetSize() const;
 
     void Send(Socket& socket) const;
-    bool Receive(Socket& socket, long timeout = -1);
+    bool Receive(Socket& socket, long timeout = kDefaultTimeout);
 
 private:
     mutable zmq_msg_t msg_;
