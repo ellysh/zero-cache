@@ -22,7 +22,7 @@ public:
     ~SocketList();
 
     void CreateSocket(const Connection& connection, const port_t port);
-    Socket& GetSocket(const port_t port) const;
+    Socket* GetSocket(const port_t port) const;
 
 private:
     static SocketList* instance_;

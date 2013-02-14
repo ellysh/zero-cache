@@ -31,9 +31,9 @@ SocketList::~SocketList()
     sockets_.clear();
 }
 
-Socket& SocketList::GetSocket(const port_t port) const
+Socket* SocketList::GetSocket(const port_t port) const
 {
-    return *sockets_[port];
+    return sockets_[port];
 }
 
 void SocketList::CreateSocket(const Connection& connection, const port_t port)

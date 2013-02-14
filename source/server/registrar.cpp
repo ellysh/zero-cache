@@ -96,9 +96,9 @@ void Registrar::SetKeysAnswer()
 void Registrar::SendAnswer() const
 {
     SocketList* out_sockets = SocketList::Instance();
-    Socket& socket = out_sockets->GetSocket(request_.GetId());
+    Socket* socket = out_sockets->GetSocket(request_.GetId());
 
-    answer_.Send(socket);
+    answer_.Send(*socket);
 }
 
 void Registrar::SetKeyLimit(const int limit)
