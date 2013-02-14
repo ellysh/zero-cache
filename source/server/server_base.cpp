@@ -29,6 +29,8 @@ void ServerBase::Start(long timeout)
         {
             SocketList* out_sockets = SocketList::Instance();
             out_sockets->RemoveSockets();
+
+            ProcessMessage(-1);
         }
     }
 }
