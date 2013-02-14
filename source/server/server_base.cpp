@@ -21,9 +21,9 @@ ServerBase::ServerBase(const char* log_file, Connection connection, const Socket
 
 void ServerBase::Start(long timeout)
 {
-    s_catch_signals();
+    AssignSignalHandler();
 
-    while (! s_interrupted )
+    while ( ! gIsInterrupt )
         ProcessMessage(timeout);
 }
 

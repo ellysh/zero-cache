@@ -9,6 +9,7 @@
 using namespace std;
 using namespace zero_cache;
 
+static const long kReactorTimeout = 3000;
 static int gQueueSize = 1000;
 static SocketType gSocketType;
 
@@ -35,7 +36,7 @@ static void* ReactorStart(void* args)
 
     reactor.SetQueueSize(gQueueSize);
 
-    reactor.Start();
+    reactor.Start(kReactorTimeout);
 }
 
 void Registrar::PerformCommand()
