@@ -8,6 +8,8 @@
 using namespace std;
 using namespace zero_cache;
 
+static bool gIsRemoveLock = false;
+
 SocketList* SocketList::instance_ = NULL;
 
 SocketList* SocketList::Instance(SocketType type)
@@ -30,13 +32,17 @@ static void RemoveSocket(SocketList::PortSocket::value_type socket_pair)
 
 void SocketList::RemoveSockets()
 {
-    if ( sockets_.empty() )
+    if ( gIsRemoveLock || sockets_.empty())
         return;
+    else
+        gIsRemoveLock = true;
 
     for_each(sockets_.begin(), sockets_.end(),
              RemoveSocket);
 
     sockets_.clear();
+
+    gIsRemoveLock = false;
 }
 
 Socket* SocketList::GetSocket(const port_t port) const
