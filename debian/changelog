@@ -1,3 +1,11 @@
+zero-cache (1.6) precise; urgency=low
+
+  * Add limit for client's requests sending
+  * Add timeout for server's requests waiting
+  * Code refactoring
+
+ -- Ilya Shpigor <petrsum@gmail.com>  Fri, 15 Feb 2013 09:50:07 +0400
+
 zero-cache (1.5) precise; urgency=low
 
   * Fix bug with working through the TCP protocol

@@ -1,3 +1,8 @@
+* zero-cache 1.6
+	- Add limit for client's requests sending
+	- Add timeout for server's requests waiting
+	- Code refactoring
+
 * zero-cache 1.5
 	- Fix bug with working through the TCP protocol
 	- Change format of the key array answer
