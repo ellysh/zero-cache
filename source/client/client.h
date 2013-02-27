@@ -3,6 +3,7 @@
 
 #include <string>
 
+#include "debug.h"
 #include "types_zcache.h"
 #include "package.h"
 
@@ -11,7 +12,7 @@ namespace zero_cache
 
 class Connection;
 
-class Client
+class Client : protected Debug
 {
 public:
     Client(const char* log_file, Connection connection, const SocketType type);

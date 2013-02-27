@@ -5,7 +5,7 @@
 using namespace std;
 using namespace zero_cache;
 
-Client::Client(const char* log_file, Connection connection, const SocketType type)
+Client::Client(const char* log_file, Connection connection, const SocketType type) : Debug(log_file)
 {
     /* FIXME: Implement this method */
 }
