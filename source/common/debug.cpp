@@ -41,10 +41,10 @@ void Debug::Log(const char* fmt, ...) const
 #endif
 }
 
-void Debug::PrintMsg(zmq_msg_t& msg) const
+void Debug::PrintMsg(void* msg) const
 {
 #ifdef __DEBUG__
-    char* data_hex = static_cast<char*>(zmq_msg_data(&msg));
+    char* data_hex = static_cast<char*>(msg);
     file_ << " data = " << data_hex << endl;
 #endif
 }

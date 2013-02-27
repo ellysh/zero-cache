@@ -2,7 +2,6 @@
 #define DEBUG_H
 
 #include <fstream>
-#include <zmq.h>
 
 #include "types_zcache.h"
 
@@ -16,7 +15,7 @@ public:
     virtual ~Debug();
 
     void Log(const char* fmt, ...) const;
-    void PrintMsg(zmq_msg_t& msg) const;
+    void PrintMsg(void* msg) const;
 
 private:
     mutable std::ofstream file_;

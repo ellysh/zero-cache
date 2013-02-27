@@ -6,12 +6,13 @@ set(common_LIB_SRCS
     debug.cpp
     functions.cpp
     package.cpp
+    thread.cpp
     speaker.cpp)
 
 add_library(common STATIC ${common_LIB_SRCS})
 
 if(UNIX)
-    target_link_libraries(common pthread ${ZMQ_LIBRARY})
+    target_link_libraries(common pthread)
 endif(UNIX)
 
 install(FILES

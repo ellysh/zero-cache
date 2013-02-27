@@ -1,5 +1,7 @@
 #include "connection.h"
 
+#include <stdio.h>
+
 #include "functions.h"
 #include "speaker.h"
 
