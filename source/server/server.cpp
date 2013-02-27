@@ -1,6 +1,6 @@
 #include "server.h"
 
-#include "connection.h"
+#include "interrupt_signal.h"
 
 using namespace std;
 using namespace zero_cache;
@@ -11,12 +11,15 @@ Server::Server(const char* log_file, Connection connection, const SocketType typ
     /* FIXME: Implement this method */
 }
 
-void Server::Start(long timeout)
+void Server::Start(const long timeout)
 {
-    /* FIXME: Implement this method */
+    AssignSignalHandler();
+
+    while ( ! gIsInterrupt )
+        ProcessMessage(timeout);
 }
 
-bool Server::ProcessMessage(long timeout)
+bool Server::ProcessMessage(const long timeout)
 {
     /* FIXME: Implement this method */
 }
