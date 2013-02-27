@@ -19,3 +19,8 @@ Package Client::ReadData(const string& key)
 {
     /* FIXME: Implement this method */
 }
+
+string Client::GetKeys()
+{
+    /* FIXME: Implement this method */
+}

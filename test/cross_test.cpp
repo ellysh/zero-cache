@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#include "registrar_client.h"
+#include "client.h"
 #include "thread.h"
 
 using namespace std;
@@ -13,7 +13,7 @@ using namespace zero_cache;
 void* WriteOperation(void* args)
 {
     char* key = static_cast<char*>(args);
-    RegistrarClient client("write.log", "ipc:///var/run/zero-cache/0", kDealer);
+    Client client("write.log", "ipc:///var/run/zero-cache/0", kDealer);
 
     client.WriteData(key, Package(key, sizeof(key)));
 }
@@ -21,7 +21,7 @@ void* WriteOperation(void* args)
 void* ReadOperation(void* args)
 {
     const char* key = static_cast<char*>(args);
-    RegistrarClient client("read.log", "ipc:///var/run/zero-cache/0", kDealer);
+    Client client("read.log", "ipc:///var/run/zero-cache/0", kDealer);
 
     Package result = client.ReadData(key);
     assert( ! memcmp(result.GetData(), key, sizeof(key)) );

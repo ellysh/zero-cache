@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#include "registrar_client.h"
+#include "client.h"
 
 using namespace std;
 using namespace zero_cache;
@@ -15,7 +15,7 @@ static const string kKey2 = "key 2";
 
 static const string kData = "test data 1";
 
-void InitData(RegistrarClient& client)
+void InitData(Client& client)
 {
     client.WriteData(kKey1, Package(kData.c_str(), kData.size()));
     client.WriteData(kKey2, Package(kData.c_str(), kData.size()));
@@ -40,7 +40,7 @@ vector<string> ParseKeys(string& keys)
     return result;
 }
 
-void CheckKeys(RegistrarClient& client)
+void CheckKeys(Client& client)
 {
     string keys = client.GetKeys();
 
@@ -53,7 +53,7 @@ void CheckKeys(RegistrarClient& client)
 
 int main()
 {
-    RegistrarClient client("key_test.log", "ipc:///var/run/zero-cache/0", kDealer);
+    Client client("key_test.log", "ipc:///var/run/zero-cache/0", kDealer);
 
     cout << "Start test..." << endl;
 

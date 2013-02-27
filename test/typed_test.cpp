@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#include "client_wrap.h"
+#include "client_typed.h"
 
 using namespace std;
 using namespace zero_cache;
@@ -18,14 +18,14 @@ static double gDataDouble = 100.53;
 static string gKeyString = "key3";
 static string gDataString = "test data";
 
-void InitData(ClientWrap& client)
+void InitData(ClientTyped& client)
 {
     client.WriteLong(gKeyLong, gDataLong);
     client.WriteDouble(gKeyDouble, gDataDouble);
     client.WriteString(gKeyString, gDataString);
 }
 
-void CheckData(ClientWrap& client)
+void CheckData(ClientTyped& client)
 {
     assert( gDataLong == client.ReadLong(gKeyLong) );
     assert( gDataDouble == client.ReadDouble(gKeyDouble) );
@@ -34,7 +34,7 @@ void CheckData(ClientWrap& client)
 
 int main()
 {
-    ClientWrap client("wrap_test.log", "ipc:///var/run/zero-cache/0", kDealer);
+    ClientTyped client("wrap_test.log", "ipc:///var/run/zero-cache/0", kDealer);
 
     cout << "Start test..." << endl;
 

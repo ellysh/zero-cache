@@ -72,11 +72,11 @@ target_link_libraries(key_test zero_cache)
 install(TARGETS key_test DESTINATION bin)
 
 
-set(wrap_test_SRCS
-    wrap_test.cpp)
+set(typed_test_SRCS
+    typed_test.cpp)
 
-add_executable(wrap_test ${wrap_test_SRCS})
+add_executable(typed_test ${typed_test_SRCS})
 
-target_link_libraries(wrap_test zero_cache)
+target_link_libraries(typed_test zero_cache)
 
-install(TARGETS wrap_test DESTINATION bin)
+install(TARGETS typed_test DESTINATION bin)

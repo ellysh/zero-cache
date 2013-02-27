@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#include "registrar_client.h"
+#include "client.h"
 
 using namespace std;
 using namespace zero_cache;
@@ -17,13 +17,13 @@ static char kData2[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 
 static const string kKey3 = "key3";
 
-void InitData(RegistrarClient& client)
+void InitData(Client& client)
 {
     client.WriteData(kKey1, Package(kData1.c_str(), kData1.size()));
     client.WriteData(kKey2, Package(&kData2, sizeof(kData2)));
 }
 
-void CheckData(RegistrarClient& client)
+void CheckData(Client& client)
 {
     Package result = client.ReadData(kKey1);
     assert( ! memcmp(result.GetData(), kData1.c_str(), kData1.size()) );
@@ -39,7 +39,7 @@ void CheckData(RegistrarClient& client)
 
 int main()
 {
-    RegistrarClient client("get_test.log", "ipc:///var/run/zero-cache/0", kDealer);
+    Client client("get_test.log", "ipc:///var/run/zero-cache/0", kDealer);
 
     cout << "Start test..." << endl;
 

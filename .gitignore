@@ -22,7 +22,7 @@ get_test
 tcp_test
 cross_test
 key_test
-wrap_test
+typed_test
 
 # debian build files
 debian/*~

@@ -6,11 +6,10 @@
 #include "debug.h"
 #include "types_zcache.h"
 #include "package.h"
+#include "connection.h"
 
 namespace zero_cache
 {
-
-class Connection;
 
 class Client : protected Debug
 {
