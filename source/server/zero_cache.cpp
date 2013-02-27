@@ -1,4 +1,4 @@
-#include "registrar.h"
+#include "server.h"
 
 #include <iostream>
 
@@ -13,7 +13,6 @@ void PrintUsage()
     cout << "Options:" << endl;
     cout << "\t-c CONNECTION\t\tSet connection string" << endl;
     cout << "\t-l FILE\t\t\tSet log file name" << endl;
-    cout << "\t-s SIZE\t\t\tSet size of the input queue" << endl;
     cout << "\t-f\t\t\tFast mode with publisher-subscriber socket type using" << endl;
     cout << "\t-h\t\t\tPrint option help" << endl;
 }
@@ -40,15 +39,9 @@ int main(int argc, char *argv[])
     if ( options.IsOptionExist("-f") )
         type = kPubSub;
 
-    Registrar registrar(log_file.c_str(), connection, type);
+    Server server(log_file.c_str(), connection, type);
 
-    if ( options.IsOptionExist("-s") )
-        registrar.SetQueueSize(options.GetInt("-s"));
-
-    if ( options.IsOptionExist("-k") )
-        registrar.SetKeyLimit(options.GetInt("-k"));
-
-    registrar.Start();
+    server.Start();
 
     return 0;
 }

@@ -16,6 +16,7 @@ class Client : protected Debug
 {
 public:
     Client(const char* log_file, Connection connection, const SocketType type);
+    virtual ~Client() {};
 
     void WriteData(const std::string& key, const Package package) const;
     Package ReadData(const std::string& key);
