@@ -10,7 +10,7 @@ using namespace zero_cache;
 
 static void RemoveMsg(Container::DataMap::value_type msg_pair)
 {
-    zmq_msg_close(&msg_pair.second);
+    /* FIXME: Implement this function */
 }
 
 Container::~Container()
@@ -19,8 +19,10 @@ Container::~Container()
              RemoveMsg);
 }
 
-void Container::WriteData(const string& key, const zmq_msg_t& data)
+void Container::WriteData(const string& key, const void* data)
 {
+    /* FIXME: Implement this method */
+#if 0
     if ( map_.count(key) != 0 )
         zmq_msg_copy(&map_[key], const_cast<zmq_msg_t*>(&data));
     else
@@ -33,9 +35,10 @@ void Container::WriteData(const string& key, const zmq_msg_t& data)
 
         map_.insert(DataMap::value_type(key, msg));
     }
+#endif
 }
 
-zmq_msg_t* Container::ReadData(const string& key) const
+void* Container::ReadData(const string& key) const
 {
     if ( map_.count(key) != 0 )
         return &map_[key];

@@ -3,7 +3,6 @@
 
 #include <string>
 #include <map>
-#include <zmq.h>
 
 #include "types_zcache.h"
 
@@ -13,14 +12,14 @@ namespace zero_cache
 class Container
 {
 public:
-    typedef std::map<std::string, zmq_msg_t> DataMap;
+    typedef std::map<std::string, void*> DataMap;
 
 public:
     Container() {};
     ~Container();
 
-    void WriteData(const std::string& key, const zmq_msg_t& data);
-    zmq_msg_t* ReadData(const std::string& key) const;
+    void WriteData(const std::string& key, const void* data);
+    void* ReadData(const std::string& key) const;
 
 private:
     mutable DataMap map_;

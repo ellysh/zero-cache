@@ -2,10 +2,7 @@
 #define SERVER_H
 
 #include "debug.h"
-#include "socket.h"
 #include "types_zcache.h"
-#include "request.h"
-#include "answer.h"
 #include "connection.h"
 
 namespace zero_cache
