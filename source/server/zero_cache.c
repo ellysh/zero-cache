@@ -4,7 +4,6 @@
 #include <linux/device.h>
 #include <linux/cdev.h>
 #include <asm/uaccess.h>
-#include <sched.h>
 
 #include "zero_cache.h"
 
