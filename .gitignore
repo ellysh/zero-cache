@@ -4,6 +4,15 @@ cscope.out
 *-journal
 *.log
 *~
+*.o
+*.out
+*.ko
+*.o.cmd
+*.ko.cmd
+.tmp_versions/
+Module.symvers
+modules.order
+*.mod.c
 
 # CMake temporary files
 *.cmake

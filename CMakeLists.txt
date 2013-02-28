@@ -45,4 +45,9 @@ add_subdirectory(source)
 add_subdirectory(test)
 add_subdirectory(conf)
 
+# Module
+add_custom_target(server ALL
+   COMMAND make -f ${PROJECT_SOURCE_DIR}/source/server/Makefile
+   WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/source/server)
+
 include(CMakeListsDeb.txt)
