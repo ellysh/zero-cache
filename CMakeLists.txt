@@ -8,10 +8,6 @@ cmake_minimum_required(VERSION 2.6)
 project(zero-cache)
 
 if(UNIX)
-  find_package(ZMQ REQUIRED)
-endif(UNIX)
-
-if(UNIX)
   set(CMAKE_INSTALL_PREFIX /usr)
 endif(UNIX)
 

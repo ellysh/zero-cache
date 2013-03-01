@@ -11,7 +11,7 @@ static char kData[1000];
 void* WriteLoop(void* args)
 {
     const char* key = static_cast<char*>(args);
-    Client client(key, "ipc:///var/run/zero-cache/0", kDealer);
+    Client client(key);
 
     while (true)
     {

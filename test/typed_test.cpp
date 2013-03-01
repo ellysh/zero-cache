@@ -34,7 +34,7 @@ void CheckData(ClientTyped& client)
 
 int main()
 {
-    ClientTyped client("wrap_test.log", "ipc:///var/run/zero-cache/0", kDealer);
+    ClientTyped client("typed_test.log");
 
     cout << "Start test..." << endl;
 

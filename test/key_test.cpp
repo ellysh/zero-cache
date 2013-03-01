@@ -53,7 +53,7 @@ void CheckKeys(Client& client)
 
 int main()
 {
-    Client client("key_test.log", "ipc:///var/run/zero-cache/0", kDealer);
+    Client client("key_test.log");
 
     cout << "Start test..." << endl;
 
