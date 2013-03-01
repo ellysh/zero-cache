@@ -4,6 +4,7 @@ link_directories(${COMMON_LIBDIR})
 set(common_LIB_SRCS
     debug.cpp
     package.cpp
+    speaker.cpp
     thread.cpp)
 
 add_library(common STATIC ${common_LIB_SRCS})

@@ -13,11 +13,14 @@ class Client : protected Debug
 {
 public:
     Client(const char* log_file);
-    virtual ~Client() {};
+    virtual ~Client();
 
     void WriteData(const std::string& key, const Package package) const;
     Package ReadData(const std::string& key);
     std::string GetKeys();
+
+private:
+    int dev_file_;
 };
 
 }
