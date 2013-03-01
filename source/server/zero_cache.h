@@ -11,5 +11,12 @@
 
 #define DEVICE_FILE_NAME "/dev/zero_cache"
 
+struct Package
+{
+    size_t offset;
+    void* pointer;
+    size_t size;
+};
+
 #endif
 

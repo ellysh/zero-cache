@@ -1,9 +1,9 @@
 #include "client.h"
 
 #include <fcntl.h>
+#include <sys/ioctl.h>
 
 #include "speaker.h"
-#include "zero_cache.h"
 
 using namespace std;
 using namespace zero_cache;
@@ -24,11 +24,16 @@ Client::~Client()
 void Client::WriteData(const string& key, const Package package) const
 {
     /* FIXME: Implement this method */
+    int rc = ioctl(dev_file_, IOCTL_SET_MSG, 1024);
 }
 
 Package Client::ReadData(const string& key)
 {
     /* FIXME: Implement this method */
+    long data;
+    int rc = ioctl(dev_file_, IOCTL_GET_MSG, &data);
+
+    return Package();
 }
 
 string Client::GetKeys()

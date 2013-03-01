@@ -19,22 +19,36 @@ static const string kKey3 = "key3";
 
 void InitData(Client& client)
 {
-    client.WriteData(kKey1, Package(kData1.c_str(), kData1.size()));
-    client.WriteData(kKey2, Package(&kData2, sizeof(kData2)));
+    Package package;
+    package.offset = 0;
+    package.pointer = malloc(kData1.size());
+    memcpy(package.pointer, kData1.c_str(), kData1.size());
+    package.size = kData1.size();
+
+    client.WriteData(kKey1, package);
+    free(package.pointer);
+
+    package.offset = sizeof(size_t) + kData1.size();
+    package.pointer = malloc(sizeof(kData2));
+    memcpy(package.pointer, &kData2, sizeof(kData2));
+    package.size = sizeof(kData2);
+
+    client.WriteData(kKey2, package);
+    free(package.pointer);
 }
 
 void CheckData(Client& client)
 {
     Package result = client.ReadData(kKey1);
-    assert( ! memcmp(result.GetData(), kData1.c_str(), kData1.size()) );
-    result.FreeData();
+    assert( ! memcmp(result.pointer, kData1.c_str(), kData1.size()) );
+    free(result.pointer);
 
     result = client.ReadData(kKey2);
-    assert( ! memcmp(result.GetData(), kData2, sizeof(kData2)) );
-    result.FreeData();
+    assert( ! memcmp(result.pointer, kData2, sizeof(kData2)) );
+    free(result.pointer);
 
     result = client.ReadData(kKey3);
-    assert( result.GetData() == NULL );
+    assert( result.pointer == NULL );
 }
 
 int main()

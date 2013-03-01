@@ -3,7 +3,7 @@
 #include <linux/fs.h>
 #include <linux/device.h>
 #include <linux/cdev.h>
-#include <asm/uaccess.h>
+#include <linux/slab.h>
 
 #include "zero_cache.h"
 
@@ -21,8 +21,32 @@ static struct Device
     struct class* class;
 } gDevice;
 
+static const size_t kCacheSize = 1000 * 1000;
+
 static spinlock_t gLock;
-static long gCache = 0;
+static void* gCache;
+
+static long zc_ioctl(struct file *file, unsigned int command, unsigned long arg)
+{
+    spin_lock(&gLock);
+
+    switch (command)
+    {
+    case IOCTL_SET_MSG:
+        printk(KERN_INFO "SET");
+        /* FIXME: Implement this command */
+        break;
+
+    case IOCTL_GET_MSG:
+        printk(KERN_INFO "GET");
+        /* FIXME: Implement this command */
+        break;
+    }
+
+    spin_unlock(&gLock);
+
+    return 0;
+}
 
 int zc_register_device( struct file_operations* fops )
 {
@@ -63,51 +87,35 @@ int zc_unregister_device()
     return 0;
 }
 
-static int zc_open(struct inode *i, struct file *f)
+int zc_alloc_cache()
 {
-  printk(KERN_INFO "zero_cache: open()\n");
-  return 0;
+    gCache = kmalloc(kCacheSize, GFP_KERNEL);
+
+    if ( gCache != NULL )
+        return 0;
+    else
+        return -1;
 }
 
-static int zc_close(struct inode *i, struct file *f)
+void zc_free_cache()
 {
-  printk(KERN_INFO "zero-cache: close()\n");
-  return 0;
-}
-
-static long zc_ioctl(struct file *file, unsigned int command, unsigned long arg)
-{
-    spin_lock(&gLock);
-
-    switch (command)
-    {
-    case IOCTL_SET_MSG:
-        get_user(gCache, (long*)arg);
-        //printk(KERN_INFO "SET");
-        break;
-
-    case IOCTL_GET_MSG:
-        put_user(gCache, (long*)arg);
-        //printk(KERN_INFO "GET");
-        break;
-    }
-
-    spin_unlock(&gLock);
-
-    return 0;
+    kfree(gCache);
 }
 
 static struct file_operations zc_fops =
 {
     .owner   = THIS_MODULE,
-    .open    = zc_open,
-    .release = zc_close,
     .unlocked_ioctl = zc_ioctl
 };
 
 static int __init zc_init(void)
 {
     int rc;
+
+    rc = zc_alloc_cache();
+    if ( rc != 0 )
+        return rc;
+
     spin_lock_init(&gLock);
     rc = zc_register_device( &zc_fops );
     printk(KERN_INFO "zero_cache: init rc=%d\n",rc);
@@ -119,6 +127,7 @@ static void __exit zc_exit(void)
 {
     int rc;
     rc = zc_unregister_device();
+    zc_free_cache();
     printk(KERN_INFO "zero_cache: exit rc=%d",rc);
 }
 

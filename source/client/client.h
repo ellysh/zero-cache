@@ -4,7 +4,7 @@
 #include <string>
 
 #include "debug.h"
-#include "package.h"
+#include "zero_cache.h"
 
 namespace zero_cache
 {
