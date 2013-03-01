@@ -3,16 +3,13 @@
 
 #include <string>
 
-#include "types_zcache.h"
-#include "connection.h"
-
 namespace zero_cache
 {
 
 class ClientTyped
 {
 public:
-    ClientTyped(const char* log_file, Connection connection, const SocketType type);
+    ClientTyped(const char* log_file);
 
     void WriteLong(const std::string key, const long value);
     void WriteDouble(const std::string key, const double value);

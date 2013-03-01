@@ -1,8 +1,6 @@
 #ifndef TYPES_ZCACHE_H
 #define TYPES_ZCACHE_H
 
-#include <string>
-
 namespace zero_cache
 {
 
@@ -23,26 +21,6 @@ struct Name : public binary_function<type1, type2, void> \
 #define END_BINARY_FUNCTOR \
     } \
 };
-
-typedef unsigned long port_t;
-
-enum Command
-{
-    kWrite = 0,
-    kRead,
-    kGetPort,
-    kGetKeys
-};
-
-enum SocketType
-{
-    kDealer = 0,
-    kPubSub
-};
-
-static const port_t kErrorPort = -1;
-static std::string kTcpProtocol = "tcp://";
-static std::string kIpcProtocol = "ipc://";
 
 }
 

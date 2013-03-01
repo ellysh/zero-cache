@@ -3,7 +3,7 @@
 using namespace std;
 using namespace zero_cache;
 
-ClientTyped::ClientTyped(const char* log_file, Connection connection, const SocketType type)
+ClientTyped::ClientTyped(const char* log_file)
 {
     /* FIXME: Implement this method */
 }

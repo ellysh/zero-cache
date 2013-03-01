@@ -4,9 +4,7 @@
 #include <string>
 
 #include "debug.h"
-#include "types_zcache.h"
 #include "package.h"
-#include "connection.h"
 
 namespace zero_cache
 {
@@ -14,7 +12,7 @@ namespace zero_cache
 class Client : protected Debug
 {
 public:
-    Client(const char* log_file, Connection connection, const SocketType type);
+    Client(const char* log_file);
     virtual ~Client() {};
 
     void WriteData(const std::string& key, const Package package) const;
