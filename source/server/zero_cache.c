@@ -24,7 +24,7 @@ static struct Device
 static spinlock_t gLock;
 static long gCache = 0;
 
-int hashmap_register_device( struct file_operations* fops )
+int zc_register_device( struct file_operations* fops )
 {
     if( alloc_chrdev_region(&gDevice.number, 0, 1, DEVICE ) < 0 )
         return -1;
@@ -54,7 +54,7 @@ int hashmap_register_device( struct file_operations* fops )
     return 0;
 }
 
-int hashmap_unregister_device()
+int zc_unregister_device()
 {
     cdev_del( &gDevice.chrdev );
     device_destroy( gDevice.class, gDevice.number );
@@ -63,19 +63,19 @@ int hashmap_unregister_device()
     return 0;
 }
 
-static int hashmap_open(struct inode *i, struct file *f)
+static int zc_open(struct inode *i, struct file *f)
 {
-  printk(KERN_INFO "hashmap: open()\n");
+  printk(KERN_INFO "zero_cache: open()\n");
   return 0;
 }
 
-static int hashmap_close(struct inode *i, struct file *f)
+static int zc_close(struct inode *i, struct file *f)
 {
-  printk(KERN_INFO "hashmap: close()\n");
+  printk(KERN_INFO "zero-cache: close()\n");
   return 0;
 }
 
-static long hashmap_ioctl(struct file *file, unsigned int command, unsigned long arg)
+static long zc_ioctl(struct file *file, unsigned int command, unsigned long arg)
 {
     spin_lock(&gLock);
 
@@ -97,31 +97,31 @@ static long hashmap_ioctl(struct file *file, unsigned int command, unsigned long
     return 0;
 }
 
-static struct file_operations hashmap_fops =
+static struct file_operations zc_fops =
 {
     .owner   = THIS_MODULE,
-    .open    = hashmap_open,
-    .release = hashmap_close,
-    .unlocked_ioctl = hashmap_ioctl
+    .open    = zc_open,
+    .release = zc_close,
+    .unlocked_ioctl = zc_ioctl
 };
 
-static int __init hashmap_init(void)
+static int __init zc_init(void)
 {
     int rc;
     spin_lock_init(&gLock);
-    rc = hashmap_register_device( &hashmap_fops );
-    printk(KERN_INFO "hashmap: init rc=%d\n",rc);
-    printk( "Please, create a dev file with 'mknod /dev/hashmap c %d 0'.\n", MAJOR(gDevice.number) );
+    rc = zc_register_device( &zc_fops );
+    printk(KERN_INFO "zero_cache: init rc=%d\n",rc);
+    printk( "Please, create a dev file with 'mknod /dev/zero_cache c %d 0'.\n", MAJOR(gDevice.number) );
     return rc;
 }
 
-static void __exit hashmap_exit(void) /* Destructor */
+static void __exit zc_exit(void)
 {
     int rc;
-    rc = hashmap_unregister_device();
-    printk(KERN_INFO "hashmap: exit rc=%d",rc);
+    rc = zc_unregister_device();
+    printk(KERN_INFO "zero_cache: exit rc=%d",rc);
 }
 
-module_init(hashmap_init);
-module_exit(hashmap_exit);
+module_init(zc_init);
+module_exit(zc_exit);
 

@@ -9,7 +9,7 @@
 
 #define IOCTL_GET_MSG _IOR(MAJOR_NUM, 1, void *)
 
-#define DEVICE_FILE_NAME "/dev/zero-cache"
+#define DEVICE_FILE_NAME "/dev/zero_cache"
 
 #endif
 
