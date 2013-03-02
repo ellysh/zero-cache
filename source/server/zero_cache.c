@@ -4,15 +4,17 @@
 #include <linux/device.h>
 #include <linux/cdev.h>
 #include <linux/slab.h>
+#include <asm/uaccess.h>
 
 #include "zero_cache.h"
-
-#define CLASS  "zero_cache_class"
-#define DEVICE "zero_cache"
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Ilya Shpigor <petrsum@gmail.com>");
 MODULE_DESCRIPTION("Kernel data cache module");
+
+#define CLASS       "zero_cache_class"
+#define DEVICE      "zero_cache"
+#define CACHE_SIZE  100000
 
 static struct Device
 {
@@ -21,25 +23,30 @@ static struct Device
     struct class* class;
 } gDevice;
 
-static const size_t kCacheSize = 1000 * 1000;
-
 static spinlock_t gLock;
-static void* gCache;
+
+static cell_t gCache[CACHE_SIZE];
 
 static long zc_ioctl(struct file *file, unsigned int command, unsigned long arg)
 {
+    struct Package* package;
+    package = (struct Package*)arg;
+
+    if ( (package->offset) < 0 || (CACHE_SIZE < package->offset) )
+        return -1;
+
     spin_lock(&gLock);
 
     switch (command)
     {
     case IOCTL_SET_MSG:
         printk(KERN_INFO "SET");
-        /* FIXME: Implement this command */
+        get_user(gCache[package->offset], &package->data);
         break;
 
     case IOCTL_GET_MSG:
         printk(KERN_INFO "GET");
-        /* FIXME: Implement this command */
+        put_user(gCache[package->offset], &package->data);
         break;
     }
 
@@ -48,19 +55,19 @@ static long zc_ioctl(struct file *file, unsigned int command, unsigned long arg)
     return 0;
 }
 
-int zc_register_device( struct file_operations* fops )
+int zc_register_device(struct file_operations* fops)
 {
-    if( alloc_chrdev_region(&gDevice.number, 0, 1, DEVICE ) < 0 )
+    if ( alloc_chrdev_region(&gDevice.number, 0, 1, DEVICE ) < 0 )
         return -1;
 
     gDevice.class = class_create(THIS_MODULE, CLASS);
-    if (gDevice.class == NULL)
+    if ( gDevice.class == NULL )
     {
         unregister_chrdev_region(gDevice.number, 1);
         return -1;
     }
 
-    if (device_create(gDevice.class, NULL, gDevice.number, NULL, "mynull") == NULL)
+    if ( device_create(gDevice.class, NULL, gDevice.number, NULL, DEVICE) == NULL )
     {
         class_destroy(gDevice.class);
         unregister_chrdev_region(gDevice.number, 1);
@@ -68,7 +75,7 @@ int zc_register_device( struct file_operations* fops )
     }
 
     cdev_init(&gDevice.chrdev, fops);
-    if (cdev_add(&gDevice.chrdev, gDevice.number, 1) == -1)
+    if ( cdev_add(&gDevice.chrdev, gDevice.number, 1) == -1 )
     {
         device_destroy(gDevice.class, gDevice.number);
         class_destroy(gDevice.class);
@@ -76,30 +83,6 @@ int zc_register_device( struct file_operations* fops )
         return -1;
     }
     return 0;
-}
-
-int zc_unregister_device()
-{
-    cdev_del( &gDevice.chrdev );
-    device_destroy( gDevice.class, gDevice.number );
-    class_destroy( gDevice.class );
-    unregister_chrdev_region( gDevice.number, 1 );
-    return 0;
-}
-
-int zc_alloc_cache()
-{
-    gCache = kmalloc(kCacheSize, GFP_KERNEL);
-
-    if ( gCache != NULL )
-        return 0;
-    else
-        return -1;
-}
-
-void zc_free_cache()
-{
-    kfree(gCache);
 }
 
 static struct file_operations zc_fops =
@@ -112,23 +95,21 @@ static int __init zc_init(void)
 {
     int rc;
 
-    rc = zc_alloc_cache();
-    if ( rc != 0 )
-        return rc;
-
     spin_lock_init(&gLock);
-    rc = zc_register_device( &zc_fops );
-    printk(KERN_INFO "zero_cache: init rc=%d\n",rc);
-    printk( "Please, create a dev file with 'mknod /dev/zero_cache c %d 0'.\n", MAJOR(gDevice.number) );
+    rc = zc_register_device(&zc_fops);
+    printk(KERN_INFO "zero_cache: init rc=%d\n", rc);
+    printk("Please, create a dev file with 'mknod /dev/zero_cache c %d 0'.\n", MAJOR(gDevice.number));
     return rc;
 }
 
 static void __exit zc_exit(void)
 {
-    int rc;
-    rc = zc_unregister_device();
-    zc_free_cache();
-    printk(KERN_INFO "zero_cache: exit rc=%d",rc);
+    cdev_del(&gDevice.chrdev);
+    device_destroy(gDevice.class, gDevice.number);
+    class_destroy(gDevice.class);
+    unregister_chrdev_region(gDevice.number, 1);
+
+    printk(KERN_INFO "zero_cache: exit\n");
 }
 
 module_init(zc_init);
