@@ -9,18 +9,26 @@
 using namespace std;
 using namespace zero_cache;
 
-static const size_t kOffset1 = 0;
+static const size_t kIndex1 = 0;
 static const long kData1 = 1024;
+
+static const size_t kIndex2 = 1;
+static const double kData2 = 17.255;
 
 void InitData(Client& client)
 {
-    client.WriteLong(kOffset1, kData1);
+    client.WriteLong(kIndex1, kData1);
+    client.WriteDouble(kIndex2, kData2);
 }
 
 void CheckData(Client& client)
 {
-    long result = client.ReadLong(kOffset1);
-    assert( result == kData1 );
+    long result_l = client.ReadLong(kIndex1);
+    assert( result_l == kData1 );
+
+    double result_d = client.ReadDouble(kIndex2);
+    cout << "result_d = " << result_d << endl;
+    assert( result_d == kData2 );
 }
 
 int main()

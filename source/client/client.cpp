@@ -35,7 +35,14 @@ void Client::WriteLong(const size_t index, const long value)
 
 void Client::WriteDouble(const size_t index, const double value)
 {
-    /* FIXME: Implement this method */
+    Package package;
+    package.index = index;
+    package.data = value;
+
+    int rc = ioctl(dev_file_, IOCTL_SET_MSG, &package);
+
+    if ( rc != 0 )
+        Speaker::Instance()->PrintError(kSetCommandError);
 }
 
 long Client::ReadLong(const size_t index) const
@@ -53,5 +60,13 @@ long Client::ReadLong(const size_t index) const
 
 double Client::ReadDouble(const size_t index) const
 {
-    /* FIXME: Implement this method */
+    Package package;
+    package.index = index;
+
+    int rc = ioctl(dev_file_, IOCTL_GET_MSG, &package);
+
+    if ( rc != 0 )
+        Speaker::Instance()->PrintError(kGetCommandError);
+
+    return package.data;
 }
