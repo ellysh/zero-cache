@@ -15,7 +15,7 @@ typedef unsigned long cell_t;
 
 struct Package
 {
-    size_t offset;
+    size_t index;
     cell_t data;
 };
 

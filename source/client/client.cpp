@@ -21,10 +21,10 @@ Client::~Client()
     close(dev_file_);
 }
 
-void Client::WriteLong(const size_t offset, const long value)
+void Client::WriteLong(const size_t index, const long value)
 {
     Package package;
-    package.offset = offset;
+    package.index = index;
     package.data = value;
 
     int rc = ioctl(dev_file_, IOCTL_SET_MSG, &package);
@@ -33,15 +33,15 @@ void Client::WriteLong(const size_t offset, const long value)
         Speaker::Instance()->PrintError(kSetCommandError);
 }
 
-void Client::WriteDouble(const size_t offset, const double value)
+void Client::WriteDouble(const size_t index, const double value)
 {
     /* FIXME: Implement this method */
 }
 
-long Client::ReadLong(const size_t offset) const
+long Client::ReadLong(const size_t index) const
 {
     Package package;
-    package.offset = offset;
+    package.index = index;
 
     int rc = ioctl(dev_file_, IOCTL_GET_MSG, &package);
 
@@ -51,7 +51,7 @@ long Client::ReadLong(const size_t offset) const
     return package.data;
 }
 
-double Client::ReadDouble(const size_t offset) const
+double Client::ReadDouble(const size_t index) const
 {
     /* FIXME: Implement this method */
 }

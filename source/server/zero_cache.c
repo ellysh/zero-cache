@@ -32,7 +32,7 @@ static long zc_ioctl(struct file *file, unsigned int command, unsigned long arg)
     struct Package* package;
     package = (struct Package*)arg;
 
-    if ( (package->offset) < 0 || (CACHE_SIZE < package->offset) )
+    if ( (package->index) < 0 || (CACHE_SIZE < package->index) )
         return -1;
 
     spin_lock(&gLock);
@@ -40,13 +40,11 @@ static long zc_ioctl(struct file *file, unsigned int command, unsigned long arg)
     switch (command)
     {
     case IOCTL_SET_MSG:
-        printk(KERN_INFO "SET");
-        get_user(gCache[package->offset], &package->data);
+        get_user(gCache[package->index], &package->data);
         break;
 
     case IOCTL_GET_MSG:
-        printk(KERN_INFO "GET");
-        put_user(gCache[package->offset], &package->data);
+        put_user(gCache[package->index], &package->data);
         break;
     }
 

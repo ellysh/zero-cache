@@ -15,11 +15,11 @@ public:
     Client(const char* log_file);
     virtual ~Client();
 
-    void WriteLong(const size_t offset, const long value);
-    void WriteDouble(const size_t offset, const double value);
+    void WriteLong(const size_t index, const long value);
+    void WriteDouble(const size_t index, const double value);
 
-    long ReadLong(const size_t offset) const;
-    double ReadDouble(const size_t offset) const;
+    long ReadLong(const size_t index) const;
+    double ReadDouble(const size_t index) const;
 
 private:
     int dev_file_;
