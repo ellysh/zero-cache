@@ -11,12 +11,12 @@
 
 #define DEVICE_FILE_NAME "/dev/zero_cache"
 
-typedef unsigned long cell_t;
+#define PACKAGE_DATA_SIZE   8
 
 struct Package
 {
     size_t index;
-    cell_t data;
+    unsigned char data[PACKAGE_DATA_SIZE];
 };
 
 #endif

@@ -27,7 +27,6 @@ void CheckData(Client& client)
     assert( result_l == kData1 );
 
     double result_d = client.ReadDouble(kIndex2);
-    cout << "result_d = " << result_d << endl;
     assert( result_d == kData2 );
 }
 

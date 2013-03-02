@@ -2,6 +2,7 @@
 
 #include <fcntl.h>
 #include <sys/ioctl.h>
+#include <string.h>
 
 #include "speaker.h"
 
@@ -25,7 +26,7 @@ void Client::WriteLong(const size_t index, const long value)
 {
     Package package;
     package.index = index;
-    package.data = value;
+    memcpy(&package.data, &value, PACKAGE_DATA_SIZE);
 
     int rc = ioctl(dev_file_, IOCTL_SET_MSG, &package);
 
@@ -37,7 +38,7 @@ void Client::WriteDouble(const size_t index, const double value)
 {
     Package package;
     package.index = index;
-    package.data = value;
+    memcpy(&package.data, &value, PACKAGE_DATA_SIZE);
 
     int rc = ioctl(dev_file_, IOCTL_SET_MSG, &package);
 
@@ -55,7 +56,10 @@ long Client::ReadLong(const size_t index) const
     if ( rc != 0 )
         Speaker::Instance()->PrintError(kGetCommandError);
 
-    return package.data;
+    long result;
+    memcpy(&result, &package.data, PACKAGE_DATA_SIZE);
+
+    return result;
 }
 
 double Client::ReadDouble(const size_t index) const
@@ -68,5 +72,8 @@ double Client::ReadDouble(const size_t index) const
     if ( rc != 0 )
         Speaker::Instance()->PrintError(kGetCommandError);
 
-    return package.data;
+    double result;
+    memcpy(&result, &package.data, PACKAGE_DATA_SIZE);
+
+    return result;
 }

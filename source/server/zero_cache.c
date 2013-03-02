@@ -25,7 +25,7 @@ static struct Device
 
 static spinlock_t gLock;
 
-static cell_t gCache[CACHE_SIZE];
+static unsigned char gCache[CACHE_SIZE][PACKAGE_DATA_SIZE];
 
 static long zc_ioctl(struct file *file, unsigned int command, unsigned long arg)
 {
@@ -40,11 +40,11 @@ static long zc_ioctl(struct file *file, unsigned int command, unsigned long arg)
     switch (command)
     {
     case IOCTL_SET_MSG:
-        get_user(gCache[package->index], &package->data);
+        copy_from_user(&gCache[package->index], &package->data, PACKAGE_DATA_SIZE);
         break;
 
     case IOCTL_GET_MSG:
-        put_user(gCache[package->index], &package->data);
+        copy_to_user(&package->data, &gCache[package->index], PACKAGE_DATA_SIZE);
         break;
     }
 
