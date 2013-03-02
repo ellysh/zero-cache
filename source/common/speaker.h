@@ -6,7 +6,9 @@ namespace zero_cache
 
 enum ErrorType
 {
-    kOpenDevFileError = 0
+    kOpenDevFileError = 0,
+    kSetCommandError,
+    kGetCommandError
 };
 
 class Speaker

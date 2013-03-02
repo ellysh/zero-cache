@@ -23,8 +23,14 @@ Client::~Client()
 
 void Client::WriteLong(const size_t offset, const long value)
 {
-    /* FIXME: Implement this method */
-    int rc = ioctl(dev_file_, IOCTL_SET_MSG, 1024);
+    Package package;
+    package.offset = offset;
+    package.data = value;
+
+    int rc = ioctl(dev_file_, IOCTL_SET_MSG, &package);
+
+    if ( rc != 0 )
+        Speaker::Instance()->PrintError(kSetCommandError);
 }
 
 void Client::WriteDouble(const size_t offset, const double value)
@@ -34,11 +40,15 @@ void Client::WriteDouble(const size_t offset, const double value)
 
 long Client::ReadLong(const size_t offset) const
 {
-    /* FIXME: Implement this method */
-    long data;
-    int rc = ioctl(dev_file_, IOCTL_GET_MSG, &data);
+    Package package;
+    package.offset = offset;
 
-    return data;
+    int rc = ioctl(dev_file_, IOCTL_GET_MSG, &package);
+
+    if ( rc != 0 )
+        Speaker::Instance()->PrintError(kGetCommandError);
+
+    return package.data;
 }
 
 double Client::ReadDouble(const size_t offset) const
