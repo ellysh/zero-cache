@@ -23,6 +23,9 @@ public:
 
 private:
     int dev_file_;
+
+    void WriteData(const size_t index, const void* value);
+    void ReadData(const size_t index, void* result) const;
 };
 
 }
