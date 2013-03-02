@@ -15,9 +15,11 @@ public:
     Client(const char* log_file);
     virtual ~Client();
 
-    void WriteData(const std::string& key, const Package package) const;
-    Package ReadData(const std::string& key);
-    std::string GetKeys();
+    void WriteLong(const size_t offset, const long value);
+    void WriteDouble(const size_t offset, const double value);
+
+    long ReadLong(const size_t offset) const;
+    double ReadDouble(const size_t offset) const;
 
 private:
     int dev_file_;
