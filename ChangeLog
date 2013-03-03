@@ -1,3 +1,8 @@
+* zero-cache 2.0
+	- Implement caching system's server in the kernel module
+	- Remove the type unsafe client class
+	- Don't use ZMQ library for the client-server connection
+
 * zero-cache 1.6
 	- Add limit for client's requests sending
 	- Add timeout for server's requests waiting
