@@ -4,6 +4,8 @@
 #include <sys/ioctl.h>
 #include <string.h>
 
+#define PRINTF Log
+#include "speed_test.h"
 #include "speaker.h"
 
 using namespace std;
@@ -34,6 +36,8 @@ void Client::WriteDouble(const size_t index, const double value)
 
 void Client::WriteData(const size_t index, const void* value)
 {
+    PRE_TIME_MEASURE("RegistrarClient::WriteData() ")
+
     Package package;
     package.index = index;
     memcpy(&package.data, value, PACKAGE_DATA_SIZE);
@@ -42,6 +46,8 @@ void Client::WriteData(const size_t index, const void* value)
 
     if ( rc != 0 )
         Speaker::Instance()->PrintError(kSetCommandError);
+
+    POST_TIME_MEASURE
 }
 
 long Client::ReadLong(const size_t index) const
@@ -62,6 +68,8 @@ double Client::ReadDouble(const size_t index) const
 
 void Client::ReadData(const size_t index, void* result) const
 {
+    PRE_TIME_MEASURE("RegistrarClient::ReadData() ")
+
     Package package;
     package.index = index;
 
@@ -71,4 +79,6 @@ void Client::ReadData(const size_t index, void* result) const
         Speaker::Instance()->PrintError(kGetCommandError);
 
     memcpy(result, &package.data, PACKAGE_DATA_SIZE);
+
+    POST_TIME_MEASURE
 }
