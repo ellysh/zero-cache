@@ -16,16 +16,16 @@ void* WriteReadLoop(void* args)
     Client client(log_file);
 
     char* endptr;
-    size_t offset = strtoul(log_file, &endptr, 10);
-    long data = offset;
+    size_t index = strtoul(log_file, &endptr, 10);
+    long data = index;
     long result;
 
     while (true)
     {
-        client.WriteLong(offset, data);
+        client.WriteLong(index, data);
         usleep(1000);
 
-        result = client.ReadLong(offset);
+        result = client.ReadLong(index);
         assert( result == data );
         usleep(1000);
     }
