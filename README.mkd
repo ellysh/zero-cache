@@ -1,37 +1,32 @@
-Zero-cache 1.6 version
+Zero-cache 2.0 version
 ======================
 
 INTRODUCTION
 ------------
 
-Zero-cache is a Open Source cross-platform distributed memory caching system based on ZMQ messaging library.
+Zero-cache is a kernel space memory caching system.
 
-Zero-cache is able to store data of any type that is addressed by key of string type.
-It provides the minimal response time thanks to multi-thread containers and absence of mutexes
-for requests synchronization. All synchronization is performed by messages processing mechanism.
+Zero-cache is able to store data of long and double types that are addressed by
+offset numbers. It provides the minimal response time thanks to direct memory
+copying between the user space and kernel space.
 
 BUILDING
 --------
 
-You need the CMake build system, C++ compiler and ZMQ library to build this software.
+You need the CMake build system, C++ and C compilers to build this software.
 
-1. Copy CMake find module for ZMQ library to your CMake modules system path.<br/>
-This is example for Ubuntu users:
-
-    $ cp *.cmake /usr/share/cmake-2.8/Modules
-
-2. Generate makefiles with CMake build system.<br/>
+1. Generate makefiles with CMake build system.<br/>
 Type one of these commands to build debug or release versions of the zero-cache:
 
     $ cmake -D CMAKE_BUILD_TYPE=Debug CMakeLists.txt
 
     $ cmake -D CMAKE_BUILD_TYPE=Release CMakeLists.txt
 
-3. Build binaries with C++ compiler:
+2. Build binaries with C++ and C compilers:
 
     $ make
 
-4. Build debian package if you use Debian-based Linux distribution:
+3. Build debian package if you use Debian-based Linux distribution:
 
     $ make deb
 
@@ -50,77 +45,71 @@ Another way is installing with Makefile default mechanism:
 USAGE
 -----
 
-First of all you must launch zero-cache service. This is example for Unix socket based
-connection:
+**ATTENTION: You need the soft real-time or hard real-time Linux kernel to use
+zero-cache server module!**
 
-    $ zero-cache -l /var/log/zero-cache.log -c "ipc:///tmp/0" -s 1000 -k 10
+First of all you must load the server zero-cache module into your kernel:
 
-**Please note that Unix socket file name must have number format.**
+    $ insmod source/server/zero_cache.ko
 
-This is example for TCP socket based connection:
+The `zero_cache` device file will be created at the `/dev` directory. Now the
+zero-cache server is ready to work.
 
-    $ zero-cache -l /var/log/zero-cache.log -c "tcp://*:5570" -s 1000 -k 10
+You can interact with zero-cache server directly with `ioctl` function. Another
+way is usage `Client` interface class for your C++ applications.
 
-The command line arguments information is available by command:
+EXAMPLES
+--------
 
-    $ zero-cache -h
+This is example of typical C++ client application:
 
-Your client application must be linked with `libzero_cache.so` to access zero-cache
-client classes.
+    #include <zero-cache/client.h>
 
-This is example of typical client application for Unix socket based connection:
-
-    #include <string>
-    #include <iostream>
-    #include <zero-cache/registrar_client.h>
-
-    using namespace std;
     using namespace zero_cache;
 
     int main()
     {
-        string key = "key1";
-        string data = "test data";
+        Client client;
 
-        RegistrarClient client("example.log", "ipc:///tmp/0", kDealer);
+        size_t index = 0;
+        long data = 1024;
 
-        client.WriteData(key, Package(data.c_str(), data.size()));
+        client.Writelong(index, data);
 
-        Package package;
-        package = client.ReadData(key);
+        long result = client.ReadLong(index);
 
-        cout << "read_data = " << static_cast<char*>(package.GetData()) << endl;
-        package.FreeData();
+        return 0;
     }
 
-This is example of typical client application for TCP socket based connection:
+This is example of typical C client application:
 
-    #include <string>
-    #include <iostream>
-    #include <zero-cache/registrar_client.h>
-
-    using namespace std;
-    using namespace zero_cache;
+    #include <zero-cache/zero_cache.h>
 
     int main()
     {
-        string key = "key1";
-        string data = "test data";
+        int dev_file;
 
-        /* 192.168.0.1 - server ip
-         * 192.168.0.15 - client ip */
-        RegistrarClient client("example.log", "tcp://192.168.0.1:5570", kDealer);
+        dev_file = open(DEVICE_FILE_NAME, 0);
 
-        client.WriteData(key, Package(data.c_str(), data.size()));
+        long data;
+        data = 1024;
 
         Package package;
-        package = client.ReadData(key);
+        package.index = 0;
+        memcpy(&package.data, data, PACKAGE_DATA_SIZE);
 
-        cout << "read_data = " << static_cast<char*>(package.GetData()) << endl;
-        package.FreeData();
+        ioctl(dev_file, IOCTL_SET_MSG, &package);
+
+        long result;
+
+        package.index = 0;
+        ioctl(dev_file, IOCTL_GET_MSG, &package);
+        memcpy(result, &package.data, PACKAGE_DATA_SIZE);
+
+        close(dev_file);
+
+        return 0;
     }
-
-More usage examples you can find in files of 'test' directory.
 
 COPYING
 -------
