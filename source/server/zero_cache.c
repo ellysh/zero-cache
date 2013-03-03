@@ -33,7 +33,10 @@ static long zc_ioctl(struct file *file, unsigned int command, unsigned long arg)
     package = (struct Package*)arg;
 
     if ( (package->index) < 0 || (CACHE_SIZE < package->index) )
+    {
+        printk(KERN_INFO "zero_cache: array index %lu out of bounds %d\n", package->index, CACHE_SIZE);
         return -1;
+    }
 
     spin_lock(&gLock);
 
@@ -96,7 +99,6 @@ static int __init zc_init(void)
     spin_lock_init(&gLock);
     rc = zc_register_device(&zc_fops);
     printk(KERN_INFO "zero_cache: init rc=%d\n", rc);
-    printk("Please, create a dev file with 'mknod /dev/zero_cache c %d 0'.\n", MAJOR(gDevice.number));
     return rc;
 }
 

@@ -1,0 +1,2 @@
+#SUBSYSTEM=="char", KERNEL=="zero_cache", NAME="zero_cache", MODE="0666"
+KERNEL=="zero_cache", NAME="%k", MODE="0666"
