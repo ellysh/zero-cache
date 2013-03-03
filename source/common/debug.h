@@ -11,7 +11,7 @@ namespace zero_cache
 class Debug
 {
 public:
-    Debug(const char* log_file);
+    Debug(const char* log_file = "");
     virtual ~Debug();
 
     void Log(const char* fmt, ...) const;

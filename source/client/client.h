@@ -12,7 +12,7 @@ namespace zero_cache
 class Client : protected Debug
 {
 public:
-    Client(const char* log_file);
+    Client(const char* log_file = "");
     virtual ~Client();
 
     void WriteLong(const size_t index, const long value);
