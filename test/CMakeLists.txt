@@ -10,3 +10,12 @@ add_executable(get_test ${get_test_SRCS})
 target_link_libraries(get_test zero_cache)
 
 install(TARGETS get_test DESTINATION bin)
+
+set(read_test_SRCS
+    read_test.cpp)
+
+add_executable(read_test ${read_test_SRCS})
+
+target_link_libraries(read_test zero_cache)
+
+install(TARGETS read_test DESTINATION bin)
