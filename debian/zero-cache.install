@@ -1,2 +1,3 @@
-debian/buildroot/usr/bin/zero-cache                 usr/bin
-debian/buildroot/usr/etc/ld.so.conf.d/*.conf        etc/ld.so.conf.d
+debian/buildroot/lib/modules                            lib
+debian/buildroot/usr/lib/zero-cache/libzero_cache.so    usr/lib/zero-cache
+debian/buildroot/usr/etc/ld.so.conf.d/*.conf            etc/ld.so.conf.d

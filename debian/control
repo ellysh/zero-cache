@@ -8,9 +8,9 @@ Standards-Version: 3.7.2
 Package: zero-cache
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, pkg-config
-Description: Memory caching system based on 0MQ messaging library
+Description: Kernel space memory caching system
 
 Package: zero-cache-dev
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, zero-cache
-Description: Development files for zero-cache
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Development files for zero-cache caching system

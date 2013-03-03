@@ -1,3 +1,2 @@
-debian/buildroot/usr/lib/zero-cache/libzero_cache.so    usr/lib/zero-cache
 debian/buildroot/usr/include/zero-cache/*.h             usr/include/zero-cache
 debian/buildroot/usr/lib/pkgconfig/*.pc                 usr/lib/pkgconfig

@@ -1,8 +1,10 @@
 obj-m += zero_cache.o
 
-KDIR ?= /lib/modules/`uname -r`/build
+KVER := `uname -r`
+KDIR ?= /lib/modules/$(KVER)/build
 
 all:
-	make -C $(KDIR) M=$(PWD) modules
+	$(MAKE) -C $(KDIR) M=$(PWD) modules
+
 clean:
-	make -C $(KDIR) M=$(PWD) clean
+	$(MAKE) -C $(KDIR) M=$(PWD) clean
