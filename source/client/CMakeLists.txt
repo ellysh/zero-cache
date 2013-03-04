@@ -10,8 +10,8 @@ if(UNIX)
     target_link_libraries(zero_cache common)
 endif(UNIX)
 
-install(TARGETS zero_cache DESTINATION lib/${PROJECT_NAME})
+install(TARGETS zero_cache DESTINATION /usr/lib/${PROJECT_NAME})
 
 install(FILES
             client.h
-        DESTINATION include/${PROJECT_NAME})
+        DESTINATION /usr/include/${PROJECT_NAME})

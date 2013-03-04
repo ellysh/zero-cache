@@ -15,4 +15,4 @@ endif(UNIX)
 install(FILES
             debug.h
             types_zcache.h
-        DESTINATION include/${PROJECT_NAME})
+        DESTINATION /usr/include/${PROJECT_NAME})
