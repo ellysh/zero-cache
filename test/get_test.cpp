@@ -1,7 +1,5 @@
 #include <iostream>
 
-#include <string.h>
-#include <stdlib.h>
 #include <assert.h>
 
 #include "typed_client.h"
