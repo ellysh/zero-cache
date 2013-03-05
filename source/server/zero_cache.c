@@ -23,7 +23,7 @@ static struct Device
     struct class* class;
 } gDevice;
 
-static spinlock_t gLock;
+DECLARE_RWSEM(gSem);
 
 static unsigned char gCache[CACHE_SIZE][PACKAGE_DATA_SIZE];
 
@@ -38,20 +38,20 @@ static long zc_ioctl(struct file *file, unsigned int command, unsigned long arg)
         return -1;
     }
 
-    spin_lock(&gLock);
-
     switch (command)
     {
     case IOCTL_SET_MSG:
+        down_write(&gSem);
         copy_from_user(&gCache[package->index], &package->data, PACKAGE_DATA_SIZE);
+        up_write(&gSem);
         break;
 
     case IOCTL_GET_MSG:
+        down_read(&gSem);
         copy_to_user(&package->data, &gCache[package->index], PACKAGE_DATA_SIZE);
+        up_read(&gSem);
         break;
     }
-
-    spin_unlock(&gLock);
 
     return 0;
 }
@@ -96,7 +96,6 @@ static int __init zc_init(void)
 {
     int rc;
 
-    spin_lock_init(&gLock);
     rc = zc_register_device(&zc_fops);
     printk(KERN_INFO "zero_cache: init rc=%d\n", rc);
     return rc;
