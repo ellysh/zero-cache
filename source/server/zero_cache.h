@@ -11,12 +11,12 @@
 
 #define DEVICE_FILE_NAME "/dev/zero_cache"
 
-#define PACKAGE_DATA_SIZE   8
+#define POINTER_SIZE   8
 
 struct Package
 {
     size_t index;
-    unsigned char data[PACKAGE_DATA_SIZE];
+    unsigned char data[POINTER_SIZE];
 };
 
 #endif

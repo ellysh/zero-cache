@@ -16,6 +16,12 @@ MODULE_DESCRIPTION("Kernel data cache module");
 #define DEVICE      "zero_cache"
 #define CACHE_SIZE  100000
 
+struct Cell
+{
+    size_t size;
+    unsigned char data[POINTER_SIZE];
+};
+
 static struct Device
 {
     dev_t number;
@@ -25,7 +31,7 @@ static struct Device
 
 DECLARE_RWSEM(gSem);
 
-static unsigned char gCache[CACHE_SIZE][PACKAGE_DATA_SIZE];
+static struct Cell gCache[CACHE_SIZE];
 
 static long zc_ioctl(struct file *file, unsigned int command, unsigned long arg)
 {
@@ -42,13 +48,13 @@ static long zc_ioctl(struct file *file, unsigned int command, unsigned long arg)
     {
     case IOCTL_SET_MSG:
         down_write(&gSem);
-        copy_from_user(&gCache[package->index], &package->data, PACKAGE_DATA_SIZE);
+        copy_from_user(&gCache[package->index].data, &package->data, POINTER_SIZE);
         up_write(&gSem);
         break;
 
     case IOCTL_GET_MSG:
         down_read(&gSem);
-        copy_to_user(&package->data, &gCache[package->index], PACKAGE_DATA_SIZE);
+        copy_to_user(&package->data, &gCache[package->index].data, POINTER_SIZE);
         up_read(&gSem);
         break;
     }

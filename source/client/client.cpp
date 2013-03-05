@@ -40,7 +40,7 @@ void Client::WriteData(const size_t index, const void* value)
 
     Package package;
     package.index = index;
-    memcpy(&package.data, value, PACKAGE_DATA_SIZE);
+    memcpy(&package.data, value, POINTER_SIZE);
 
     int rc = ioctl(dev_file_, IOCTL_SET_MSG, &package);
 
@@ -78,7 +78,7 @@ void Client::ReadData(const size_t index, void* result) const
     if ( rc != 0 )
         Speaker::Instance()->PrintError(kGetCommandError);
 
-    memcpy(result, &package.data, PACKAGE_DATA_SIZE);
+    memcpy(result, &package.data, POINTER_SIZE);
 
     POST_TIME_MEASURE
 }
