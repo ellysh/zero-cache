@@ -45,9 +45,6 @@ Another way is installing with Makefile default mechanism:
 USAGE
 -----
 
-**ATTENTION: You need the soft real-time or hard real-time Linux kernel to use
-zero-cache server module!**
-
 First of all you must load the server zero-cache module into your kernel:
 
     $ insmod source/server/zero_cache.ko
