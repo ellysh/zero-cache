@@ -24,13 +24,13 @@ UntypedClient::~UntypedClient()
     close(dev_file_);
 }
 
-void UntypedClient::WriteData(const size_t index, const void* value)
+void UntypedClient::WriteData(const size_t index, const void* value, const size_t size)
 {
-    PRE_TIME_MEASURE("RegistrarUntypedClient::WriteData() ")
+    PRE_TIME_MEASURE("UntypedClient::WriteData() ")
 
     Package package;
     package.index = index;
-    package.size = POINTER_SIZE;
+    package.size = size;
     memcpy(&package.data, value, POINTER_SIZE);
 
     int rc = ioctl(dev_file_, IOCTL_SET_MSG, &package);
@@ -41,20 +41,20 @@ void UntypedClient::WriteData(const size_t index, const void* value)
     POST_TIME_MEASURE
 }
 
-void UntypedClient::ReadData(const size_t index, void* result) const
+void UntypedClient::ReadData(const size_t index, void* result, const size_t size) const
 {
-    PRE_TIME_MEASURE("RegistrarUntypedClient::ReadData() ")
+    PRE_TIME_MEASURE("UntypedClient::ReadData() ")
 
     Package package;
     package.index = index;
-    package.size = POINTER_SIZE;
+    package.size = size;
 
     int rc = ioctl(dev_file_, IOCTL_GET_MSG, &package);
 
     if ( rc != 0 )
         Speaker::Instance()->PrintError(kGetCommandError);
 
-    memcpy(result, &package.data, POINTER_SIZE);
+    memcpy(result, &package.data, size);
 
     POST_TIME_MEASURE
 }

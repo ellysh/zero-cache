@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#include "client.h"
+#include "typed_client.h"
 #include "thread.h"
 
 using namespace std;
@@ -13,7 +13,7 @@ using namespace zero_cache;
 void* WriteReadLoop(void* args)
 {
     const char* log_file = static_cast<char*>(args);
-    Client client(log_file);
+    TypedClient client(log_file);
 
     char* endptr;
     size_t index = strtoul(log_file, &endptr, 10);

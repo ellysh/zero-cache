@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#include "client.h"
+#include "typed_client.h"
 
 using namespace std;
 using namespace zero_cache;
@@ -15,13 +15,13 @@ static const long kData1 = 1024;
 static const size_t kIndex2 = 1;
 static const double kData2 = 17.255;
 
-void InitData(Client& client)
+void InitData(TypedClient& client)
 {
     client.WriteLong(kIndex1, kData1);
     client.WriteDouble(kIndex2, kData2);
 }
 
-void CheckData(Client& client)
+void CheckData(TypedClient& client)
 {
     long result_l = client.ReadLong(kIndex1);
     assert( result_l == kData1 );
@@ -32,7 +32,7 @@ void CheckData(Client& client)
 
 int main()
 {
-    Client client("get_test.log");
+    TypedClient client("get_test.log");
 
     cout << "Start test..." << endl;
 
