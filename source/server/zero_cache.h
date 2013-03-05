@@ -16,6 +16,7 @@
 struct Package
 {
     size_t index;
+    size_t size;
     unsigned char data[POINTER_SIZE];
 };
 

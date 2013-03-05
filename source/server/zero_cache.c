@@ -48,13 +48,29 @@ static long zc_ioctl(struct file *file, unsigned int command, unsigned long arg)
     {
     case IOCTL_SET_MSG:
         down_write(&gSem);
-        copy_from_user(&gCache[package->index].data, &package->data, POINTER_SIZE);
+
+        if ( package->size <= POINTER_SIZE )
+            copy_from_user(&gCache[package->index].data, &package->data, package->size);
+        else
+        {
+            printk(KERN_INFO "zero_cache: package->size = %lu\n", package->size);
+            return -1;
+        }
+
         up_write(&gSem);
         break;
 
     case IOCTL_GET_MSG:
         down_read(&gSem);
-        copy_to_user(&package->data, &gCache[package->index].data, POINTER_SIZE);
+
+        if ( package->size <= POINTER_SIZE )
+            copy_to_user(&package->data, &gCache[package->index].data, package->size);
+        else
+        {
+            printk(KERN_INFO "zero_cache: package->size = %lu\n", package->size);
+            return -1;
+        }
+
         up_read(&gSem);
         break;
     }

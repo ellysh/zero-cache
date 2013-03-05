@@ -40,6 +40,7 @@ void Client::WriteData(const size_t index, const void* value)
 
     Package package;
     package.index = index;
+    package.size = POINTER_SIZE;
     memcpy(&package.data, value, POINTER_SIZE);
 
     int rc = ioctl(dev_file_, IOCTL_SET_MSG, &package);
@@ -72,6 +73,7 @@ void Client::ReadData(const size_t index, void* result) const
 
     Package package;
     package.index = index;
+    package.size = POINTER_SIZE;
 
     int rc = ioctl(dev_file_, IOCTL_GET_MSG, &package);
 
