@@ -1,4 +1,4 @@
-#include "client.h"
+#include "untyped_client.h"
 
 #include <fcntl.h>
 #include <sys/ioctl.h>
@@ -11,7 +11,7 @@
 using namespace std;
 using namespace zero_cache;
 
-Client::Client(const char* log_file) : Debug(log_file)
+UntypedClient::UntypedClient(const char* log_file) : Debug(log_file)
 {
     dev_file_ = open(DEVICE_FILE_NAME, 0);
 
@@ -19,24 +19,14 @@ Client::Client(const char* log_file) : Debug(log_file)
         Speaker::Instance()->PrintError(kOpenDevFileError);
 }
 
-Client::~Client()
+UntypedClient::~UntypedClient()
 {
     close(dev_file_);
 }
 
-void Client::WriteLong(const size_t index, const long value)
+void UntypedClient::WriteData(const size_t index, const void* value)
 {
-    WriteData(index, &value);
-}
-
-void Client::WriteDouble(const size_t index, const double value)
-{
-    WriteData(index, &value);
-}
-
-void Client::WriteData(const size_t index, const void* value)
-{
-    PRE_TIME_MEASURE("RegistrarClient::WriteData() ")
+    PRE_TIME_MEASURE("RegistrarUntypedClient::WriteData() ")
 
     Package package;
     package.index = index;
@@ -51,25 +41,9 @@ void Client::WriteData(const size_t index, const void* value)
     POST_TIME_MEASURE
 }
 
-long Client::ReadLong(const size_t index) const
+void UntypedClient::ReadData(const size_t index, void* result) const
 {
-    long result;
-    ReadData(index, &result);
-
-    return result;
-}
-
-double Client::ReadDouble(const size_t index) const
-{
-    double result;
-    ReadData(index, &result);
-
-    return result;
-}
-
-void Client::ReadData(const size_t index, void* result) const
-{
-    PRE_TIME_MEASURE("RegistrarClient::ReadData() ")
+    PRE_TIME_MEASURE("RegistrarUntypedClient::ReadData() ")
 
     Package package;
     package.index = index;
