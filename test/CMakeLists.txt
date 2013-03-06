@@ -12,14 +12,14 @@ target_link_libraries(get_test zero_cache)
 install(TARGETS get_test DESTINATION bin)
 
 
-set(read_test_SRCS
-    read_test.cpp)
+set(stress_value_test_SRCS
+    stress_value_test.cpp)
 
-add_executable(read_test ${read_test_SRCS})
+add_executable(stress_value_test ${stress_value_test_SRCS})
 
-target_link_libraries(read_test zero_cache)
+target_link_libraries(stress_value_test zero_cache)
 
-install(TARGETS read_test DESTINATION bin)
+install(TARGETS stress_value_test DESTINATION bin)
 
 
 set(array_test_SRCS

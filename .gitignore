@@ -23,7 +23,7 @@ Makefile
 # Binaries
 *.so
 *.a
-read_test
+stress_value_test
 get_test
 array_test
 
