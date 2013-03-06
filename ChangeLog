@@ -1,3 +1,8 @@
+* zero-cache 2.1
+	- Add arrays and strings to supported caching data types
+	- Add the untyped client class
+	- Fix work with not real-time kernels
+
 * zero-cache 2.0
 	- Implement caching system's server in the kernel module
 	- Remove the type unsafe client class

@@ -1,3 +1,11 @@
+zero-cache (2.1) precise; urgency=low
+
+  * Add arrays and strings to supported caching data types
+  * Add the untyped client class
+  * Fix work with not real-time kernels
+
+ -- Ilya Shpigor <petrsum@gmail.com>  Wed, 06 Mar 2013 17:30:15 +0400
+
 zero-cache (2.0) precise; urgency=low
 
   * Implement caching system's server in the kernel module

@@ -1,4 +1,4 @@
-Zero-cache 2.0 version
+Zero-cache 2.1 version
 ======================
 
 INTRODUCTION
@@ -6,7 +6,7 @@ INTRODUCTION
 
 Zero-cache is a open source, high-performance, kernel space memory caching system.
 
-Zero-cache is able to store data of long and double types that are addressed by
+Zero-cache is able to store data of any type that are addressed by
 index numbers. It provides the minimal response time thanks to direct memory
 copying between the user space and kernel space.
 
