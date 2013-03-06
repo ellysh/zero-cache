@@ -8,6 +8,8 @@
 #include "speed_test.h"
 #include "speaker.h"
 
+#include "zero_cache.h"
+
 using namespace std;
 using namespace zero_cache;
 

@@ -2,7 +2,7 @@
 
 rm -f *.log
 
-for (( i=0; i<=30; i++ ))
+for (( i=0; i<=50; i++ ))
 do
     rm $i
 done

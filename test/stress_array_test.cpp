@@ -45,22 +45,22 @@ int main()
 {
     cout << "Start test..." << endl;
 
-    StartWriteThread("1");
-    StartWriteThread("2");
-    StartWriteThread("3");
-    StartWriteThread("4");
-    StartWriteThread("5");
-    StartWriteThread("6");
-    StartWriteThread("7");
-    StartWriteThread("8");
-    StartWriteThread("9");
-    StartWriteThread("10");
-    StartWriteThread("11");
-    StartWriteThread("12");
-    StartWriteThread("13");
-    StartWriteThread("14");
-    StartWriteThread("15");
-    StartWriteThread("16");
+    StartWriteThread("31");
+    StartWriteThread("32");
+    StartWriteThread("33");
+    StartWriteThread("34");
+    StartWriteThread("35");
+    StartWriteThread("36");
+    StartWriteThread("37");
+    StartWriteThread("38");
+    StartWriteThread("39");
+    StartWriteThread("40");
+    StartWriteThread("41");
+    StartWriteThread("42");
+    StartWriteThread("43");
+    StartWriteThread("44");
+    StartWriteThread("45");
+    StartWriteThread("46");
 
     WaitInput();
 }

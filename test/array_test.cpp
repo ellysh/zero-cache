@@ -8,10 +8,10 @@
 using namespace std;
 using namespace zero_cache;
 
-static const size_t kIndex1 = 0;
+static const size_t kIndex1 = 20;
 static const string kData1 = "test data 1";
 
-static const size_t kIndex2 = 1;
+static const size_t kIndex2 = 21;
 static const unsigned char kData2[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 
 void InitData(UntypedClient& client)

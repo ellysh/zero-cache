@@ -14,5 +14,6 @@ endif(UNIX)
 install(TARGETS zero_cache DESTINATION /usr/lib/${PROJECT_NAME})
 
 install(FILES
-            client.h
+            typed_client.h
+            untyped_client.h
         DESTINATION /usr/include/${PROJECT_NAME})

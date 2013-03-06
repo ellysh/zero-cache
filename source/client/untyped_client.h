@@ -2,7 +2,7 @@
 #define UNTYPED_CLIENT_H
 
 #include "debug.h"
-#include "zero_cache.h"
+#include "types_zcache.h"
 
 namespace zero_cache
 {
@@ -21,6 +21,8 @@ public:
 
 private:
     int dev_file_;
+
+    DISALLOW_COPY_AND_ASSIGN(UntypedClient)
 };
 
 }
