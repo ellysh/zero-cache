@@ -80,7 +80,12 @@ static long zc_ioctl(struct file *file, unsigned int command, unsigned long arg)
         break;
 
     case IOCTL_WRITE_ARRAY:
-        /* FIXME: Add checking to free memory existance in the gHeap array */
+        if ( (gIndexHeap + package->size) > CACHE_SIZE )
+        {
+            printk(KERN_INFO "zero_cache: limit of the memory pool have been reached");
+            return -1;
+        }
+
         down_write(&gSem);
         set_heap_index(package->index);
         copy_from_user(&gHeap[gIndexHeap], data_to_pointer(&package->data[0]), package->size);
