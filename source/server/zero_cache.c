@@ -32,6 +32,19 @@ static unsigned char gCache[CACHE_SIZE][POINTER_SIZE];
 static unsigned char gHeap[CACHE_SIZE];
 static size_t gIndexHeap = 0;
 
+void set_heap_index(const size_t cache_index)
+{
+    memcpy(&gCache[cache_index], &gIndexHeap, sizeof(gIndexHeap));
+}
+
+size_t get_heap_index(const size_t cache_index)
+{
+    size_t result;
+    memcpy(&result, &gCache[cache_index], sizeof(result));
+
+    return result;
+}
+
 static long zc_ioctl(struct file *file, unsigned int command, unsigned long arg)
 {
     struct Package* package;
@@ -58,16 +71,19 @@ static long zc_ioctl(struct file *file, unsigned int command, unsigned long arg)
         break;
 
     case IOCTL_WRITE_ARRAY:
-        /* FIXME: Add checking to free memory in the gHeap array */
+        /* FIXME: Add checking to free memory existance in the gHeap array */
         down_write(&gSem);
-        *(unsigned long*)&gCache[package->index] = gIndexHeap;
+        set_heap_index(package->index);
         copy_from_user(&gHeap[gIndexHeap], &package->data, package->size);
         gIndexHeap = gIndexHeap + package->size;
         up_write(&gSem);
         break;
 
     case IOCTL_READ_ARRAY:
-        /* FIXME: Implement this command */
+        /* FIXME: Add checking to out of bound of gHeap array by package's index and size */
+        down_read(&gSem);
+        copy_to_user(&package->data, &gHeap[get_heap_index(package->index)], package->size);
+        up_read(&gSem);
         break;
     }
 
