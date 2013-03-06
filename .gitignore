@@ -24,6 +24,7 @@ Makefile
 *.so
 *.a
 stress_value_test
+stress_array_test
 get_test
 array_test
 

@@ -30,3 +30,13 @@ add_executable(array_test ${array_test_SRCS})
 target_link_libraries(array_test zero_cache)
 
 install(TARGETS array_test DESTINATION bin)
+
+
+set(stress_array_test_SRCS
+    stress_array_test.cpp)
+
+add_executable(stress_array_test ${stress_array_test_SRCS})
+
+target_link_libraries(stress_array_test zero_cache)
+
+install(TARGETS stress_array_test DESTINATION bin)
