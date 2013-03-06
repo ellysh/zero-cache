@@ -45,13 +45,24 @@ size_t get_heap_index(const size_t cache_index)
     return result;
 }
 
-void* data_to_pointer(unsigned char* data)
+void* data_to_pointer(const unsigned char const * data)
 {
     void* result;
 
     result = (void*)(*(unsigned long*)data);
 
     return result;
+}
+
+int is_heap_limit(const size_t index, const size_t size)
+{
+    if ( CACHE_SIZE < (index + size) )
+    {
+        printk(KERN_INFO "zero_cache: limit of the memory pool have been reached");
+        return TRUE;
+    }
+    else
+        return FALSE;
 }
 
 static long zc_ioctl(struct file *file, unsigned int command, unsigned long arg)
@@ -80,13 +91,13 @@ static long zc_ioctl(struct file *file, unsigned int command, unsigned long arg)
         break;
 
     case IOCTL_WRITE_ARRAY:
-        if ( (gIndexHeap + package->size) > CACHE_SIZE )
+        down_write(&gSem);
+        if ( is_heap_limit(gIndexHeap, package->size) )
         {
-            printk(KERN_INFO "zero_cache: limit of the memory pool have been reached");
+            up_write(&gSem);
             return -1;
         }
 
-        down_write(&gSem);
         set_heap_index(package->index);
         copy_from_user(&gHeap[gIndexHeap], data_to_pointer(&package->data[0]), package->size);
         gIndexHeap = gIndexHeap + package->size;
@@ -94,7 +105,9 @@ static long zc_ioctl(struct file *file, unsigned int command, unsigned long arg)
         break;
 
     case IOCTL_READ_ARRAY:
-        /* FIXME: Add checking to out of bound of gHeap array by package's index and size */
+        if ( is_heap_limit(get_heap_index(package->index), package->size) )
+            return -1;
+
         down_read(&gSem);
         copy_to_user(data_to_pointer(&package->data[0]), &gHeap[get_heap_index(package->index)], package->size);
         up_read(&gSem);

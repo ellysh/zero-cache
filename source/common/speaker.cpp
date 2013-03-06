@@ -20,11 +20,11 @@ Speaker* Speaker::Instance()
 void Speaker::PrintError(const ErrorType error) const
 {
     if ( error == kOpenDevFileError )
-        cout << "error: can't open device file" << endl;
+        cout << "error: can't OPEN device file" << endl;
     else if ( error == kWriteError )
-        cout << "error: ioctl with write command failed" << endl;
+        cout << "error: ioctl with WRITE command failed" << endl;
     else if ( error == kReadError )
-        cout << "error: ioctl with read command failed" << endl;
+        cout << "error: ioctl with READ command failed" << endl;
 
     exit(1);
 }
