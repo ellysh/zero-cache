@@ -13,8 +13,8 @@ public:
     UntypedClient(const char* log_file = "");
     virtual ~UntypedClient();
 
-    void WriteData(const size_t index, const void* value, const size_t size);
-    void ReadData(const size_t index, void* result, const size_t size) const;
+    void WriteValue(const size_t index, const void* value, const size_t size);
+    void ReadValue(const size_t index, void* result, const size_t size) const;
 
 private:
     int dev_file_;

@@ -24,35 +24,35 @@ UntypedClient::~UntypedClient()
     close(dev_file_);
 }
 
-void UntypedClient::WriteData(const size_t index, const void* value, const size_t size)
+void UntypedClient::WriteValue(const size_t index, const void* value, const size_t size)
 {
-    PRE_TIME_MEASURE("UntypedClient::WriteData() ")
+    PRE_TIME_MEASURE("UntypedClient::WriteValue() ")
 
     Package package;
     package.index = index;
     package.size = size;
     memcpy(&package.data, value, POINTER_SIZE);
 
-    int rc = ioctl(dev_file_, IOCTL_SET_MSG, &package);
+    int rc = ioctl(dev_file_, IOCTL_WRITE_VALUE, &package);
 
     if ( rc != 0 )
-        Speaker::Instance()->PrintError(kSetCommandError);
+        Speaker::Instance()->PrintError(kWriteError);
 
     POST_TIME_MEASURE
 }
 
-void UntypedClient::ReadData(const size_t index, void* result, const size_t size) const
+void UntypedClient::ReadValue(const size_t index, void* result, const size_t size) const
 {
-    PRE_TIME_MEASURE("UntypedClient::ReadData() ")
+    PRE_TIME_MEASURE("UntypedClient::ReadValue() ")
 
     Package package;
     package.index = index;
     package.size = size;
 
-    int rc = ioctl(dev_file_, IOCTL_GET_MSG, &package);
+    int rc = ioctl(dev_file_, IOCTL_READ_VALUE, &package);
 
     if ( rc != 0 )
-        Speaker::Instance()->PrintError(kGetCommandError);
+        Speaker::Instance()->PrintError(kReadError);
 
     memcpy(result, &package.data, size);
 

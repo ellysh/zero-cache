@@ -16,18 +16,18 @@ static const unsigned char kData2[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 
 void InitData(UntypedClient& client)
 {
-    client.WriteData(kIndex1, kData1.c_str(), kData1.size());
-    client.WriteData(kIndex2, kData2, sizeof(kData2));
+    client.WriteValue(kIndex1, kData1.c_str(), kData1.size());
+    client.WriteValue(kIndex2, kData2, sizeof(kData2));
 }
 
 void CheckData(UntypedClient& client)
 {
     char result_s[20];
-    client.ReadData(kIndex1, result_s, kData1.size());
+    client.ReadValue(kIndex1, result_s, kData1.size());
     assert( ! memcmp(result_s, kData1.c_str(), kData1.size()) );
 
     unsigned char result_a[20];
-    client.ReadData(kIndex2, result_a, sizeof(kData2));
+    client.ReadValue(kIndex2, result_a, sizeof(kData2));
     assert( ! memcmp(result_a, kData2, sizeof(kData2) ) );
 }
 

@@ -21,10 +21,10 @@ void Speaker::PrintError(const ErrorType error) const
 {
     if ( error == kOpenDevFileError )
         cout << "error: can't open device file" << endl;
-    else if ( error == kSetCommandError )
-        cout << "error: ioctl with IOCTL_SET_MSG command failed" << endl;
-    else if ( error == kGetCommandError )
-        cout << "error: ioctl with IOCTL_GET_MSG command failed" << endl;
+    else if ( error == kWriteError )
+        cout << "error: ioctl with write command failed" << endl;
+    else if ( error == kReadError )
+        cout << "error: ioctl with read command failed" << endl;
 
     exit(1);
 }

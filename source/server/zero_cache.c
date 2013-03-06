@@ -12,15 +12,12 @@ MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Ilya Shpigor <petrsum@gmail.com>");
 MODULE_DESCRIPTION("Kernel data cache module");
 
+#define TRUE    1
+#define FALSE   0
+
 #define CLASS       "zero_cache_class"
 #define DEVICE      "zero_cache"
 #define CACHE_SIZE  100000
-
-struct Cell
-{
-    size_t size;
-    unsigned char data[POINTER_SIZE];
-};
 
 static struct Device
 {
@@ -31,7 +28,18 @@ static struct Device
 
 DECLARE_RWSEM(gSem);
 
-static struct Cell gCache[CACHE_SIZE];
+static unsigned char gCache[CACHE_SIZE][POINTER_SIZE];
+
+int is_value_size_correct(const struct Package* package)
+{
+    if ( package->size <= POINTER_SIZE )
+        return TRUE;
+    else
+    {
+        printk(KERN_INFO "zero_cache: invalid package size %lu for the value access command\n", package->size);
+        return FALSE;
+    }
+}
 
 static long zc_ioctl(struct file *file, unsigned int command, unsigned long arg)
 {
@@ -46,32 +54,30 @@ static long zc_ioctl(struct file *file, unsigned int command, unsigned long arg)
 
     switch (command)
     {
-    case IOCTL_SET_MSG:
-        down_write(&gSem);
-
-        if ( package->size <= POINTER_SIZE )
-            copy_from_user(&gCache[package->index].data, &package->data, package->size);
-        else
-        {
-            printk(KERN_INFO "zero_cache: package->size = %lu\n", package->size);
+    case IOCTL_WRITE_VALUE:
+        if ( ! is_value_size_correct(package) )
             return -1;
-        }
 
+        down_write(&gSem);
+        copy_from_user(&gCache[package->index], &package->data, package->size);
         up_write(&gSem);
         break;
 
-    case IOCTL_GET_MSG:
-        down_read(&gSem);
-
-        if ( package->size <= POINTER_SIZE )
-            copy_to_user(&package->data, &gCache[package->index].data, package->size);
-        else
-        {
-            printk(KERN_INFO "zero_cache: package->size = %lu\n", package->size);
+    case IOCTL_READ_VALUE:
+        if ( ! is_value_size_correct(package) )
             return -1;
-        }
 
+        down_read(&gSem);
+        copy_to_user(&package->data, &gCache[package->index], package->size);
         up_read(&gSem);
+        break;
+
+    case IOCTL_WRITE_ARRAY:
+        /* FIXME: Implement this command */
+        break;
+
+    case IOCTL_READ_ARRAY:
+        /* FIXME: Implement this command */
         break;
     }
 
