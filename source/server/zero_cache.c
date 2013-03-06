@@ -12,9 +12,6 @@ MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Ilya Shpigor <petrsum@gmail.com>");
 MODULE_DESCRIPTION("Kernel data cache module");
 
-#define TRUE    1
-#define FALSE   0
-
 #define CLASS       "zero_cache_class"
 #define DEVICE      "zero_cache"
 #define CACHE_SIZE  100000
@@ -32,38 +29,7 @@ static unsigned char gCache[CACHE_SIZE][POINTER_SIZE];
 static unsigned char gHeap[CACHE_SIZE];
 static size_t gIndexHeap = 0;
 
-void set_heap_index(const size_t cache_index)
-{
-    memcpy(&gCache[cache_index], &gIndexHeap, sizeof(gIndexHeap));
-}
-
-size_t get_heap_index(const size_t cache_index)
-{
-    size_t result;
-    memcpy(&result, &gCache[cache_index], sizeof(result));
-
-    return result;
-}
-
-void* data_to_pointer(const unsigned char const * data)
-{
-    void* result;
-
-    result = (void*)(*(unsigned long*)data);
-
-    return result;
-}
-
-int is_heap_limit(const size_t index, const size_t size)
-{
-    if ( CACHE_SIZE < (index + size) )
-    {
-        printk(KERN_INFO "zero_cache: limit of the memory pool have been reached");
-        return TRUE;
-    }
-    else
-        return FALSE;
-}
+#include "functions.c"
 
 static long zc_ioctl(struct file *file, unsigned int command, unsigned long arg)
 {
@@ -109,7 +75,8 @@ static long zc_ioctl(struct file *file, unsigned int command, unsigned long arg)
             return -1;
 
         down_read(&gSem);
-        copy_to_user(data_to_pointer(&package->data[0]), &gHeap[get_heap_index(package->index)], package->size);
+        copy_to_user(data_to_pointer(&package->data[0]),
+                     &gHeap[get_heap_index(package->index)], package->size);
         up_read(&gSem);
         break;
     }
@@ -117,7 +84,7 @@ static long zc_ioctl(struct file *file, unsigned int command, unsigned long arg)
     return 0;
 }
 
-int zc_register_device(struct file_operations* fops)
+int register_device(struct file_operations* fops)
 {
     if ( alloc_chrdev_region(&gDevice.number, 0, 1, DEVICE ) < 0 )
         return -1;
@@ -157,7 +124,7 @@ static int __init zc_init(void)
 {
     int rc;
 
-    rc = zc_register_device(&zc_fops);
+    rc = register_device(&zc_fops);
     printk(KERN_INFO "zero_cache: init rc=%d\n", rc);
     return rc;
 }
