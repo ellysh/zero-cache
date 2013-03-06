@@ -45,6 +45,15 @@ size_t get_heap_index(const size_t cache_index)
     return result;
 }
 
+void* data_to_pointer(unsigned char* data)
+{
+    void* result;
+
+    result = (void*)(*(unsigned long*)data);
+
+    return result;
+}
+
 static long zc_ioctl(struct file *file, unsigned int command, unsigned long arg)
 {
     struct Package* package;
@@ -74,7 +83,7 @@ static long zc_ioctl(struct file *file, unsigned int command, unsigned long arg)
         /* FIXME: Add checking to free memory existance in the gHeap array */
         down_write(&gSem);
         set_heap_index(package->index);
-        copy_from_user(&gHeap[gIndexHeap], &package->data, package->size);
+        copy_from_user(&gHeap[gIndexHeap], data_to_pointer(&package->data[0]), package->size);
         gIndexHeap = gIndexHeap + package->size;
         up_write(&gSem);
         break;
@@ -82,7 +91,7 @@ static long zc_ioctl(struct file *file, unsigned int command, unsigned long arg)
     case IOCTL_READ_ARRAY:
         /* FIXME: Add checking to out of bound of gHeap array by package's index and size */
         down_read(&gSem);
-        copy_to_user(&package->data, &gHeap[get_heap_index(package->index)], package->size);
+        copy_to_user(data_to_pointer(&package->data[0]), &gHeap[get_heap_index(package->index)], package->size);
         up_read(&gSem);
         break;
     }

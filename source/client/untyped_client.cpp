@@ -86,12 +86,13 @@ void UntypedClient::ReadArray(const size_t index, void* result, const size_t siz
     package.index = index;
     package.size = size;
 
+    unsigned long address = reinterpret_cast<unsigned long>(result);
+    memcpy(&package.data, &address, POINTER_SIZE);
+
     int rc = ioctl(dev_file_, IOCTL_READ_ARRAY, &package);
 
     if ( rc != 0 )
         Speaker::Instance()->PrintError(kReadError);
-
-    memcpy(result, package.data, size);
 
     POST_TIME_MEASURE
 }
