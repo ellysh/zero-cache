@@ -58,3 +58,40 @@ void UntypedClient::ReadValue(const size_t index, void* result, const size_t siz
 
     POST_TIME_MEASURE
 }
+
+void UntypedClient::WriteArray(const size_t index, const void* array, const size_t size)
+{
+    PRE_TIME_MEASURE("UntypedClient::WriteArray() ")
+
+    Package package;
+    package.index = index;
+    package.size = size;
+
+    unsigned long address = reinterpret_cast<unsigned long>(array);
+    memcpy(&package.data, &address, POINTER_SIZE);
+
+    int rc = ioctl(dev_file_, IOCTL_WRITE_ARRAY, &package);
+
+    if ( rc != 0 )
+        Speaker::Instance()->PrintError(kWriteError);
+
+    POST_TIME_MEASURE
+}
+
+void UntypedClient::ReadArray(const size_t index, void* result, const size_t size) const
+{
+    PRE_TIME_MEASURE("UntypedClient::ReadArray() ")
+
+    Package package;
+    package.index = index;
+    package.size = size;
+
+    int rc = ioctl(dev_file_, IOCTL_READ_ARRAY, &package);
+
+    if ( rc != 0 )
+        Speaker::Instance()->PrintError(kReadError);
+
+    memcpy(result, package.data, size);
+
+    POST_TIME_MEASURE
+}

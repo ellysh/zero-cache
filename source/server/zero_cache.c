@@ -29,17 +29,8 @@ static struct Device
 DECLARE_RWSEM(gSem);
 
 static unsigned char gCache[CACHE_SIZE][POINTER_SIZE];
-
-int is_value_size_correct(const struct Package* package)
-{
-    if ( package->size <= POINTER_SIZE )
-        return TRUE;
-    else
-    {
-        printk(KERN_INFO "zero_cache: invalid package size %lu for the value access command\n", package->size);
-        return FALSE;
-    }
-}
+static unsigned char gHeap[CACHE_SIZE];
+static size_t gIndexHeap = 0;
 
 static long zc_ioctl(struct file *file, unsigned int command, unsigned long arg)
 {
@@ -55,25 +46,24 @@ static long zc_ioctl(struct file *file, unsigned int command, unsigned long arg)
     switch (command)
     {
     case IOCTL_WRITE_VALUE:
-        if ( ! is_value_size_correct(package) )
-            return -1;
-
         down_write(&gSem);
-        copy_from_user(&gCache[package->index], &package->data, package->size);
+        copy_from_user(&gCache[package->index], &package->data, POINTER_SIZE);
         up_write(&gSem);
         break;
 
     case IOCTL_READ_VALUE:
-        if ( ! is_value_size_correct(package) )
-            return -1;
-
         down_read(&gSem);
-        copy_to_user(&package->data, &gCache[package->index], package->size);
+        copy_to_user(&package->data, &gCache[package->index], POINTER_SIZE);
         up_read(&gSem);
         break;
 
     case IOCTL_WRITE_ARRAY:
-        /* FIXME: Implement this command */
+        /* FIXME: Add checking to free memory in the gHeap array */
+        down_write(&gSem);
+        *(unsigned long*)&gCache[package->index] = gIndexHeap;
+        copy_from_user(&gHeap[gIndexHeap], &package->data, package->size);
+        gIndexHeap = gIndexHeap + package->size;
+        up_write(&gSem);
         break;
 
     case IOCTL_READ_ARRAY:

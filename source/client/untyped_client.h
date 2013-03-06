@@ -16,6 +16,9 @@ public:
     void WriteValue(const size_t index, const void* value, const size_t size);
     void ReadValue(const size_t index, void* result, const size_t size) const;
 
+    void WriteArray(const size_t index, const void* array, const size_t size);
+    void ReadArray(const size_t index, void* result, const size_t size) const;
+
 private:
     int dev_file_;
 };
