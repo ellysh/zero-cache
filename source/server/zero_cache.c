@@ -26,8 +26,8 @@ static struct Device
 DECLARE_RWSEM(gSem);
 
 static unsigned char gCache[CACHE_SIZE][POINTER_SIZE];
-static unsigned char gHeap[CACHE_SIZE];
-static size_t gIndexHeap = 0;
+static unsigned char gPool[CACHE_SIZE];
+static size_t gIndexPool = 0;
 
 #include "functions.c"
 
@@ -58,25 +58,25 @@ static long zc_ioctl(struct file *file, unsigned int command, unsigned long arg)
 
     case IOCTL_WRITE_ARRAY:
         down_write(&gSem);
-        if ( is_heap_limit(gIndexHeap, package->size) )
+        if ( is_pool_limit(gIndexPool, package->size) )
         {
             up_write(&gSem);
             return -1;
         }
 
-        set_heap_index(package->index);
-        copy_from_user(&gHeap[gIndexHeap], data_to_pointer(&package->data[0]), package->size);
-        gIndexHeap = gIndexHeap + package->size;
+        set_pool_index(package->index);
+        copy_from_user(&gPool[gIndexPool], data_to_pointer(&package->data[0]), package->size);
+        gIndexPool = gIndexPool + package->size;
         up_write(&gSem);
         break;
 
     case IOCTL_READ_ARRAY:
-        if ( is_heap_limit(get_heap_index(package->index), package->size) )
+        if ( is_pool_limit(get_pool_index(package->index), package->size) )
             return -1;
 
         down_read(&gSem);
         copy_to_user(data_to_pointer(&package->data[0]),
-                     &gHeap[get_heap_index(package->index)], package->size);
+                     &gPool[get_pool_index(package->index)], package->size);
         up_read(&gSem);
         break;
     }
