@@ -64,9 +64,11 @@ static long zc_ioctl(struct file *file, unsigned int command, unsigned long arg)
             return -1;
         }
 
-        set_pool_index(package->index);
-        copy_from_user(&gPool[gIndexPool], data_to_pointer(&package->data[0]), package->size);
-        gIndexPool = gIndexPool + package->size;
+        if ( is_data_empty(package->index) )
+            set_pool_index(package->index, package->size);
+
+        copy_from_user(&gPool[get_pool_index(package->index)],
+                       data_to_pointer(&package->data[0]), package->size);
         up_write(&gSem);
         break;
 

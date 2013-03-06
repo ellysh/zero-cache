@@ -1,9 +1,10 @@
 #define TRUE    1
 #define FALSE   0
 
-void set_pool_index(const size_t cache_index)
+void set_pool_index(const size_t cache_index, const size_t size)
 {
     memcpy(&gCache[cache_index], &gIndexPool, sizeof(gIndexPool));
+    gIndexPool = gIndexPool + size;
 }
 
 size_t get_pool_index(const size_t cache_index)
@@ -31,4 +32,16 @@ void* data_to_pointer(const unsigned char const * data)
     result = (void*)(*(unsigned long*)data);
 
     return result;
+}
+
+int is_data_empty(const size_t index)
+{
+    unsigned long data;
+
+    memcpy(&data, gCache[index], sizeof(data));
+
+    if ( data == 0 )
+        return TRUE;
+    else
+        return FALSE;
 }
