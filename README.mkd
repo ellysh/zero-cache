@@ -60,13 +60,13 @@ EXAMPLES
 
 This is example of typical C++ client application:
 
-    #include <zero-cache/client.h>
+    #include <zero-cache/typed_client.h>
 
     using namespace zero_cache;
 
     int main()
     {
-        Client client;
+        TypedClient client;
 
         size_t index = 0;
         long data = 1024;
@@ -95,12 +95,12 @@ This is example of typical C client application:
         package.index = 0;
         memcpy(&package.data, data, PACKAGE_DATA_SIZE);
 
-        ioctl(dev_file, IOCTL_SET_MSG, &package);
+        ioctl(dev_file, IOCTL_WRITE_VALUE, &package);
 
         long result;
 
         package.index = 0;
-        ioctl(dev_file, IOCTL_GET_MSG, &package);
+        ioctl(dev_file, IOCTL_READ_VALUE, &package);
         memcpy(result, &package.data, PACKAGE_DATA_SIZE);
 
         close(dev_file);
