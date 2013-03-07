@@ -1,4 +1,4 @@
-Zero-cache 2.1 version
+Zero-cache 2.2 version
 ======================
 
 INTRODUCTION

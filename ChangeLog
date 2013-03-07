@@ -1,3 +1,7 @@
+* zero-cache 2.2
+	- Implement the cache cleaning mechanism
+	- Build the server module in dkms
+
 * zero-cache 2.1
 	- Add arrays and strings to supported caching data types
 	- Add the untyped client class
