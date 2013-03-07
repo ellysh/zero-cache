@@ -81,6 +81,12 @@ static long zc_ioctl(struct file *file, unsigned int command, unsigned long arg)
                      &gPool[get_pool_index(package->index)], package->size);
         up_read(&gSem);
         break;
+
+    case IOCTL_CLEAR_CACHE:
+        down_write(&gSem);
+        clear_cache();
+        up_write(&gSem);
+        break;
     }
 
     return 0;
@@ -125,8 +131,10 @@ static struct file_operations zc_fops =
 static int __init zc_init(void)
 {
     int rc;
-
     rc = register_device(&zc_fops);
+
+    clear_cache();
+
     printk(KERN_INFO "zero_cache: init rc=%d\n", rc);
     return rc;
 }

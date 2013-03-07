@@ -45,3 +45,10 @@ int is_data_empty(const size_t index)
     else
         return FALSE;
 }
+
+void clear_cache(void)
+{
+    memset(&gCache, 0x00, sizeof(gCache));
+    memset(&gPool, 0x00, sizeof(gPool));
+    gIndexPool = 0;
+}

@@ -9,6 +9,7 @@
 #define IOCTL_READ_VALUE _IOR(MAJOR_NUM, 1, void *)
 #define IOCTL_WRITE_ARRAY _IOW(MAJOR_NUM, 2, void *)
 #define IOCTL_READ_ARRAY _IOR(MAJOR_NUM, 3, void *)
+#define IOCTL_CLEAR_CACHE _IOR(MAJOR_NUM, 4, void *)
 
 #define DEVICE_FILE_NAME "/dev/zero_cache"
 
