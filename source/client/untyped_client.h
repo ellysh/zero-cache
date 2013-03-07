@@ -19,6 +19,8 @@ public:
     void WriteArray(const size_t index, const void* array, const size_t size);
     void ReadArray(const size_t index, void* result, const size_t size) const;
 
+    void ClearCache();
+
 private:
     int dev_file_;
 

@@ -25,6 +25,8 @@ void Speaker::PrintError(const ErrorType error) const
         cout << "error: ioctl with WRITE command failed" << endl;
     else if ( error == kReadError )
         cout << "error: ioctl with READ command failed" << endl;
+    else if ( error == kClearError )
+        cout << "error: ioctl with CLEAR command failed" << endl;
 
     exit(1);
 }

@@ -82,6 +82,7 @@ void UntypedClient::WriteArray(const size_t index, const void* array, const size
 
 void UntypedClient::ReadArray(const size_t index, void* result, const size_t size) const
 {
+    /* FIXME: This function is the same as WriteArray() */
     PRE_TIME_MEASURE("UntypedClient::ReadArray() ")
 
     Package package;
@@ -95,6 +96,20 @@ void UntypedClient::ReadArray(const size_t index, void* result, const size_t siz
 
     if ( rc != 0 )
         Speaker::Instance()->PrintError(kReadError);
+
+    POST_TIME_MEASURE
+}
+
+void UntypedClient::ClearCache()
+{
+    PRE_TIME_MEASURE("UntypedClient::ClearCache() ")
+
+    Package package;
+
+    int rc = ioctl(dev_file_, IOCTL_CLEAR_CACHE, &package);
+
+    if ( rc != 0 )
+        Speaker::Instance()->PrintError(kClearError);
 
     POST_TIME_MEASURE
 }

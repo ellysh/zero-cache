@@ -8,7 +8,8 @@ enum ErrorType
 {
     kOpenDevFileError = 0,
     kWriteError,
-    kReadError
+    kReadError,
+    kClearError
 };
 
 class Speaker
