@@ -32,3 +32,8 @@ double TypedClient::ReadDouble(const size_t index) const
 
     return result;
 }
+
+void TypedClient::ClearCache()
+{
+    client_.ClearCache();
+}

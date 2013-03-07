@@ -17,6 +17,8 @@ public:
     long ReadLong(const size_t index) const;
     double ReadDouble(const size_t index) const;
 
+    void ClearCache();
+
 private:
     UntypedClient client_;
 };
