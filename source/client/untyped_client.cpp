@@ -105,6 +105,7 @@ void UntypedClient::ClearCache()
     PRE_TIME_MEASURE("UntypedClient::ClearCache() ")
 
     Package package;
+    package.index = 0;
 
     int rc = ioctl(dev_file_, IOCTL_CLEAR_CACHE, &package);
 

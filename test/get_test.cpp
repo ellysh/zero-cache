@@ -31,6 +31,7 @@ void CheckData(TypedClient& client)
 int main()
 {
     TypedClient client("get_test.log");
+    client.ClearCache();
 
     cout << "Start test..." << endl;
 

@@ -43,6 +43,9 @@ void WaitInput()
 
 int main()
 {
+    TypedClient client("");
+    client.ClearCache();
+
     cout << "Start test..." << endl;
 
     StartWriteThread("1");
