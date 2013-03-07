@@ -1,6 +1,10 @@
 set(BIN_DIR ${PROJECT_SOURCE_DIR}/bin)
 set(BIN_DEB_DIR ${BIN_DIR}/deb)
 set(DEBIAN_DIR ${PROJECT_SOURCE_DIR}/debian)
+set(MODULE_DIR ${PROJECT_SOURCE_DIR}/source/server)
+set(MODULE_NAME zero_cache)
+set(MODULE_VERSION 2.1)
+set(USR_SRC_DIR /usr/src/${MODULE_NAME}-${MODULE_VERSION})
 
 # Targets for the deb packages building
 add_custom_target(deb-clean
@@ -19,6 +23,9 @@ add_custom_target(deb-clean
     COMMAND find ${BIN_DIR} -name "*.changes" | xargs rm -f
     COMMAND find ${BIN_DIR} -name "*.deb" | xargs rm -f
     COMMAND find ${BIN_DIR} -name "*.tar.gz" | xargs rm -f
+
+    COMMAND -sudo dkms remove -m ${MODULE_NAME} -v ${MODULE_VERSION} --all
+    COMMAND -sudo rm -Rf ${USR_SRC_DIR}
 )
 
 add_custom_target(deb
@@ -26,6 +33,14 @@ add_custom_target(deb
     COMMAND ${MKCHANGELOG}
     COMMAND dpkg-buildpackage -rfakeroot -b -us -uc
     COMMAND mv -f ../*.changes ../*.deb ${BIN_DEB_DIR}
+
+    COMMAND -sudo mkdir ${USR_SRC_DIR}
+    COMMAND -sudo cp -R ${MODULE_DIR}/* ${USR_SRC_DIR}
+    COMMAND -sudo cp dkms.conf ${USR_SRC_DIR}/
+    COMMAND -sudo dkms add -m ${MODULE_NAME} -v ${MODULE_VERSION}
+    COMMAND -sudo dkms build -m ${MODULE_NAME} -v ${MODULE_VERSION}
+    COMMAND -sudo dkms mkdeb -m ${MODULE_NAME} -v ${MODULE_VERSION}
+    COMMAND -cp -f /var/lib/dkms/${MODULE_NAME}/${MODULE_VERSION}/deb/* ${BIN_DEB_DIR}
 )
 
 add_dependencies(deb deb-clean)
