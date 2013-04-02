@@ -3,7 +3,7 @@ set(BIN_DEB_DIR ${BIN_DIR}/deb)
 set(DEBIAN_DIR ${PROJECT_SOURCE_DIR}/debian)
 set(MODULE_DIR ${PROJECT_SOURCE_DIR}/source/server)
 set(MODULE_NAME zero_cache)
-set(MODULE_VERSION 2.1)
+set(MODULE_VERSION 2.2)
 set(USR_SRC_DIR /usr/src/${MODULE_NAME}-${MODULE_VERSION})
 
 # Targets for the deb packages building
