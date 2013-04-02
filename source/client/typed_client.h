@@ -1,7 +1,7 @@
 #ifndef TYPED_CLIENT_H
 #define TYPED_CLIENT_H
 
-#include "untyped_client.h"
+#include <untyped_client.h>
 
 namespace zero_cache
 {

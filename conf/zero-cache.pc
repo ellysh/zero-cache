@@ -5,9 +5,9 @@ includedir=${prefix}/include/zero-cache
 modules=1
 
 Name: zero-cache
-Version: 2.0
+Version: 2.2
 Description: Kernel space memory caching system
 Requires:
-Libs: -L${libdir}
+Libs: -L${libdir} -lzero_cache
 Libs.private:
 Cflags: -I${includedir}
